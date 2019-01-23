@@ -8,16 +8,16 @@ mongoose.connect(dbURL, {useNewUrlParser: true}, function(err){
         console.log("Something went wrong");
         console.log(err);
     } else {
-        console.log("connected");
+        console.log("connected to mongo");
     }
 });
 
 app.set("view engine", "ejs");
 app.get("/", function(req, res){
-    res.send("hello");
+    res.render("index");
 });
 
 
 app.listen(process.env.PORT, process.env.IP, function(){
-    console.log("The yelpcamp server is on"); 
+    console.log("The tea-shop server is on"); 
 });
