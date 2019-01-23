@@ -11,7 +11,7 @@ mongoose.connect(dbURL, {useNewUrlParser: true}, function(err){
         console.log("connected to mongo");
     }
 });
-
+app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
 app.get("/", function(req, res){
     res.render("index");

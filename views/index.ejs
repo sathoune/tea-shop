@@ -1,8 +1,69 @@
 <% include ./partials/header %>
 
-<form>
-<input type="button" value="xd">    
-    
-</form>
+<div id="main-form" class="container">
+    <form class="">
+        <div class="row">
+            <div class="col-1">
+                Code
+            </div>
+            <div class="col-2">
+                Name
+            </div>
+            <div class="col-1">
+                Type
+            </div>
+            <div class="col-1">
+                Count
+            </div>
+            <div class="col-1">
+                Price
+            </div>
+            <div class="col-2">
+                Hint
+            </div>
+            <div class="col-1">
+                Discounted Price
+            </div>
+            
+        </div> 
+        <div class="row">
+            <div class="col-1">
+                <input type="text">
+            </div>
+            <div class="col-2">
+                <input type="text">
+            </div>
+            <div  class="col-1">
+                <input list="browsers" type="text">
+            </div>
+            <div class="col-1">
+                <input type="number" min="0" step="1" max = "500">
+            </div>
+            <div class="col-1">
+                <input type="text">
+            </div>
+            <div class="col-2">
+                <input type="text">
+            </div>
+            <div class="col-1">
+                <input type="text">
+            </div>
+            
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="btn btn-primary">submit</button>
+            </div>    
+        </div>
+     
+    </form>
+</div>
 
+<datalist id="browsers">
+  <option value="Internet Explorer">
+  <option value="Firefox">
+  <option value="Google Chrome">
+  <option value="Opera">
+  <option value="Safari">
+</datalist>
 <% include ./partials/footer %>
