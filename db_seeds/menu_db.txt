@@ -1,0 +1,170 @@
+Mate Terere	                    ;1;     12.80;      0;      0;   0.05
+Yerba Mate Amigo	            ;1;     15.80;      0;      0;   0.05
+Yerba Mate Rancho	            ;1;     12.80;      0;      0;   0.05
+Bancha Kyoto Bio	            ;2; 	16.80; 	13.80;	58.00;	 0.83
+Bi Luo Chung Tai Hu	            ;2;	    18.80;	15.80; 100.00;   1.00
+Bomba Kwiatowa Camelia	        ;2; 	14.80;      0;	 6.50;	    0
+Che Xanh	                    ;2; 	12.80;	 9.80;		0;	 0.23
+Chun Mei	                    ;2;	    10.80;		0;		0;	 0.20
+Dian Lu Cha	                    ;2;	    11.80;	    0;		0;   0.27
+Dian Lu Wenshan Mao Feng Cha	;2;	    17.80;	14.80;	    0;	 0.85
+Genmaicha Kyoto BIO	            ;2;	    16.80;	13.80;  51.00;	 0.73
+Gui Hua Cha	                    ;2;	    15.80;	12.80;	35.00;	 0.35
+Gyokuro Kyoto	                ;2;	    24.80;	21.80;	95.00;	 1.90
+Hagiang ancient green tea   	;2;	    16.80;	13.80;	50.00;   0.50
+Hojicha Kyoto Bio	            ;2;	    16.80;	13.80;	40.00;   0.80
+Kabukicha Bio	                ;2;	    24.80;	21.80;  80.00;	 1.60
+Kamacha Ureshino Bio	        ;2;	    17.80;	14.80;	70.00;	 1.00
+Kukicha Kyoto Bio	            ;2; 	16.80;	13.80;  55.00;	 0.79
+Kyoto Kinnen	                ;2;	    12.80;	    0;      0;      0
+Long Jing Cha „Tiger Spring“	;2;	    19.80;	16.80;      0;   1.09
+Luan Gua Pian	                ;2;	    19.80;	16.80;      0;	 1.00
+Lushan Yun Wu	                ;2;	    14.80;	11.80;	    0;   0.60
+Matcha iri Genmaicha Bio	    ;2;	    19.80;  16.80;      0;      0
+Matcha iri Sencha Bio	        ;2;	    21.80;	18.80;      0;      0
+Matcha Kyoto Bio	            ;2;	    25.80;	    0;	85.00;      0
+Matcha Kyoto Natural	        ;2;         0;	    0; 120.00;	 1.20
+Moli Hua Cha                    ;2;	    12.80;      0;  45.00;   0.25
+Nokcha DARACK	                ;2;     26.80;	23.80; 110.00;   2.75
+Nokcha Sejak                    ;2;     22.80;  19.80;  95.00;   1.90
+Putuo Shian Fo Cha              ;2;     24.80;  21.80;  39.00;   1.95
+Que She Jian - Ptasi Języczek   ;2;     15.80;  12.80;  25.00;   0.33
+Sencha Kyoto Bio                ;2;     18.80;  15.80;  69.00;   1.00
+Shincha                          ;2;     24.80;  21.80;  90.00;   1.80
+Tai Mu Long Zhu                 ;2;     18.80;  15.80;      0;   0.90
+Tamaryokucha Ureshino           ;2;     19.80;  16.80;  70.00;   1.00
+Tian Mu Long Zhu Moli           ;2;     18.80;  15.80;      0;   0.95
+Weishan Mao Jian                ;2;     16.80;  13.80;      0;   0.60
+Wydma Pustynna                  ;2;     12.80;      0;  29.00;      0
+Wydma Pustynna w zestawie       ;2;     14.00;      0;      0;      0
+Yamacha Hamamatsu               ;2;     19.80;  16.80;  79.00;   1.58
+Zhu Cha                         ;2;     10.80;      0;  25.00;   0.23
+Zhu Cha Pingsui                 ;2;     15.80;  12.80;  35.00;      0
+Assam Brahmaputra               ;3;     10.80;      0;  28.00;   0.25
+Assam CTC Kundalimukh           ;3;     10.80;      0;      0;   0.17
+Ceylon Adam’s Peak FOP I        ;3;     10.80;      0;  16.00;   0.20
+Ceylon Earl Grey                ;3;     11.80;      0;  16.00;      0
+Ceylon Moslim Tea               ;3;      5.80;      0;  16.00;      0
+Ceylon Tiger River FOP I        ;3;     10.80;      0;  16.00;   0.20
+Czaj Czaje Czaj !               ;3;     12.80;      0;      0;      0
+Czajszana                       ;3;      7.80;      0;      0;   0.20
+Darjeeling First Flush          ;3;     21.80;  18.80;      0;   1.09
+Darjeeling Himalaya             ;3;     11.80;      0;  32.00;   0.25
+Darjeeling Second Flush         ;3;     17.80;  14.80;      0;   0.78
+Edward Lear                     ;3;     12.80;      0;      0;   0.25
+Ha giang Black ancient tea      ;3;     16.80;  13.80;  50.00;   0.50
+Herbata Babuni                  ;3;     14.80;      0;      0;      0
+K.H. Macha                      ;3;     12.80;      0;      0;   0.25
+Kenia Fop                       ;3;     11.80;      0;      0;   0.25
+Nepal Ilam Bio                  ;3;     13.80;      0;      0;   0.39
+Nepal Kuwapani                  ;3;     13.80;      0;      0;   0.39
+Nilgiri Shiva                   ;3;     10.80;      0;      0;   0.23
+Rize Cay                        ;3;     16.80;      0;  48.00;      0
+Rosyjska Karawana               ;3;     12.80;      0;      0;      0
+Rwanda Black Ortodox Bio        ;3;     15.80;  12.80;      0;   0.40
+Tygrys Malajski                 ;3;     12.80;      0;      0;   0.25
+Wooricha                        ;3;     23.80;  20.80;  90.00;   1.80
+Wspomnienia z Melanezji         ;3;     12.80;      0;      0;   0.25
+Wspomnienie z Bejrutu	        ;3;     12.80;      0;      0;   0.25
+Wspomnienie z Istambułu	        ;3;     12.80;      0;      0;   0.25
+Wspomnienie z Jerozolimy        ;3;     12.80;      0;      0;   0.25
+Wspomnienie z Omdurmanu         ;3;     12.80;      0;      0;   0.25
+Mięta Nana                      ;4;      9.80;      0;      0;   0.20
+Niebieski i zielony z Formosy   ;4;     36.80;      0;      0;      0
+Smak Himalajów                  ;4;     32.80;      0;      0;      0
+Tajemnica Samuraja              ;4;     31.80;      0;      0;      0
+Tajemnica Trzech Skarbów        ;4;     28.80;      0;      0;      0
+Trzech Cesarzy                  ;4;     40.80;      0;      0;      0
+Trzy Kolory PUER                ;4;     30.80;      0;      0;      0
+Bai Mu Dan Bing Cha             ;5;     16.80;  13.80;  70.00;   0.35
+Chi Tse Bing Cha                ;5;     15.80;  12.80; 100.00;   0.30
+Gong ting Pu Er Imperial        ;5;     17.80;  14.80;  50.00;   0.50
+Lao Shu Bing Cha                ;5;     18.80;  15.80;  90.00;   0.90
+mini bing cha                   ;5;         0;      0;   5.00;      0
+midi bing cha                   ;5;         0;      0;  33.00;      0
+Pu Er Cha                       ;5;     10.80;      0;      0;   0.23
+Pu Er Mandaryn                  ;5;     15.80;  12.80;  16.00;      0
+Pu Er Peletki                   ;5;     15.80;  12.80;      0;   0.50
+Qing Tuo Cha                    ;5;     14.80;  11.80;  33.00;      0
+Sa Bang                         ;5;     17.80;  14.80;  46.00;   0.46
+Tuo Cha                         ;5;     14.80;  11.80;  33.00;      0
+Zhu Ye Pu Er Cha                ;5;     17.80;  14.80; 100.00;   1.00
+Zhuan Cha                       ;5;     14.80;  11.80;  70.00;   0.30
+Fajka wodna                     ;6;     35.00;      0;      0;      0
+Ali Shan Jin Xuan               ;7;     21.80;  18.80;  75.00;   1.50
+Bai Hao                         ;7;     20.80;  17.80;  65.00;   1.30
+Da Hong Pao                     ;7;     19.80;  16.80;      0;   1.09
+Feng Huang Dan Cong             ;7;     19.80;  16.80;      0;   1.09
+Shan Lin Xi                     ;7;     22.80;  19.80;  90.00;   1.80
+Tie Guan Yin Bio                ;7;     18.80;  15.80;      0;   0.85
+Tung Ting                       ;7;     20.80;  17.80;  72.00;   1.44
+Wu Long                         ;7;     12.80;      0;  28.00;      0
+Wu Yi Shan Shui Xian            ;7;     16.80;  13.80;      0;   0.58
+Bai Mu Dan                      ;8;     15.80;  12.80;      0;   0.45
+Dhara White Bio                 ;8;     23.80;  20.80;  45.00;   2.25
+Rwanda Silver Needle Bio        ;8;     19.80;  16.80;      0;   1.10
+Ya Bao                          ;8;     18.80;  15.80;      0;   0.85
+Yin Zhen                        ;8;     19.80;  16.80;      0;   1.09
+Dian Hong Golden Yunann         ;9;     15.80;  12.80;      0;   0.30
+Jin Mao Feng                    ;9;     17.80;  14.80;      0;   0.65
+Jin Zhen Gold                   ;9;     18.80;  15.80;      0;   0.85
+Li Zhi                          ;9;     12.80;      0;      0;   0.25
+Migdałowa                       ;9;     12.80;      0;      0;   0.25
+Qi Hong                         ;9;     11.80;      0;      0;   0.29
+Qi Hong Mao Feng                ;9;     16.80;  13.80;      0;   0.65
+Śliwkowa                        ;9;     12.80;      0;      0;   0.25
+Waniliowa                       ;9;     12.80;      0;      0;   0.25
+Zheng Shan Xiao Zhong           ;9;     11.80;      0;      0;   0.29
+Matcha KULE                     ;10;     8.50;0;0;0
+Kandyzowany IMBIR               ;11;     6.50;0;0;0
+Pistacje                        ;12;     7.50;0;0;0
+Orzeszki WASABI                 ;13;     7.50;0;0;0
+Mieszanka egzotyczna            ;14;     6.50;0;0;0
+Mieszanaka orzechowo-żurawinowa ;16;     6.50;0;0;0
+Herbatniki                      ;19;     6.50;0;0;0
+Lody Eskimono                   ;20;    14.80;0;0;0
+Pita vegan                      ;21;    12.50;0;0;0
+Pita Liban                      ;21;     8.50;0;0;0
+Pita TAKADA                     ;21;     3.50;0;0;0
+miód                            ;25;     1.50;0;0;0
+mleko                           ;26;     1.50;0;0;0
+Miód. mleko                     ;27;     3.00;0;0;0
+Huang Ya                        ;31;    20.80; 17.80;      0;  1.09
+Rooibos                         ;32;     9.80;     0;      0;  0.14
+Sahlep                          ;33;    10.80;     0;  25.00;     0
+Sahlep Chococo                  ;33;    11.80;0;0;0
+Sahlep Roxy                     ;33;    11.80;0;0;0
+Boston Tea Party                ;34;    12.80;0;0;0
+AN-Cha                          ;35;    12.80;0;0;0
+MAN-Cha                         ;36;    12.80;0;0;0
+Staroborszow                    ;37;    10.80;0;0;0
+Ho-Chi-Minha lemoniada          ;38;    10.80;0;0;0
+Lemoniada Assam                 ;40;    10.80;0;0;0
+Karkade                         ;43;    10.80;0;0;0
+sok                             ;44;     6.80;0;0;0
+Woda źródlana                   ;45;     3.80;0;0;0
+Ceramika                        ;46;        0;0;0;0
+Akcesoria                       ;47;        0;0;0;0
+Liście wiśni Sakura             ;50;    22.80;  19.80; 100.00;   2.50
+filtry                          ;51;    23.00;0;0;0
+filtry dla firmy                ;51;    14.00;0;0;0
+czarka                          ;52;        0;0;0;0
+termometr                       ;53;        0;0;0;0
+zaparzacz                       ;54;        0;0;0;0
+bombilla                        ;55;        0;0;0;0
+matero                          ;56;        0;0;0;0
+czajnik                         ;57;        0;0;0;0
+książka                         ;58;    42.00;0;0;0
+danie indyjskie                 ;60;    17.80;0;0;0
+zestaw świąteczny               ;61;        0;0;0;0
+Herbata Yogi                    ;F1;    15.80;     0; 29.00;   0
+Wspomnienie z Bombaju           ;F2;    15.80;     0;     0;   0.25
+Aromat Kaszmiru                 ;F3;    12.80;     0; 29.00;   0.25
+Baklava                         ;F4;     8.50;0;0;0
+Marlenka                        ;F5;     9.50;0;0;0
+Che Xahn - Wspomnienia z aresztu;1;     13.00;0;0;0
+tulipan szklanka                ;46;    12.50;0;0;0
+lemoniada lawendowa             ;63;    10.80;0;0;0
+lemoniada werbenowa             ;64;    10.80;0;0;0
+birma czarna                    ;9;      0;0;0;0
+birma zielona                   ;2;      0;0;0;0
