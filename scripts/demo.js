@@ -14,7 +14,24 @@ function magicTrick(){
     	success: function(data){
             console.log(data);
             if(Object.entries(data).length){
-    		    $("#price").val(data.prices.default);
+                var type = $("#type").val()
+    		    $("#registerCode").val(data.registerCode);
+
+                if(type == "sztuka" || type == "czajnik"){
+        		    $("#price").val(data.prices.default);
+                }
+                else if(type == "gaiwan"){
+        		    $("#price").val(data.prices.gaiwan);
+                }
+                else if(type == "opakowanie"){
+        		    $("#price").val(data.prices.package);
+                }
+                else if(type == "gram"){
+        		    $("#price").val(data.prices.bulk);
+                }
+            } else {
+    		    $("#registerCode").val("");
+                $("#price").val("");
             }
         }
     });
