@@ -1,6 +1,11 @@
 // $ is defined in scope of view
+$(document).ready(function(){
+    $("#name").change(function(){
+       magicTrick(); 
+    });
+});
+
 function magicTrick(){
-    
     $.ajax({
     	method: 'post',
     	url: '/data',
