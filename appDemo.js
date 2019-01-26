@@ -10,6 +10,6 @@ mongoose.connect(dbURL, {useNewUrlParser: true}, function(err){
         console.log("connected to mongo");
     }
 });
+findMatchingItems("kyot", console.log)
 
-console.log(findMatchingItems("shan"));
 //seedMenu();

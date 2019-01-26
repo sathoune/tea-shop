@@ -1,17 +1,15 @@
 var MenuItem = require("../models/menu.js");
 
-function findMatchingItems(name){
- 
-    MenuItem.find({name: new RegExp('.*'+name+'.*', "i")}, function(err, foundItem){
+function findMatchingItems(name, makeSomethingWithData){
+    var results = [];
+    MenuItem.find({name: new RegExp('.*'+name+'.*', "i")}, 
+    function(err, matchingItems){
         if(err){
           console.log(err);  
         } else {
-            console.log("I am here");
-            console.log(foundItem);
+           makeSomethingWithData(matchingItems);
         }
-        
-        
-});
-   
+    });
+    
 }
 module.exports = findMatchingItems;
