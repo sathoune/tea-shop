@@ -3,7 +3,6 @@ var mongoose = require("mongoose");
 var MenuItemSchema = new mongoose.Schema({
    name: String,
    registerCode: String,
-   image: String,
    prices: {
        default_price: String,
        gaiwan_price: String,

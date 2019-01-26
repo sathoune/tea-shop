@@ -1,9 +1,8 @@
 var mongoose = require("mongoose");
-var MenuItem = require("models/menu.js");
-var arrayOfMenuItems = require("open_menu_file");
-
+var MenuItem = require("../models/menu.js");
+var arrayOfMenuItems = require("./openMenuFile");
+var x = 615;
 console.log(arrayOfMenuItems);
-
 // function seedDB() {
 //     //Remove all campgrounds
 //     Campground.remove({}, function(err) {
@@ -46,4 +45,4 @@ console.log(arrayOfMenuItems);
 //     //add a few comments
 // }
 
-// module.exports = seedDB;
+module.exports = "homunkulus";
