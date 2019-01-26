@@ -1,5 +1,5 @@
 var mongoose = require("mongoose");
-console.log(require("./db_seeds/menuItems"));
+var seedMenu = require("./db_seeds/seedMenuItems");
     
 var dbURL =  "mongodb://localhost:27017/tea-shop";
 mongoose.connect(dbURL, {useNewUrlParser: true}, function(err){
@@ -10,3 +10,5 @@ mongoose.connect(dbURL, {useNewUrlParser: true}, function(err){
         console.log("connected to mongo");
     }
 });
+
+seedMenu();

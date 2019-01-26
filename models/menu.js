@@ -4,9 +4,9 @@ var MenuItemSchema = new mongoose.Schema({
    name: String,
    registerCode: String,
    prices: {
-       default_price: String,
-       gaiwan_price: String,
-       package_price: String,
+       default: String,
+       gaiwan: String,
+       package: String,
        bulk: String,
    }
    

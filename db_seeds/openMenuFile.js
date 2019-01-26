@@ -29,9 +29,9 @@ function makeMenuObject(arrayOfMenuStrings){
            name: arrayOfMenuStrings[0],
            registerCode: arrayOfMenuStrings[1],
            prices: {
-               default_price: arrayOfMenuStrings[2],
-               gaiwan_price: arrayOfMenuStrings[3],
-               package_price: arrayOfMenuStrings[4],
+               default: arrayOfMenuStrings[2],
+               gaiwan: arrayOfMenuStrings[3],
+               package: arrayOfMenuStrings[4],
                bulk: arrayOfMenuStrings[5],
             }
         }
