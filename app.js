@@ -2,6 +2,7 @@ var express = require("express");
 var app = express();
 var mongoose = require("mongoose");
 var MenuItem = require("./models/menu");
+var bodyParser = require("body-parser");
 
 var seedMenu = require("./db_seeds/seedMenuItems");
 //var findMatchingItems = require("./db_helpers/findMatchingItems");
@@ -15,6 +16,8 @@ mongoose.connect(dbURL, {useNewUrlParser: true}, function(err){
         console.log("connected to mongo");
     }
 });
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + '/scripts'));
 app.use(express.static(__dirname + "/public"));
@@ -39,7 +42,15 @@ app.get("/", function(req, res){
 });
 
 app.post("/data", function(req,res){
-   res.send("xasdas");
+    MenuItem.findOne({name: req.body.name}, function(err, result){
+        if(err){
+            console.log(err);
+        } else {
+            res.send(result);
+            
+            
+        }
+    });
 });
 
 app.listen(process.env.PORT, process.env.IP, function(){
