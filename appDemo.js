@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
 var seedMenu = require("./db_seeds/seedMenuItems");
-    
+var findMatchingItems = require("./db_helpers/findMatchingItems");
 var dbURL =  "mongodb://localhost:27017/tea-shop";
 mongoose.connect(dbURL, {useNewUrlParser: true}, function(err){
     if(err){
@@ -11,4 +11,5 @@ mongoose.connect(dbURL, {useNewUrlParser: true}, function(err){
     }
 });
 
-seedMenu();
+console.log(findMatchingItems("shan"));
+//seedMenu();

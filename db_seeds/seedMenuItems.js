@@ -9,7 +9,6 @@ function seedMenuDB() {
             console.log(err);
         } 
         console.log("Menu removed");
-        console.log(arrayOfMenuObjects);
         arrayOfMenuObjects.forEach(function(menuObject){
             saveItemInDB(menuObject);
             });
