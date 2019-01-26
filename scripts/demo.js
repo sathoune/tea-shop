@@ -1,11 +1,10 @@
 // $ is defined in scope of view
 $(document).ready(function(){
-    $("#name").change(function(){
-       magicTrick(); 
-    });
+    $("#name").change(calculatePrice); 
+    $("#type").change(calculatePrice);
 });
-
-function magicTrick(){
+ 
+function calculatePrice(){
     $.ajax({
     	method: 'post',
     	url: '/data',
