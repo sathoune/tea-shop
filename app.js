@@ -3,7 +3,7 @@ var app = express();
 var mongoose = require("mongoose");
 var MenuItem = require("./models/menu");
 var bodyParser = require("body-parser");
-var MenuItem = require("./models/menu");
+var OrderedItem = require("./models/orderedItem");
 
 var seedMenu = require("./db_seeds/seedMenuItems");
 //var findMatchingItems = require("./db_helpers/findMatchingItems");
@@ -55,7 +55,13 @@ app.post("/data", function(req,res){
 });
 
 app.post("/create-item", function(req, res){
-    
+    OrderedItem.create({}, function(err, createdItem){
+        if(err){
+            console.log(err);
+        } else {
+            res.send(createdItem);
+        }
+    })
 })
 
 app.listen(process.env.PORT, process.env.IP, function(){
