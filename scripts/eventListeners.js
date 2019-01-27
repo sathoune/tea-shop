@@ -12,29 +12,32 @@ function calculatePrice(){
     	url: '/data',
     	data: JSON.stringify({ name: $("#name").val() }),
     	contentType: "application/json",
-    	success: function(data){
-            console.log(data);
-            if(Object.entries(data).length){
+    	success: function(menuObject){
+            if(Object.entries(menuObject).length){
                 var type = $("#type").val()
                 var quantity = $("#quantity").val()
-    		    $("#registerCode").val(data.registerCode);
-
-                if(type == "sztuka" || type == "czajnik"){
-        		    $("#price").val(data.prices.default*quantity);
-                }
-                else if(type == "gaiwan"){
-        		    $("#price").val(data.prices.gaiwan*quantity);
-                }
-                else if(type == "opakowanie"){
-        		    $("#price").val(data.prices.package*quantity);
-                }
-                else if(type == "gram"){
-        		    $("#price").val(data.prices.bulk*quantity);
-                }
+    		    $("#registerCode").val(menuObject.registerCode);
+                assignPrice(type, quantity, menuObject);
+                
             } else {
     		    $("#registerCode").val("");
                 $("#price").val("");
             }
         }
     });
+}
+
+function assignPrice(type, quantity, menuObject){
+    if(type == "sztuka" || type == "czajnik"){
+	    $("#price").val(menuObject.prices.default*quantity);
+    }
+    else if(type == "gaiwan"){
+	    $("#price").val(menuObject.prices.gaiwan*quantity);
+    }
+    else if(type == "opakowanie"){
+	    $("#price").val(menuObject.prices.package*quantity);
+    }
+    else if(type == "gram"){
+	    $("#price").val(menuObject.prices.bulk*quantity);
+    }
 }
