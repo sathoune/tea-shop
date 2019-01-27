@@ -9,12 +9,7 @@
     <body> 
     <div id="666">
         <input id="name" list="tees">
-        <datalist id="tees">
-        <% foundItems.forEach(function(item){%>
-            <option value="<%= item.name %>">
-            
-        <% }) %>
-        </datalist>
+      
         <input class="code" id="registerCode" type="text">
         <input id="price" type="text">
         <input id="quantity" type="number" name="quantity" min="0" value="1">
@@ -27,8 +22,12 @@
         </select>
     </div>
     
-        <input class="code">
-    
+    <datalist id="tees">
+        <% foundItems.forEach(function(item){%>
+            <option value="<%= item.name %>">
+            
+        <% }) %>
+    </datalist>
     <script type="text/javascript" src="eventListeners.js"></script>
     <script type="text/javascript" src="createItemDiv.js"></script>
     </body>
