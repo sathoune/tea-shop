@@ -5,10 +5,10 @@ function sendUpdatedItem(){
     var updatedItem = {
         id: itemID,
     
-        name: $(`#${itemID} .name`).val(),
-        quantity: $(`#${itemID} .quantity`).val(),
-        type: $(`#${itemID} .type`).val(),
-        price: $(`#${itemID} .price`).val(),
+        name: $(`#${itemID}.item .name`).val(),
+        quantity: $(`#${itemID}.item .quantity`).val(),
+        type: $(`#${itemID}.item .type`).val(),
+        price: $(`#${itemID}.item .price`).val(),
     
     };
    
@@ -19,8 +19,8 @@ function sendUpdatedItem(){
     	contentType: "application/json",
     	success: function(data){
     	   
-            $(`#${itemID} .price`).val(data.price);
-            $(`#${itemID} .registercode`).val(data.registerCode);
+            $(`#${itemID}.item .price`).val(data.price);
+            $(`#${itemID}.item .registercode`).val(data.registerCode);
         }
     });
 }

@@ -56,13 +56,23 @@ app.post("/data", function(req,res){
 });
 
 app.post("/create-item", function(req, res){
-    OrderedItem.create({}, function(err, createdItem){
+    Order.findById(req.body.orderID, function(err, foundOrder){
         if(err){
             console.log(err);
         } else {
-            res.send(createdItem);
-        }
+            OrderedItem.create({}, function(err, createdItem){
+            if(err){
+                console.log(err);
+            } else {
+                foundOrder.orderedItems.push(createdItem);
+                foundOrder.save();
+                
+                res.send(createdItem);
+            }
     });
+        }
+    })
+    
 });
 
 app.post("/update-item", function(req, res){

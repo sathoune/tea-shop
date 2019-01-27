@@ -18,7 +18,7 @@ function createOrderDiv(order_id, itemsQuantity=4){
     
     $("#master").append(div);
     for(var i=0; i<itemsQuantity; i++){
-        createItem(`#${order_id}.order`);
+        createItem(order_id);
     }
     
 }

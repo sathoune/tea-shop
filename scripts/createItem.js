@@ -1,8 +1,10 @@
 
-function createItem(parentSelector="#master"){
+function createItem(parentID){
+    var parentSelector = "#"+parentID+".order";
     $.ajax({
         	method: 'post',
         	url: '/create-item',
+        	data: JSON.stringify({orderID: parentID}),
         	contentType: "application/json",
         	success: function(orderedItem){
     			createItemDiv(orderedItem._id, parentSelector)
