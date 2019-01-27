@@ -1,23 +1,27 @@
 // $ is defined in scope of view
 $(document).ready(function(){
-    createListenersForInputs();
     createItem();
-});
+    createListenersForInputs();
+    
+    });
 
 
  
 function calculatePrice(){
+    
+    var itemID =  $(this).parent()[0].id;
+    
     $.ajax({
     	method: 'post',
     	url: '/data',
-    	data: JSON.stringify({ name: $("#666 .name").val() }),
+    	data: JSON.stringify({ name: $(`#${itemID} .name`).val() }),
     	contentType: "application/json",
     	success: function(menuObject){
             if(Object.entries(menuObject).length){
-                var type = $(".type").val()
-                var quantity = $(".quantity").val()
-    		    $(".registerCode").val(menuObject.registerCode);
-                assignPrice(type, quantity, menuObject);
+                var type = $(`#${itemID} .type`).val()
+                var quantity = $(`#${itemID} .quantity`).val()
+    		    $(`#${itemID} .registerCode`).val(menuObject.registerCode);
+                assignPrice(itemID, type, quantity, menuObject);
                 
             } else {
     		    $("#registerCode").val("");
@@ -27,8 +31,8 @@ function calculatePrice(){
     });
 }
 
-function assignPrice(type, quantity, menuObject){
-    var selector = ".price";
+function assignPrice(itemID, type, quantity, menuObject){
+    var selector = `#${itemID} .price`;
     if(type == "sztuka" || type == "czajnik"){
 	    $(selector).val(menuObject.prices.default*quantity);
     }
@@ -44,9 +48,8 @@ function assignPrice(type, quantity, menuObject){
 }
 
 function createListenersForInputs(){
-    $(".name").on("change", calculatePrice); 
-    $(".type").on("change", calculatePrice);
-    $(".quantity").on("change", calculatePrice);
-    $(".quantity").on("change", calculatePrice);
-    
+    $('#master').on('change', 'div .name', calculatePrice);
+    $('#master').on('change', 'div .type', calculatePrice);
+    $('#master').on('change', 'div .quantity', calculatePrice);
+    $('#master').on('keydown', 'div .quantity', calculatePrice);
 }

@@ -14,7 +14,7 @@ function createItem(){
 function createItemDiv(item_id){
     var div = `<div id=${item_id}></div>`;     
     
-    $("body").append(div);  
+    $("#master").append(div);  
     insertInputsInto($(`#${item_id}`));
     
 }
