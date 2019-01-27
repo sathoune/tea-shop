@@ -1,20 +1,20 @@
 
-function createItem(){
+function createItem(parentSelector="#master"){
     $.ajax({
         	method: 'post',
         	url: '/create-item',
         	contentType: "application/json",
         	success: function(orderedItem){
-    			createItemDiv(orderedItem._id)
+    			createItemDiv(orderedItem._id, parentSelector)
             }
                 
         });
 }
 
-function createItemDiv(item_id){
-    var div = `<div id=${item_id}></div>`;     
+function createItemDiv(item_id, parentSelector){
+    var div = `<div id=${item_id} class='item'></div>`;     
     
-    $("#master").append(div);  
+    $(parentSelector).append(div);  
     insertInputsInto($(`#${item_id}`));
     
 }

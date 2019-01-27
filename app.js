@@ -4,6 +4,7 @@ var mongoose = require("mongoose");
 var MenuItem = require("./models/menu");
 var bodyParser = require("body-parser");
 var OrderedItem = require("./models/orderedItem");
+var Order = require("./models/order");
 
 var seedMenu = require("./db_seeds/seedMenuItems");
 //var findMatchingItems = require("./db_helpers/findMatchingItems");
@@ -61,28 +62,41 @@ app.post("/create-item", function(req, res){
         } else {
             res.send(createdItem);
         }
-    })
-})
+    });
+});
+
 app.post("/update-item", function(req, res){
     MenuItem.findOne({name: req.body.name}, function(err, foundItem){
         if(err){
             console.log(err);
         } else {
-            var calculatedPrice = calculatePrice(foundItem, req.body);
-            OrderedItem.findOneAndUpdate({_id: req.body.id}, {
-                name: req.body.name,
-                quantity: req.body.quantity,
-                type: req.body.type,
-                price: calculatedPrice,
-                
-            }, function(){
-                res.send({price: calculatedPrice, registerCode: foundItem.registerCode});
-            });
-            
+            if(req.body.name){
+                var calculatedPrice = calculatePrice(foundItem, req.body);
+                OrderedItem.findOneAndUpdate({_id: req.body.id}, {
+                    name: req.body.name,
+                    quantity: req.body.quantity,
+                    type: req.body.type,
+                    price: calculatedPrice,
+                    
+                }, function(){
+                    res.send({price: calculatedPrice, registerCode: foundItem.registerCode});
+                });
+            }
         }
     });
     
 });
+
+app.post("/create-order", function(req, res){
+    Order.create({}, function(err, createdOrder){
+        if(err){
+            console.log(err);
+        } else {
+            res.send(createdOrder);
+        }
+    });
+});
+
 
 function calculatePrice(menuObject, uiObject){
     var type = uiObject.type;

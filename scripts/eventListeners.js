@@ -1,6 +1,6 @@
 // $ is defined in scope of view
 $(document).ready(function(){
-    createItem();
+    createOrder();
     createListenersForInputs();
     
     });
