@@ -8,12 +8,12 @@
     
     <body> 
     <div id="666">
-        <input id="name" list="tees">
+        <input class="name" list="tees">
       
-        <input class="code" id="registerCode" type="text">
-        <input id="price" type="text">
-        <input id="quantity" type="number" name="quantity" min="0" value="1">
-        <select id="type">
+        <input class="registerCode" type="text">
+        <input class="price" type="text">
+        <input class="quantity" type="number" name="quantity" min="0" value="1">
+        <select class="type">
             <option value="sztuka">sztuka</option>
             <option value="czajnik">czajnik</option>
             <option value="gaiwan">gaiwan</option>
@@ -28,7 +28,9 @@
             
         <% }) %>
     </datalist>
-    <script type="text/javascript" src="eventListeners.js"></script>
+
     <script type="text/javascript" src="createItemDiv.js"></script>
+    <script type="text/javascript" src="eventListeners.js"></script>
+
     </body>
 </html>

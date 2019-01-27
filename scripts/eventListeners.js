@@ -1,22 +1,22 @@
 // $ is defined in scope of view
 $(document).ready(function(){
-    $("#name").change(calculatePrice); 
-    $("#type").change(calculatePrice);
-    $("#quantity").change(calculatePrice);
-    $("#quantity").keydown(calculatePrice);
+    createListenersForInputs();
+    createItem();
 });
+
+
  
 function calculatePrice(){
     $.ajax({
     	method: 'post',
     	url: '/data',
-    	data: JSON.stringify({ name: $("#name").val() }),
+    	data: JSON.stringify({ name: $("#666 .name").val() }),
     	contentType: "application/json",
     	success: function(menuObject){
             if(Object.entries(menuObject).length){
-                var type = $("#type").val()
-                var quantity = $("#quantity").val()
-    		    $("#registerCode").val(menuObject.registerCode);
+                var type = $(".type").val()
+                var quantity = $(".quantity").val()
+    		    $(".registerCode").val(menuObject.registerCode);
                 assignPrice(type, quantity, menuObject);
                 
             } else {
@@ -28,16 +28,25 @@ function calculatePrice(){
 }
 
 function assignPrice(type, quantity, menuObject){
+    var selector = ".price";
     if(type == "sztuka" || type == "czajnik"){
-	    $("#price").val(menuObject.prices.default*quantity);
+	    $(selector).val(menuObject.prices.default*quantity);
     }
     else if(type == "gaiwan"){
-	    $("#price").val(menuObject.prices.gaiwan*quantity);
+	    $(selector).val(menuObject.prices.gaiwan*quantity);
     }
     else if(type == "opakowanie"){
-	    $("#price").val(menuObject.prices.package*quantity);
+	    $(selector).val(menuObject.prices.package*quantity);
     }
     else if(type == "gram"){
-	    $("#price").val(menuObject.prices.bulk*quantity);
+	    $(selector).val(menuObject.prices.bulk*quantity);
     }
+}
+
+function createListenersForInputs(){
+    $(".name").on("change", calculatePrice); 
+    $(".type").on("change", calculatePrice);
+    $(".quantity").on("change", calculatePrice);
+    $(".quantity").on("change", calculatePrice);
+    
 }
