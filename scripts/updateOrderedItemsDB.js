@@ -2,7 +2,6 @@
  
 function sendUpdatedItem(){
     var itemID = $(this).parent()[0].id;
-    console.log(itemID);
     var updatedItem = {
         id: itemID,
     
@@ -19,7 +18,9 @@ function sendUpdatedItem(){
     	data: JSON.stringify(updatedItem),
     	contentType: "application/json",
     	success: function(data){
+    	   
             $(`#${itemID} .price`).val(data.price);
+            $(`#${itemID} .registercode`).val(data.registerCode);
         }
     });
 }

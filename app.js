@@ -76,8 +76,7 @@ app.post("/update-item", function(req, res){
                 price: calculatedPrice,
                 
             }, function(){
-                res.send({price: calculatedPrice});
-                
+                res.send({price: calculatedPrice, registerCode: foundItem.registerCode});
             });
             
         }
