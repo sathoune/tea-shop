@@ -3,6 +3,7 @@ var app = express();
 var mongoose = require("mongoose");
 var MenuItem = require("./models/menu");
 var bodyParser = require("body-parser");
+var MenuItem = require("./models/menu");
 
 var seedMenu = require("./db_seeds/seedMenuItems");
 //var findMatchingItems = require("./db_helpers/findMatchingItems");
@@ -52,6 +53,10 @@ app.post("/data", function(req,res){
         }
     });
 });
+
+app.post("/create-item", function(req, res){
+    
+})
 
 app.listen(process.env.PORT, process.env.IP, function(){
     console.log("The tea-shop server is on"); 

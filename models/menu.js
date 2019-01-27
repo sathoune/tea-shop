@@ -8,7 +8,7 @@ var MenuItemSchema = new mongoose.Schema({
         gaiwan: String,
         package: String,
         bulk: String,
-    }
+    },
 
 });
 
