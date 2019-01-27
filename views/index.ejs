@@ -8,20 +8,6 @@
     
     <body> 
     <div id="master">
-        <div id="666">
-            <input class="name" list="tees">
-          
-            <input class="registerCode" type="text">
-            <input class="price" type="text">
-            <input class="quantity" type="number" name="quantity" min="0" value="1">
-            <select class="type">
-                <option value="sztuka">sztuka</option>
-                <option value="czajnik">czajnik</option>
-                <option value="gaiwan">gaiwan</option>
-                <option value="opakowanie">opakowanie</option>
-                <option value="gram">gram</option>
-            </select>
-        </div>
         
         <datalist id="tees">
             <% foundItems.forEach(function(item){%>
@@ -32,6 +18,7 @@
     </div>
     <script type="text/javascript" src="createItemDiv.js"></script>
     <script type="text/javascript" src="eventListeners.js"></script>
+    <script type="text/javascript" src="updateOrderedItemsDB.js"></script>
 
     </body>
 </html>

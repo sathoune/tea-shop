@@ -43,11 +43,11 @@ app.get("/", function(req, res){
 });
 
 app.post("/data", function(req,res){
-    MenuItem.findOne({name: req.body.name}, function(err, result){
+    MenuItem.findOne({name: req.body.name}, function(err, foundItem){
         if(err){
             console.log(err);
         } else {
-            res.send(result);
+            res.send(foundItem);
             
             
         }
@@ -63,6 +63,46 @@ app.post("/create-item", function(req, res){
         }
     })
 })
+app.post("/update-item", function(req, res){
+    MenuItem.findOne({name: req.body.name}, function(err, foundItem){
+        if(err){
+            console.log(err);
+        } else {
+            var calculatedPrice = calculatePrice(foundItem, req.body);
+            OrderedItem.findOneAndUpdate({_id: req.body.id}, {
+                name: req.body.name,
+                quantity: req.body.quantity,
+                type: req.body.type,
+                price: calculatedPrice,
+                
+            }, function(){
+                res.send({price: calculatedPrice});
+                
+            });
+            
+        }
+    });
+    
+});
+
+function calculatePrice(menuObject, uiObject){
+    var type = uiObject.type;
+    var calculatedPrice;
+    if(type == "sztuka" || type == "czajnik"){
+	    calculatedPrice = menuObject.prices.default;
+    }
+    else if(type == "gaiwan"){
+	    calculatedPrice = menuObject.prices.gaiwan;
+    }
+    else if(type == "opakowanie"){
+        calculatedPrice = menuObject.prices.package;
+    }
+    else if(type == "gram"){
+        calculatedPrice = menuObject.prices.bulk;
+    }
+    return calculatedPrice * uiObject.quantity;
+}
+
 
 app.listen(process.env.PORT, process.env.IP, function(){
     console.log("The tea-shop server is on"); 
