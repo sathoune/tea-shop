@@ -1,21 +1,31 @@
-<% include ./partials/header %>
-
-<div id="main-form" class="container">
-    <form class="">
-                Code
-                Name
-                Type
-                Count
-                 Price
-                Hint
-                Discounted Price
-<br>
-        <% include ./table-row %><% include ./table-row %><% include ./table-row %>
-       
-                <button class="btn btn-primary">submit</button>
-
-    </form>
-</div>
-
-
-<% include ./partials/footer %>
+<html>
+    <head>
+        <title>
+            demonstration
+        </title>
+        <script src="jquery-3.3.1.min.js"></script>
+    </head>
+    
+    <body> 
+    <div>
+        <input id="name" list="tees">
+        <datalist id="tees">
+        <% foundItems.forEach(function(item){%>
+            <option value="<%= item.name %>">
+            
+        <% }) %>
+        </datalist>
+        <input id="registerCode" type="text">
+        <input id="price" type="text">
+        <input id="quantity" type="number" name="quantity" min="0" value="1">
+        <select id="type">
+            <option value="sztuka">sztuka</option>
+            <option value="czajnik">czajnik</option>
+            <option value="gaiwan">gaiwan</option>
+            <option value="opakowanie">opakowanie</option>
+            <option value="gram">gram</option>
+        </select>
+    </div>
+    <script type="text/javascript" src="eventListeners.js"></script>
+    </body>
+</html>
