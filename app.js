@@ -1,5 +1,5 @@
-var express = require("express");
-var app = express();
+var express     = require("express"),
+    app         = express();
 
 var bodyParser = require("body-parser");
 
@@ -13,7 +13,7 @@ app.use(express.static(__dirname + "/public"));
 
 // connect to db
 var mongoose    = require("mongoose"),
-    dbURL       =  "mongodb://localhost:27017/tea-shop";
+    dbURL       = "mongodb://localhost:27017/tea-shop";
 mongoose.connect(dbURL, {useNewUrlParser: true}, function(err){
     if(err){
         console.log("Something went wrong");
@@ -28,9 +28,9 @@ var indexRoutes         = require("./routes/index"),
     orderRoutes         = require("./routes/orders"),
     orderedItemRoutes   = require("./routes/orderedItems");
 
-app.use("/order", orderRoutes);
-app.use("/ordered-item", orderedItemRoutes);
-app.use("/", indexRoutes);
+app.use("/order",           orderRoutes);
+app.use("/ordered-item",    orderedItemRoutes);
+app.use("/",                indexRoutes);
 
 
 // menu seed
