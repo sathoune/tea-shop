@@ -14,7 +14,7 @@ function sendUpdatedItem(){
    
     $.ajax({
     	method: 'post',
-    	url: '/update-item',
+    	url: '/ordered-item/edit',
     	data: JSON.stringify(updatedItem),
     	contentType: "application/json",
     	success: function(data){

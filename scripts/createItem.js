@@ -3,7 +3,7 @@ function createItem(parentID){
     var parentSelector = "#"+parentID+".order";
     $.ajax({
         	method: 'post',
-        	url: '/create-item',
+        	url: '/ordered-item/new',
         	data: JSON.stringify({orderID: parentID}),
         	contentType: "application/json",
         	success: function(orderedItem){

@@ -1,7 +1,7 @@
 function createOrder(){
     $.ajax({
         	method: 'post',
-        	url: '/create-order',
+        	url: '/order/new',
         	contentType: "application/json",
         	success: function(data){
         	    createOrderDiv(data._id);

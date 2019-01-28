@@ -15,7 +15,7 @@ function sendUpdatedOrder(){
     }
     $.ajax({
         method: 'post',
-        url: '/update-order',
+        url: '/order/edit',
         data: JSON.stringify(updatedOrder),
         contentType: "application/json",
         success: function(sum){
@@ -41,7 +41,7 @@ function sendUpdatedOrderForCheckbox(){
     }
      $.ajax({
     	method: 'post',
-    	url: '/update-order',
+    	url: '/order/edit',
     	data: JSON.stringify(updatedOrder),
     	contentType: "application/json",
     	success: function(data){
