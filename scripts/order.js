@@ -17,12 +17,14 @@ function createOrderDiv(order_id, itemsQuantity=4){
     
     $("#master").append(div);
     createOrderTopPanel(order_id);
-    createOrderLabels(order_id);
+    createOrderLabels(order_id); 
+    createOrderBottomPanel(order_id);
+    createOrderPanel(order_id);
+
     for(var i=0; i<itemsQuantity; i++){
         createItem(order_id);
     }
-    createOrderBottomPanel(order_id);
-
+   
     
 }
 
@@ -36,7 +38,14 @@ function createOrderTopPanel(order_id){
     var discountInput = "<label>Discount:</label><input type='number' class='discount' value='0' min='0' max='100'>%";
     var discountToGoCheckbox = "<label><input class='discount-to-go' type='checkbox' name='checkbox' value='discountToGo'>na wagę</label>";
     var sendButton = "<input type='button' value='Send Away'>";
-    $(topPanelDivSelector).append(tableInput, discountInput, discountToGoCheckbox, sendButton);
+    
+    var TopPanelElements = [
+        tableInput, 
+        discountInput, 
+        discountToGoCheckbox, 
+        sendButton,
+        ];
+    $(topPanelDivSelector).append(TopPanelElements);
 }
 
 function createOrderLabels(order_id){
@@ -46,7 +55,19 @@ function createOrderLabels(order_id){
     var labelsDivSelector = orderSelector + " .labels";
     $(orderSelector).append(labelsDiv);
     
-    var labels = `<span>Code </span><span>Name </span><span>Type </span><span>Quantity </span><span>Price </span>`
+    var labelCode = `<span>Code </span>`;
+    var labelName = `<span>Name </span>`;
+    var labelType = `<span>Type </span>`;
+    var labelQuantity = `<span>Quantity </span>`;
+    var labelPrice = `<span>Price </span>`;
+    
+    var labels = [
+        labelCode,
+        labelName,
+        labelType,
+        labelQuantity,
+        labelPrice,
+        ];
     $(labelsDivSelector).append(labels);
     
 }
@@ -60,10 +81,23 @@ function createOrderBottomPanel(order_id){
     var sumInput = "<label>sum</label><input type='number' value='0' class='sum'>"
     var discountedSumInput = "<label>after discount</label><input type='number' value='0' class='discounted-sum'>"
     var addItemButton = `<button onclick='createItem("${order_id}")'>Add brand new item</button>`;
-    $(bottomPanelDivSelector).append(addItemButton, sumInput, discountedSumInput);
+    
+    var bottomPanelElements = [
+        addItemButton,
+        sumInput,
+        discountedSumInput,
+        ];
+    
+    $(bottomPanelDivSelector).append(bottomPanelElements);
 }
 
-
+function createOrderPanel(order_id){
+    var orderPanelDiv = `<div class='item-container'></div>`
+    var orderSelector = `#${order_id}.order`;
+    $(orderSelector).append(orderPanelDiv);
+    
+    
+}
  
 function sendUpdatedOrder(){
    

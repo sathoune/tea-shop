@@ -1,6 +1,6 @@
 
 function createItem(parentID){
-    var parentSelector = "#"+parentID+".order";
+    var parentSelector = "#"+parentID+".order .item-container";
     $.ajax({
         	method: 'post',
         	url: '/ordered-item/new',
@@ -33,7 +33,16 @@ function insertInputsInto(div){
                 <option value="opakowanie">opakowanie</option>\
                 <option value="gram">gram</option>\
                 </select>';
-    div.append(codeInput, nameInput, typeInput, quantityInput, priceInput);
+                
+    var inputElements = [
+            codeInput,
+            nameInput,
+            typeInput,
+            quantityInput,
+            priceInput,
+        ];
+        
+    div.append(inputElements);
     
 }
 
