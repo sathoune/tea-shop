@@ -34,7 +34,7 @@ function createOrderTopPanel(order_id){
     
     var tableInput = "<input type='text' class='table' placeholder='stolik'>";
     var discountInput = "<label>Discount:</label><input type='number' class='discount' value='0' min='0' max='100'>%";
-    var discountToGoCheckbox = "<label><input class='discountToGo' type='checkbox' name='checkbox' value='discountToGo'>na wagę</label>";
+    var discountToGoCheckbox = "<label><input class='discount-to-go' type='checkbox' name='checkbox' value='discountToGo'>na wagę</label>";
     var sendButton = "<input type='button' value='Send Away'>";
     $(topPanelDivSelector).append(tableInput, discountInput, discountToGoCheckbox, sendButton);
 }
