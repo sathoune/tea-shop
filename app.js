@@ -117,6 +117,11 @@ app.post("/create-order", function(req, res){
     });
 });
 
+app.post("/update-order", function(req, res){
+    console.log("updating...");
+    res.send("hello from backend");
+});
+
 
 function calculatePrice(menuObject, uiObject){
     var type = uiObject.type;

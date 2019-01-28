@@ -5,6 +5,9 @@ var OrderSchema = new mongoose.Schema({
     discount: { type: String, default: "0" },
     discountToGo: { type: Boolean, default: false},
     closed: { type: Boolean, default: false },
+    sum: String,
+    discountedSum: String,
+    table: String,
     orderedItems: [
         {
             type: mongoose.Schema.Types.ObjectId,
