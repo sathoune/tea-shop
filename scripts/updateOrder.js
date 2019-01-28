@@ -13,17 +13,19 @@ function sendUpdatedOrder(){
             table: $(orderSelector + " .table").val(),
         }
     }
-     $.ajax({
-    	method: 'post',
-    	url: '/update-order',
-    	data: JSON.stringify(updatedOrder),
-    	contentType: "application/json",
-    	success: function(data){
-    	    console.log("hurray" + data);   
+    $.ajax({
+        method: 'post',
+        url: '/update-order',
+        data: JSON.stringify(updatedOrder),
+        contentType: "application/json",
+        success: function(sum){
+            $(orderSelector +" .sum").val(sum); 
         }
     });
+    
 }
- 
+
+
 function sendUpdatedOrderForCheckbox(){
    
     var orderID = $(this).parent().parent().parent()[0].id;
@@ -43,7 +45,7 @@ function sendUpdatedOrderForCheckbox(){
     	data: JSON.stringify(updatedOrder),
     	contentType: "application/json",
     	success: function(data){
-    	    console.log("hurray" + data);   
+    	    console.log(data);   
         }
     });
 }
