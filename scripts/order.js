@@ -60,6 +60,8 @@ function createOrderLabels(order_id){
     var labelType = `<span>Type </span>`;
     var labelQuantity = `<span>Quantity </span>`;
     var labelPrice = `<span>Price </span>`;
+    var labelHint = `<span>Hint </span>`;
+    var labelDiscountedPrice = `<span>Discounted Price </span>`;
     
     var labels = [
         labelCode,
@@ -67,6 +69,8 @@ function createOrderLabels(order_id){
         labelType,
         labelQuantity,
         labelPrice,
+        labelHint,
+        labelDiscountedPrice,
         ];
     $(labelsDivSelector).append(labels);
     
@@ -117,8 +121,9 @@ function sendUpdatedOrder(){
         url: '/order/edit',
         data: JSON.stringify(updatedOrder),
         contentType: "application/json",
-        success: function(sum){
-            $(orderSelector +" .sum").val(sum); 
+        success: function(data){
+            $(orderSelector +" .sum").val(data.sum); 
+            $(orderSelector +" .discounted-sum").val(data.discountedSum); 
         }
     });
     
@@ -144,7 +149,8 @@ function sendUpdatedOrderForCheckbox(){
     	data: JSON.stringify(updatedOrder),
     	contentType: "application/json",
     	success: function(data){
-    	    console.log(data);   
+    	    $(orderSelector +" .sum").val(data.sum); 
+            $(orderSelector +" .discounted-sum").val(data.discountedSum);   
         }
     });
 }

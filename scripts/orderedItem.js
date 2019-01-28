@@ -33,13 +33,16 @@ function insertInputsInto(div){
                 <option value="opakowanie">opakowanie</option>\
                 <option value="gram">gram</option>\
                 </select>';
-                
+    var hintInput = '<input class="hint" type="text>';
+    var discountedPriceInput = '<input class="discountedPrice" type="number">';
     var inputElements = [
             codeInput,
             nameInput,
             typeInput,
             quantityInput,
             priceInput,
+            hintInput,
+            discountedPriceInput,
         ];
         
     div.append(inputElements);
