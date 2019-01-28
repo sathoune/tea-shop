@@ -4,7 +4,6 @@ function createOrder(){
         	url: '/create-order',
         	contentType: "application/json",
         	success: function(data){
-        	    console.log(data);
         	    createOrderDiv(data._id);
             }
                 

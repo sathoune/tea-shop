@@ -91,7 +91,17 @@ app.post("/update-item", function(req, res){
                 }, function(){
                     res.send({price: calculatedPrice, registerCode: foundItem.registerCode});
                 });
-            }
+            } else {
+                OrderedItem.findOneAndUpdate({_id: req.body.id}, {
+                    name: '',
+                    quantity: '',
+                    type: 'default',
+                    price: '',
+                    
+                }, function(){
+                    res.send({price: 0, registerCode: 0});
+                });
+            } 
         }
     });
     
