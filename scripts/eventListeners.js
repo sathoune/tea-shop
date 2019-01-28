@@ -1,8 +1,7 @@
 // $ is defined in scope of view
 $(document).ready(function(){
-    createOrder();
     createListenersForInputs();
-    
+    createHeader();
     });
 
 
