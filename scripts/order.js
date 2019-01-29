@@ -38,8 +38,11 @@ function createOrderTopPanel(order_id){
     var discountInput = "<label>Discount:</label><input type='number' class='discount' value='0' min='0' max='100'>%";
     var discountToGoCheckbox = "<label><input class='discount-to-go' type='checkbox' name='checkbox' value='discountToGo'>na wagę</label>";
     var sendButton = "<input type='button' value='Send Away'>";
+    var addItemButton = `<button onclick='createItem("${order_id}")'>Add brand new item</button>`;
+
     
     var TopPanelElements = [
+        addItemButton,
         tableInput, 
         discountInput, 
         discountToGoCheckbox, 
@@ -82,12 +85,10 @@ function createOrderBottomPanel(order_id){
     var bottomPanelDivSelector = orderSelector + " .bottom-panel";
     $(orderSelector).append(bottomPanelDiv);
     
-    var sumInput = "<label>sum</label><input type='number' value='0' class='sum'>"
-    var discountedSumInput = "<label>after discount</label><input type='number' value='0' class='discounted-sum'>"
-    var addItemButton = `<button onclick='createItem("${order_id}")'>Add brand new item</button>`;
+    var sumInput = "<label>sum</label><input type='number' value='0' class='sum' readonly>"
+    var discountedSumInput = "<label>after discount</label><input type='number' value='0' class='discounted-sum' readonly>"
     
     var bottomPanelElements = [
-        addItemButton,
         sumInput,
         discountedSumInput,
         ];

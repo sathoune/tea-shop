@@ -23,8 +23,8 @@ function createItemDiv(item_id, parentSelector){
 
 function insertInputsInto(div){
     var nameInput = '<input type="text" class="name" list="tees">'
-    var codeInput = '<input type="text" class="registerCode">';
-    var priceInput = '<input class="price" type="text">';
+    var codeInput = '<input type="text" class="registerCode" readonly>';
+    var priceInput = '<input class="price" type="number" readonly>';
     var quantityInput = '<input class="quantity" type="number" name="quantity" min="0" value="1">';
     var typeInput = '<select class="type">\
                 <option value="sztuka">sztuka</option>\
@@ -34,7 +34,7 @@ function insertInputsInto(div){
                 <option value="gram">gram</option>\
                 </select>';
     var hintInput = '<input class="hint" type="text>';
-    var discountedPriceInput = '<input class="discountedPrice" type="number">';
+    var discountedPriceInput = '<input class="discounted-price" type="number" readonly>';
     var inputElements = [
             codeInput,
             nameInput,
@@ -70,9 +70,13 @@ function sendUpdatedItem(){
     	data: JSON.stringify(updatedItem),
     	contentType: "application/json",
     	success: function(data){
-    	   
+    	   console.log("done");
             $(`#${itemID}.item .price`).val(data.price);
+            $(`#${itemID}.item .discounted-price`).val(data.discountedPrice);
             $(`#${itemID}.item .registercode`).val(data.registerCode);
+            if(data.name != updatedItem.name){
+                $(`#${itemID}.item .name`).val(data.name);
+            }
         }
     });
 }

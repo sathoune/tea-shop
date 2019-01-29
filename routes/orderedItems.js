@@ -6,6 +6,7 @@ var MenuItem = require("../models/menu");
 
 
 
+
 router.post("/new", function(req, res){
     Order.findById(req.body.orderID, function(err, foundOrder){
         if(err){
@@ -27,20 +28,22 @@ router.post("/new", function(req, res){
 });
 
 router.post("/edit", function(req, res){
-    MenuItem.findOne({name: req.body.name}, function(err, foundItem){
+    MenuItem.findOne({name: { $regex: new RegExp(req.body.name,  "i")}}, function(err, foundItem){
         if(err){
             console.log(err);
         } else {
-            if(req.body.name){
+            if(foundItem){
                 var calculatedPrice = calculatePrice(foundItem, req.body);
                 OrderedItem.findOneAndUpdate({_id: req.body.id}, {
-                    name: req.body.name,
+                    name: foundItem.name,
                     quantity: req.body.quantity,
                     type: req.body.type,
                     price: calculatedPrice,
                     
-                }, function(){
-                    res.send({price: calculatedPrice, registerCode: foundItem.registerCode});
+                }, 
+                {new: true},
+                function(err, updatedItem){
+                    res.send({name: updatedItem.name, price: updatedItem.price, registerCode: foundItem.registerCode, discountedPrice: calculatedPrice});
                 });
             } else {
                 OrderedItem.findOneAndUpdate({_id: req.body.id}, {
@@ -50,7 +53,7 @@ router.post("/edit", function(req, res){
                     price: '',
                     
                 }, function(){
-                    res.send({price: 0, registerCode: 0});
+                    res.send({price: 0, registerCode: 0, discountedPrice: 0});
                 });
             } 
         }
