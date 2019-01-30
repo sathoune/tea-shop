@@ -129,7 +129,8 @@ router.post('/update-name', function(req,res){
                         if(err){
                           console.log(err);
                         } else {  
-                          res.send({item: updatedItem, code: foundMenuItem.registerCode});
+                          var response= { name: updatedItem.name, price: updatedItem.price, registerCode: foundMenuItem.registerCode};
+                          res.send(response);
                         } 
                       });
                   }
@@ -182,7 +183,26 @@ router.post('/update-quantity', function(req,res){
     function(err, updatedItem){
       if(err){  console.log(err); }
       else {
-        res.send(updatedItem);
+        MenuItem.findOne({name: updatedItem.name}, function(err, menuItem){
+          if(err) { console.log(err); }
+          else if(menuItem){
+            var newPrice = pricesAndSums.calculatePrice(menuItem, updatedItem);
+            OrderedItem.findOneAndUpdate(
+              { _id: updatedItem._id}, 
+              {price: newPrice}, 
+              {new: true},
+              function(err, updatedItem){
+                if(err) { console.log(err); }
+                else {
+                  res.send(updatedItem);
+                }
+              });
+          } else {
+            // When item not found
+            res.send(updatedItem);
+          }
+        });
+        
       }
     });
 });

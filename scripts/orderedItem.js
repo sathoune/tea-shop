@@ -87,15 +87,23 @@ function sendUpdatedItem(){
 
 function updateItemName(){
     var itemID = $(this).parent()[0].id;
-    sendDataToUpdate('/ordered-item/update-name', {item_id: itemID, name: $(this).val()}, callback);
+    var name = $(this).val()
+    sendDataToUpdate('/ordered-item/update-name', {item_id: itemID, name: name}, callback);
+    
     function callback(data){
-        console.log(data);
+      $(`#${itemID}.item .price`).val(data.price);
+      $(`#${itemID}.item .registercode`).val(data.registerCode);
+     
+      if(data.name != name){
+        $(`#${itemID}.item .name`).val(data.name);
+      }
     }
 }
 
 function updateItemType(){
   var itemID = $(this).parent()[0].id;
     sendDataToUpdate('/ordered-item/update-type', {item_id: itemID, type: $(this).val()}, callback);
+    
     function callback(data){
         console.log(data);
     }
@@ -104,6 +112,7 @@ function updateItemType(){
 function updateItemQuantity(){
   var itemID = $(this).parent()[0].id;
     sendDataToUpdate('/ordered-item/update-quantity', {item_id: itemID, quantity: $(this).val()}, callback);
+    
     function callback(data){
         console.log(data);
     }
