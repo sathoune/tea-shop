@@ -184,3 +184,17 @@ function updateSumOfDiscountedPrices(orderID){
 
     }
 }
+
+function updateDiscount(){
+    var orderID = $(this).parent().parent()[0].id;
+    var newDiscount = $(this).val();
+    
+    sendDataToUpdate('/order/edit-discount', {_id: orderID, discount: newDiscount}, callback);
+    function callback(data){
+        $("#"+orderID+".order" + " .discounted-sum").val(data.discountedSum); 
+        data.arrayOfPrices.forEach(function(item){
+            $(`#${item.item_id}.item .discounted-price`).val(item.discountedPrice);
+        })
+   
+    }
+}

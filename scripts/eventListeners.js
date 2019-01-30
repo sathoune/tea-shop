@@ -14,8 +14,8 @@ function createListenersItemInputs(){
 }
 
 function createListenersOrderInputs(){
-    $('#master').on('change', '.discount', sendUpdatedOrder);
-    $('#master').on('keydown', '.discount', sendUpdatedOrder);
+    $('#master').on('change', '.discount', updateDiscount);
+    $('#master').on('keydown', '.discount', updateDiscount);
     $('#master').on('change', '.discount-to-go', sendUpdatedOrderForCheckbox);
     $('#master').on('change', '.table', updateOrderTable);
     
