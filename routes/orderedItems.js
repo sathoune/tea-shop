@@ -109,30 +109,40 @@ router.post("/edit", function(req, res){
 
 router.post('/update-name', function(req,res){
     MenuItem.findOne({name: { $regex: new RegExp(req.body.name,  "i")}}, function(err, foundMenuItem){
-        if(err){
-            console.log(err);
+        if(err){ console.log(err);
         } else if(foundMenuItem){
-          
             OrderedItem.findOneAndUpdate(
                 { _id: req.body.item_id}, 
                 {name: foundMenuItem.name}, 
                 {new: true}, function(err, updatedItem){
-                  if(err){
-                    console.log(err);
+                  if(err){console.log(err);
                   } else {
-                    var calculatedPrice = pricesAndSums.calculatePrice(foundMenuItem, updatedItem)
-                    OrderedItem.findOneAndUpdate(
-                      {_id: updatedItem._id}, 
-                      {price: calculatedPrice},
-                      {new: true}, 
-                      function(err, updatedItem){
-                        if(err){
-                          console.log(err);
-                        } else {  
-                          var response= { name: updatedItem.name, price: updatedItem.price, registerCode: foundMenuItem.registerCode};
-                          res.send(response);
-                        } 
-                      });
+                    var calculatedPrice = pricesAndSums.calculatePrice(foundMenuItem, updatedItem);
+                    Order.findById({_id: req.body.order_id}, function(err, foundOrder){
+                      if(err) { console.log(err); 
+                      } else {
+                        var discountedPrice = calculatedPrice * pricesAndSums.calculateDiscount(updatedItem, foundOrder);
+                        OrderedItem.findOneAndUpdate(
+                        {_id: updatedItem._id}, 
+                        {price: calculatedPrice,
+                          discountedPrice: discountedPrice,
+                        },
+                        {new: true}, 
+                        function(err, updatedItem){
+                          if(err){console.log(err);
+                          } else {  
+                            var response= { 
+                              name: updatedItem.name, 
+                              price: updatedItem.price, 
+                              registerCode: foundMenuItem.registerCode,
+                              discountedPrice: updatedItem.discountedPrice,
+                            };
+                            res.send(response);
+                          } 
+                        });
+                      }
+                    })
+                    
                   }
                 });
                 
@@ -155,17 +165,25 @@ router.post('/update-type', function(req,res){
           if(err) { console.log(err); }
           else if(menuItem){
             var newPrice = pricesAndSums.calculatePrice(menuItem, updatedItem);
-            OrderedItem.findOneAndUpdate(
-              { _id: updatedItem._id}, 
-              {price: newPrice}, 
-              {new: true},
-              function(err, updatedItem){
-                if(err) { console.log(err); }
-                else {
-                  var response = {price: updatedItem.price };
-                  res.send(response);
-                }
-              });
+            Order.findById({_id: req.body.order_id}, function(err, foundOrder){
+              if(err) { console.log(err); 
+              } else {
+              var discountedPrice = newPrice * pricesAndSums.calculateDiscount(updatedItem, foundOrder);
+              OrderedItem.findOneAndUpdate(
+                { _id: updatedItem._id}, 
+                {price: newPrice,
+                discountedPrice: discountedPrice,
+                }, 
+                {new: true},
+                function(err, updatedItem){
+                  if(err) { console.log(err); }
+                  else {
+                    var response = {price: updatedItem.price, discountedPrice: updatedItem.discountedPrice};
+                    res.send(response);
+                  }
+                });
+              }
+            });
           } else {
             // When item not found
             res.send({price: "0"});
@@ -182,29 +200,36 @@ router.post('/update-quantity', function(req,res){
     {quantity: req.body.quantity}, 
     {new: true}, 
     function(err, updatedItem){
-      if(err){  console.log(err); }
-      else {
+      if(err){  console.log(err);
+      } else {
         MenuItem.findOne({name: updatedItem.name}, function(err, menuItem){
-          if(err) { console.log(err); }
-          else if(menuItem){
+          if(err) { console.log(err); 
+          } else if(menuItem){
             var newPrice = pricesAndSums.calculatePrice(menuItem, updatedItem);
-            OrderedItem.findOneAndUpdate(
-              { _id: updatedItem._id}, 
-              {price: newPrice}, 
-              {new: true},
-              function(err, updatedItem){
-                if(err) { console.log(err); }
-                else {
-                  var respone = {price: updatedItem.price };
-                  res.send(respone);
-                }
-              });
+            Order.findById({_id: req.body.order_id}, function(err, foundOrder){
+              if(err) { console.log(err); 
+              } else {
+                var discountedPrice = newPrice * pricesAndSums.calculateDiscount(updatedItem, foundOrder);
+                OrderedItem.findOneAndUpdate(
+                  { _id: updatedItem._id}, 
+                  {price: newPrice,
+                    discountedPrice: discountedPrice,
+                  }, 
+                  {new: true},
+                  function(err, updatedItem){
+                    if(err) { console.log(err);
+                    } else {
+                      var respone = {price: updatedItem.price, discountedPrice: updatedItem.discountedPrice };
+                      res.send(respone);
+                    }
+                  });
+              }
+            });
           } else {
             // When item not found
             res.send({price: "0"});
           }
         });
-        
       }
     });
 });

@@ -76,7 +76,7 @@ router.post("/edit-sum", function(req, res){
             {sum: sum},
             {new: true},
             function(err, updatedOrder){
-              if(err) { console.log("wrong"); console.log(err); }
+              if(err) {console.log(err); }
               else { res.send({sum: updatedOrder.sum}); }
             });
         }
@@ -84,5 +84,27 @@ router.post("/edit-sum", function(req, res){
     }
   });
 });
+
+router.post("/edit-discounted-sum", function(req, res){
+  Order.findById({_id: req.body._id}, function(err, foundOrder){
+    if(err) { console.log(err); }
+    else {
+      OrderedItem.find({_id: {$in: foundOrder.orderedItems}}, function(err, foundItems){
+        if(err) { console.log(err); }
+        else {
+          var sum = pricesAndSums.calculateSum(foundItems, "discountedPrice");
+          Order.findByIdAndUpdate(
+            {_id: foundOrder._id}, 
+            {discountedSum: sum},
+            {new: true},
+            function(err, updatedOrder){
+              if(err) { console.log(err); }
+              else { res.send({discountedSum: updatedOrder.discountedSum}); }
+            });
+        }
+      });
+    }
+  });
+})
 
 module.exports = router;

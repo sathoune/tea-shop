@@ -1,10 +1,10 @@
 
-function calculateSum(orderedItems){
+function calculateSum(orderedItems, property="price"){
     var sum = 0; 
          
     orderedItems.forEach(function(item){
-        if(item.price){
-            sum+=Number(item.price);
+        if(item[property]){
+            sum+=Number(item[property]);
         }
     });
     return sum.toString();

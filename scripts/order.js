@@ -174,3 +174,13 @@ function updateSumOfPrices(orderID){
         $("#"+orderID+".order" + " .sum").val(data.sum); 
     }
 }
+
+function updateSumOfDiscountedPrices(orderID){
+    
+    sendDataToUpdate('/order/edit-discounted-sum', { _id: orderID}, callback);
+    function callback(data){
+        console.log(data);
+        $("#"+orderID+".order" + " .discounted-sum").val(data.discountedSum); 
+
+    }
+}
