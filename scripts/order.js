@@ -198,3 +198,17 @@ function updateDiscount(){
    
     }
 }
+
+function updateToGoDiscount(){
+    var orderID = $(this).parent().parent().parent()[0].id;
+    var discountToGo = $(this).is(":checked");
+
+    sendDataToUpdate('/order/edit-discount-togo', {_id: orderID, discountToGo: discountToGo}, callback);
+    function callback(data){
+        $("#"+orderID+".order" + " .discounted-sum").val(data.discountedSum); 
+        data.arrayOfPrices.forEach(function(item){
+            $(`#${item.item_id}.item .discounted-price`).val(item.discountedPrice);
+        })
+   
+    }
+}

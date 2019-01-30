@@ -124,7 +124,6 @@ router.post("/edit-discount", function(req, res) {
             var newDiscountedPrice = item.price * pricesAndSums.calculateDiscount(item, updatedOrder);
             if(newDiscountedPrice){
               discountedSum += newDiscountedPrice;
-
             }
             OrderedItem.findOneAndUpdate(
               {_id: item._id}, 
@@ -142,10 +141,43 @@ router.post("/edit-discount", function(req, res) {
         }
       });
       }
-      
     }); 
-   
-    
+});
+
+router.post("/edit-discount-togo", function(req, res) {
+    Order.findByIdAndUpdate({_id: req.body._id}, 
+    {discountToGo: req.body.discountToGo},
+    {new: true},
+    function(err, updatedOrder){
+      if(err) { console.log(err); }
+      else {
+        OrderedItem.find({_id: {$in: updatedOrder.orderedItems}}, function(err, foundItems){
+          if(err) { console.log(err); }
+          else {
+            var discountedSum = 0;
+            var arrayOfPrices = [];
+
+            foundItems.forEach(function(item){
+              var newDiscountedPrice = item.price * pricesAndSums.calculateDiscount(item, updatedOrder);
+              if(newDiscountedPrice){
+                discountedSum += newDiscountedPrice;
+              }
+              arrayOfPrices.push({item_id: item._id, discountedPrice: newDiscountedPrice});
+              OrderedItem.findOneAndUpdate({_id: item._id}, {discountedPrice: newDiscountedPrice});
+            });
+            Order.findByIdAndUpdate(
+            {_id: updatedOrder._id}, 
+            {discountedSum: discountedSum},
+            {new: true},
+            function(err, updatedOrder){
+              if(err) { console.log(err); }
+              else { res.send({discountedSum: updatedOrder.discountedSum, arrayOfPrices: arrayOfPrices}); }
+            });
+            
+          }
+        });
+      }
+    });
 });
 
 module.exports = router;
