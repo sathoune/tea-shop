@@ -54,9 +54,10 @@ function insertInputsInto(div){
  
 function sendUpdatedItem(){
     var itemID = $(this).parent()[0].id;
+    var orderID = $(this).parent().parent().parent()[0].id;
     var updatedItem = {
         id: itemID,
-    
+        orderID: orderID,
         name: $(`#${itemID}.item .name`).val(),
         quantity: $(`#${itemID}.item .quantity`).val(),
         type: $(`#${itemID}.item .type`).val(),
@@ -71,12 +72,15 @@ function sendUpdatedItem(){
     	contentType: "application/json",
     	success: function(data){
     	   console.log("done");
-            $(`#${itemID}.item .price`).val(data.price);
-            $(`#${itemID}.item .discounted-price`).val(data.discountedPrice);
-            $(`#${itemID}.item .registercode`).val(data.registerCode);
-            if(data.name != updatedItem.name){
-                $(`#${itemID}.item .name`).val(data.name);
+            $(`#${itemID}.item .price`).val(data.itemData.price);
+            $(`#${itemID}.item .discounted-price`).val(data.itemData.discountedPrice);
+            $(`#${itemID}.item .registercode`).val(data.itemData.registerCode);
+            if(data.itemData.name != updatedItem.name){
+                $(`#${itemID}.item .name`).val(data.itemData.name);
             }
+            $(`#${orderID}.order .sum`).val(data.orderData.sum);
+            $(`#${orderID}.order .discounted-sum`).val(data.orderData.discountedSum);
+            
         }
     });
 }

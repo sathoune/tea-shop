@@ -3,6 +3,7 @@ var router = express.Router({ mergeParams: true });
 var Order = require("../models/order");
 var OrderedItem = require("../models/orderedItem");
 var MenuItem = require("../models/menu");
+var pricesAndSums = require("../functions/pricesAndSums");
 
 
 
@@ -28,29 +29,74 @@ router.post("/new", function(req, res){
 });
 
 router.post("/edit", function(req, res){
-    MenuItem.findOne({name: { $regex: new RegExp(req.body.name,  "i")}}, function(err, foundItem){
+    MenuItem.findOne(
+        {name: { $regex: new RegExp(req.body.name,  "i")}}, 
+        function(err, foundItem){
         if(err){
             console.log(err);
         } else {
             if(foundItem){
-                var calculatedPrice = calculatePrice(foundItem, req.body);
-                OrderedItem.findOneAndUpdate({_id: req.body.id}, {
-                    name: foundItem.name,
-                    quantity: req.body.quantity,
-                    type: req.body.type,
-                    price: calculatedPrice,
-                    
-                }, 
-                {new: true},
-                function(err, updatedItem){
-                    res.send({name: updatedItem.name, price: updatedItem.price, registerCode: foundItem.registerCode, discountedPrice: calculatedPrice});
+                Order.findById({_id: req.body.orderID}, function(err, foundOrder){
+                    if(err){
+                        console.log(err);
+                    } else {
+                        var calculatedPrice = pricesAndSums.calculatePrice(foundItem, req.body);
+                        var discount = pricesAndSums.calculateDiscount(req.body, foundOrder);
+                        OrderedItem.findOneAndUpdate({_id: req.body.id}, {
+                                    name: foundItem.name,
+                                    quantity: req.body.quantity,
+                                    type: req.body.type,
+                                    price: calculatedPrice,
+                                    discountedPrice: calculatedPrice*discount,
+                                }, 
+                                {new: true},
+                                function(err, updatedItem){
+                                    if(err){
+                                        console.log(err);
+                                    } else {
+                                        OrderedItem.find({_id: {$in: foundOrder.orderedItems}},
+                                        function(err, orderedItems){
+                                            if(err){
+                                                console.log(err);
+                                            } else {
+                                                var data = {
+                                            itemData: {
+                                                name: updatedItem.name, 
+                                                price: updatedItem.price, 
+                                                registerCode: foundItem.registerCode, 
+                                                discountedPrice: updatedItem.discountedPrice},
+                                                
+                                            orderData: {
+                                                sum: pricesAndSums.calculateSum(orderedItems).toString(),
+                                                discountedSum: pricesAndSums.calculateDiscountedSum(orderedItems).toString()
+                                            }
+                                            };
+                                            Order.findOneAndUpdate({_id: req.body.orderID}, data.orderData, {new: true},function(err){
+                                                if(err){
+                                                    console.log(err);
+                                                } else {
+                                                    res.send(data);
+                                                }
+                                            });
+                                            }
+                                            
+                                           
+                                            
+                                        });
+                                       
+                                    }
+                                    
+                                });
+                    }
                 });
+                
             } else {
                 OrderedItem.findOneAndUpdate({_id: req.body.id}, {
                     name: '',
                     quantity: '',
                     type: 'default',
                     price: '',
+                    discountedPrice: '',
                     
                 }, function(){
                     res.send({price: 0, registerCode: 0, discountedPrice: 0});
@@ -62,23 +108,6 @@ router.post("/edit", function(req, res){
 });
 
 
-function calculatePrice(menuObject, uiObject){
-    var type = uiObject.type;
-    var calculatedPrice;
-    if(type == "sztuka" || type == "czajnik"){
-	    calculatedPrice = menuObject.prices.default;
-    }
-    else if(type == "gaiwan"){
-	    calculatedPrice = menuObject.prices.gaiwan;
-    }
-    else if(type == "opakowanie"){
-        calculatedPrice = menuObject.prices.package;
-    }
-    else if(type == "gram"){
-        calculatedPrice = menuObject.prices.bulk;
-    }
-    return calculatedPrice * uiObject.quantity;
-}
 
 
 module.exports = router;

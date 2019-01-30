@@ -6,6 +6,7 @@ var OrderedItemSchema = new mongoose.Schema({
     quantity: String,
     type: String,
     price: String,
+    discountedPrice: String,
 
 });
 
