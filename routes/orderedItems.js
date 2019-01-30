@@ -162,12 +162,13 @@ router.post('/update-type', function(req,res){
               function(err, updatedItem){
                 if(err) { console.log(err); }
                 else {
-                  res.send(updatedItem);
+                  var response = {price: updatedItem.price };
+                  res.send(response);
                 }
               });
           } else {
             // When item not found
-            res.send(updatedItem);
+            res.send({price: "0"});
           }
         });
         
@@ -194,12 +195,13 @@ router.post('/update-quantity', function(req,res){
               function(err, updatedItem){
                 if(err) { console.log(err); }
                 else {
-                  res.send(updatedItem);
+                  var respone = {price: updatedItem.price };
+                  res.send(respone);
                 }
               });
           } else {
             // When item not found
-            res.send(updatedItem);
+            res.send({price: "0"});
           }
         });
         

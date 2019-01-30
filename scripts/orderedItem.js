@@ -91,12 +91,17 @@ function updateItemName(){
     sendDataToUpdate('/ordered-item/update-name', {item_id: itemID, name: name}, callback);
     
     function callback(data){
-      $(`#${itemID}.item .price`).val(data.price);
-      $(`#${itemID}.item .registercode`).val(data.registerCode);
+      if(data){
+        $(`#${itemID}.item .price`).val(data.price);
+        $(`#${itemID}.item .registercode`).val(data.registerCode);
      
-      if(data.name != name){
-        $(`#${itemID}.item .name`).val(data.name);
+        if(data.name != name){
+          $(`#${itemID}.item .name`).val(data.name);
+        }
+      } else {
+        $(`#${itemID}.item .name`).val("");
       }
+      
     }
 }
 
@@ -105,7 +110,8 @@ function updateItemType(){
     sendDataToUpdate('/ordered-item/update-type', {item_id: itemID, type: $(this).val()}, callback);
     
     function callback(data){
-        console.log(data);
+      $(`#${itemID}.item .price`).val(data.price);
+
     }
 }
 
@@ -114,7 +120,7 @@ function updateItemQuantity(){
     sendDataToUpdate('/ordered-item/update-quantity', {item_id: itemID, quantity: $(this).val()}, callback);
     
     function callback(data){
-        console.log(data);
+        $(`#${itemID}.item .price`).val(data.price);
     }
 }
 
