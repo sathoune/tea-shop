@@ -87,6 +87,7 @@ function sendUpdatedItem(){
 
 function updateItemName(){
     var itemID = $(this).parent()[0].id;
+    var orderID = $(this).parent().parent().parent()[0].id;
     var name = $(this).val()
     sendDataToUpdate('/ordered-item/update-name', {item_id: itemID, name: name}, callback);
     
@@ -94,10 +95,11 @@ function updateItemName(){
       if(data){
         $(`#${itemID}.item .price`).val(data.price);
         $(`#${itemID}.item .registercode`).val(data.registerCode);
-     
         if(data.name != name){
           $(`#${itemID}.item .name`).val(data.name);
         }
+        updateSumOfPrices(orderID);
+  
       } else {
         $(`#${itemID}.item .name`).val("");
       }
@@ -107,20 +109,26 @@ function updateItemName(){
 
 function updateItemType(){
   var itemID = $(this).parent()[0].id;
+  var orderID = $(this).parent().parent().parent()[0].id;
+
     sendDataToUpdate('/ordered-item/update-type', {item_id: itemID, type: $(this).val()}, callback);
     
     function callback(data){
       $(`#${itemID}.item .price`).val(data.price);
-
+      updateSumOfPrices(orderID);
+    
     }
 }
 
 function updateItemQuantity(){
   var itemID = $(this).parent()[0].id;
+  var orderID = $(this).parent().parent().parent()[0].id;
+
     sendDataToUpdate('/ordered-item/update-quantity', {item_id: itemID, quantity: $(this).val()}, callback);
     
     function callback(data){
         $(`#${itemID}.item .price`).val(data.price);
+        updateSumOfPrices(orderID);
     }
 }
 

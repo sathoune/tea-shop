@@ -7,7 +7,7 @@ function calculateSum(orderedItems){
             sum+=Number(item.price);
         }
     });
-    return sum;
+    return sum.toString();
 }
 
 function calculateDiscountedSum(orderedItems){

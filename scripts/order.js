@@ -163,8 +163,14 @@ function updateOrderTable(){
     
     sendDataToUpdate('/order/edit-table', {_id: orderID, table: newTable}, callback);
     function callback(data){
-        console.log('updated');
         // TODO create movement of tables with flexbox and css
     }
 }
 
+
+function updateSumOfPrices(orderID){
+    sendDataToUpdate('/order/edit-sum', { _id: orderID }, callback);
+    function callback(data){
+        $("#"+orderID+".order" + " .sum").val(data.sum); 
+    }
+}
