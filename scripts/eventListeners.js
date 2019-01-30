@@ -7,10 +7,10 @@ $(document).ready(function(){
 
 
 function createListenersItemInputs(){
-    $('#master').on('change', 'div .name', sendUpdatedItem);
-    $('#master').on('change', 'div .type', sendUpdatedItem);
-    $('#master').on('change', 'div .quantity', sendUpdatedItem);
-    $('#master').on('keyup', 'div .quantity', sendUpdatedItem);
+    $('#master').on('change', 'div .name', updateItemName);
+    $('#master').on('change', 'div .type', updateItemType);
+    $('#master').on('change', 'div .quantity', updateItemQuantity);
+    $('#master').on('keyup', 'div .quantity', updateItemQuantity);
 }
 
 function createListenersOrderInputs(){

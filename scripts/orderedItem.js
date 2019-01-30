@@ -85,3 +85,27 @@ function sendUpdatedItem(){
     });
 }
 
+function updateItemName(){
+    var itemID = $(this).parent()[0].id;
+    sendDataToUpdate('/ordered-item/update-name', {item_id: itemID, name: $(this).val()}, callback);
+    function callback(data){
+        console.log(data);
+    }
+}
+
+function updateItemType(){
+  var itemID = $(this).parent()[0].id;
+    sendDataToUpdate('/ordered-item/update-type', {item_id: itemID, type: $(this).val()}, callback);
+    function callback(data){
+        console.log(data);
+    }
+}
+
+function updateItemQuantity(){
+  var itemID = $(this).parent()[0].id;
+    sendDataToUpdate('/ordered-item/update-quantity', {item_id: itemID, quantity: $(this).val()}, callback);
+    function callback(data){
+        console.log(data);
+    }
+}
+

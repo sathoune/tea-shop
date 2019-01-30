@@ -107,7 +107,84 @@ router.post("/edit", function(req, res){
     
 });
 
+router.post('/update-name', function(req,res){
+    MenuItem.findOne({name: { $regex: new RegExp(req.body.name,  "i")}}, function(err, foundMenuItem){
+        if(err){
+            console.log(err);
+        } else if(foundMenuItem){
+          
+            OrderedItem.findOneAndUpdate(
+                { _id: req.body.item_id}, 
+                {name: foundMenuItem.name}, 
+                {new: true}, function(err, updatedItem){
+                  if(err){
+                    console.log(err);
+                  } else {
+                    var calculatedPrice = pricesAndSums.calculatePrice(foundMenuItem, updatedItem)
+                    OrderedItem.findOneAndUpdate(
+                      {_id: updatedItem._id}, 
+                      {price: calculatedPrice},
+                      {new: true}, 
+                      function(err, updatedItem){
+                        if(err){
+                          console.log(err);
+                        } else {  
+                          res.send({item: updatedItem, code: foundMenuItem.registerCode});
+                        } 
+                      });
+                  }
+                });
+                
+        } else {
+          // if name not found
+          res.send("");
+        }
+    });
+});
 
+router.post('/update-type', function(req,res){
+  OrderedItem.findOneAndUpdate(
+    { _id: req.body.item_id}, 
+    {type: req.body.type}, 
+    {new: true}, 
+    function(err, updatedItem){
+      if(err){console.log(err); }
+      else {
+        MenuItem.findOne({name: updatedItem.name}, function(err, menuItem){
+          if(err) { console.log(err); }
+          else if(menuItem){
+            var newPrice = pricesAndSums.calculatePrice(menuItem, updatedItem);
+            OrderedItem.findOneAndUpdate(
+              { _id: updatedItem._id}, 
+              {price: newPrice}, 
+              {new: true},
+              function(err, updatedItem){
+                if(err) { console.log(err); }
+                else {
+                  res.send(updatedItem);
+                }
+              });
+          } else {
+            // When item not found
+            res.send(updatedItem);
+          }
+        });
+        
+      }
+    });
+});
 
+router.post('/update-quantity', function(req,res){
+  OrderedItem.findOneAndUpdate(
+    { _id: req.body.item_id}, 
+    {quantity: req.body.quantity}, 
+    {new: true}, 
+    function(err, updatedItem){
+      if(err){  console.log(err); }
+      else {
+        res.send(updatedItem);
+      }
+    });
+});
 
 module.exports = router;
