@@ -17,8 +17,19 @@ function calculateDiscountedSum(orderedItems){
             discountedSum+=Number(item.discountedPrice);
         }
     });
-    return discountedSum
+    return discountedSum;
 }
+
+function calculateDiscountedPricesForOrder(orderedItems, order, OrderedItem){
+    var discountedSum = 0;
+    orderedItems.forEach(function(item){
+        var newPrice = item.price * calculateDiscount(item, order);
+        discountedSum += newPrice;
+        OrderedItem.findOneAndUpdate({_id: item._id}, {discountedPrice: newPrice});
+    });
+    return discountedSum; 
+}
+
 
 
 function calculatePrice(menuObject, uiObject){
@@ -61,4 +72,5 @@ module.exports = {
     calculateDiscountedSum: calculateDiscountedSum,
     calculatePrice: calculatePrice,
     calculateDiscount: calculateDiscount,
+    calculateDiscountedPricesForOrder: calculateDiscountedPricesForOrder,
 };

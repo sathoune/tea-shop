@@ -33,7 +33,7 @@ router.post("/edit", function(req, res){
                     console.log(err);
                 } else {
                     var sum = pricesAndSums.calculateSum(orderedItems).toString();
-                    var discountedSum = pricesAndSums.calculateDiscountedSum(orderedItems, updatedOrder).toString();
+                    var discountedSum = pricesAndSums.calculateDiscountedPricesForOrder(orderedItems, updatedOrder, OrderedItem).toString();
                     Order.findByIdAndUpdate({_id: req.body.orderID }, 
                     {sum: sum, discountedSum: discountedSum}, {new: true}, 
                     function(err, updatedOrder){
@@ -52,6 +52,17 @@ router.post("/edit", function(req, res){
         }
     });
    
+});
+
+router.post("/edit-table", function(req,res){
+   Order.findByIdAndUpdate({_id: req.body._id}, {table: req.body.table}, function(err){
+       if(err){
+           console.log(err);
+       } else {
+           res.send("done");
+   
+       }
+   });
 });
 
 

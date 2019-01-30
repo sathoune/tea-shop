@@ -155,3 +155,16 @@ function sendUpdatedOrderForCheckbox(){
         }
     });
 }
+
+function updateOrderTable(){
+    
+    var orderID = $(this).parent().parent()[0].id;
+    var newTable = $(this).val();
+    
+    sendDataToUpdate('/order/edit-table', {_id: orderID, table: newTable}, callback);
+    function callback(data){
+        console.log('updated');
+        // TODO create movement of tables with flexbox and css
+    }
+}
+
