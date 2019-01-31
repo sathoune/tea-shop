@@ -4,10 +4,21 @@ function openArchive(){
     $("#show-archive").off("click").on("click", closeArchive);
     createArchiveContainers();
     
-    sendRequest("/archive/", {date: new Date()}, callback);
-    function callback(data){
-        data.forEach(constructArchiveDiv);
-    }
+    sendRequest("/archive/", {date: new Date()}, (data) => {
+        var sum = 0;
+        var discountedSum = 0;
+        data.forEach((item)=>{
+           if(item.sum){
+               sum+= Number(item.sum);
+           } 
+           if(item.discountedSum){
+               discountedSum += Number(item.discountedSum);
+           }
+        });
+        data.forEach(constructArchiveDiv); 
+        setSums(sum, discountedSum);
+    });
+
 }
 
 function closeArchive(){
@@ -22,7 +33,7 @@ function createArchiveContainers(){
     var date ={
         year: now.getFullYear(),
         month: (1 + now.getMonth()).toString().padStart(2, '0'),
-        day: now.getDate(),
+        day: now.getDate().toString().padStart(2, '0'),
     };
     var newDate = `${date.year}-${date.month}-${date.day}`;
 
@@ -42,8 +53,20 @@ function createArchiveContainers(){
         let dayForDisplay = $('#day-for-display').val()
         sendRequest('/archive', {date: dayForDisplay}, (data)=>{
             if(data){
-                data.forEach(constructArchiveDiv);   
+                var sum = 0;
+                var discountedSum = 0;
+                data.forEach((item)=>{
+                   if(item.sum){
+                       sum+= Number(item.sum);
+                   } 
+                   if(item.discountedSum){
+                       discountedSum += Number(item.discountedSum);
+                   }
+                });
+                data.forEach(constructArchiveDiv); 
+                setSums(sum, discountedSum);
             } else {
+                setSums(0,0);
                 console.log('this day is not a day');
                 //make message
             }
@@ -111,4 +134,11 @@ function constructItemDisplay(orderID, itemObject){
     $(`#${orderID}.archived-order .item-container`).append(itemDiv);
     $(`#${itemObject._id}.item-div`).append(inputs);
     
+}
+
+function setSums(sum, discountedSum){
+    $('#archive-panel .day-sum').remove();
+    var sumInput = `<input class="day-sum" type="number" value='${sum}' readonly>`;
+    var discountedSumInput = `<input class="day-sum" type="number" value='${discountedSum}' readonly>`;
+    $('#archive-panel').append([sumInput, discountedSumInput]);
 }
