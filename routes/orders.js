@@ -180,4 +180,41 @@ router.post("/edit-discount-togo", function(req, res) {
     });
 });
 
+router.post('/close', function(req, res) {
+    Order.findById({_id: req.body._id}, function(err, foundOrder){
+      if(err) { console.log(err);
+      } else {
+        var arrayOfItems = foundOrder.orderedItems
+        OrderedItem.find({_id: {$in: arrayOfItems}}, function(err, foundItems){
+        if(err) { console.log(err); 
+        } else {
+          foundItems.forEach(function(item){
+            if(item.name == ""){
+              var index = arrayOfItems.indexOf(item._id);
+              if(index > -1){
+                arrayOfItems.splice(index, 1);
+              }
+              OrderedItem.findOneAndDelete({_id: item._id}, function(err){
+                if(err){console.log(err);}
+              });
+            }
+          });
+          Order.findByIdAndUpdate({_id: req.body._id}, 
+          {closed: true, orderedItems: arrayOfItems}, 
+          {new: true},
+          function(err, updatedOrder){
+            if(err){ console.log(err);
+            } else {
+              res.send(updatedOrder._id);
+            }
+          });
+        }
+          
+        });  
+      }
+      
+  });
+});
+
+
 module.exports = router;

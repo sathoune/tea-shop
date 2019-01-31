@@ -37,7 +37,7 @@ function createOrderTopPanel(order_id){
     var tableInput = "<input type='text' class='table' placeholder='stolik'>";
     var discountInput = "<label>Discount:</label><input type='number' class='discount' value='0' min='0' max='100'>%";
     var discountToGoCheckbox = "<label><input class='discount-to-go' type='checkbox' name='checkbox' value='discountToGo'>na wagę</label>";
-    var sendButton = "<input type='button' value='Send Away'>";
+    var sendButton = `<button onclick='closeOrder("${order_id}")'>Send away</button>`;
     var addItemButton = `<button onclick='createItem("${order_id}")'>Add brand new item</button>`;
 
     
@@ -158,7 +158,14 @@ function updateToGoDiscount(){
         $("#"+orderID+".order" + " .discounted-sum").val(data.discountedSum); 
         data.arrayOfPrices.forEach(function(item){
             $(`#${item.item_id}.item .discounted-price`).val(item.discountedPrice);
-        })
+        });
    
+    }
+}
+
+function closeOrder(orderID){
+    sendDataToUpdate('/order/close', {_id: orderID}, callback);
+    function callback(data){
+        $("#"+data+".order").remove();
     }
 }
