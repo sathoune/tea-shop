@@ -1,13 +1,13 @@
 var mongoose = require("mongoose");
 
 var MenuItemSchema = new mongoose.Schema({
-    name: String,
-    registerCode: String,
+    name: {type: String, default: ""},
+    registerCode: {type: String,default: ""},
     prices: {
-        default: String,
-        gaiwan: String,
-        package: String,
-        bulk: String,
+        default: {type: String, default: ""},
+        gaiwan: {type: String, default: ""},
+        package: {type: String, default: ""},
+        bulk: {type: String, default: ""},
     },
 
 });

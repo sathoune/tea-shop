@@ -19,7 +19,7 @@ function createItemDiv(menuID) {
 }
 
 function setupMenuItem(menuValues){
-    var deleteButton = '<button>delete</button>'
+    var deleteButton = `<button onclick="deleteMenuItem('${menuValues._id}')">delete</button>`
     var codeInput = `<input type='text' class='menu-code' value='${menuValues.registerCode}'>`;
     var nameInput = `<input type='text' class='menu-name' value='${menuValues.name}'>`;
     var price0Input = `<input type='text' class='menu-price0' value='${menuValues.prices.default}'>`;
@@ -47,7 +47,7 @@ function createMenuTemplate(){
 }
 
 function menuLabels(){
-    var createNewButton = '<button>Add Position</button>'
+    var createNewButton = '<button onclick="newMenuItem()">Add Position</button>'
     var codeInput = `<input type='text' class='menu-code' value='Code'>`;
     var nameInput = `<input type='text' class='menu-name' value='Name'>`;
     var price0Input = `<input type='text' class='menu-price' value='Default price'>`;
@@ -81,4 +81,21 @@ function updateMenuItem(itemID){
       console.log(data);  
     }
     
+}
+
+function newMenuItem(){
+    sendDataToUpdate("/menu/new", {}, callback);
+    function callback(data){
+        var div = createItemDiv(data._id);
+        $('#menu-container').prepend(div);
+        setupMenuItem(data)
+    }
+}
+
+function deleteMenuItem(itemID){
+    sendDataToUpdate("/menu/delete", {_id: itemID}, callback);
+    function callback(data){
+        console.log(data);
+        $(`#${itemID}.menu-item`).remove();
+    }
 }

@@ -22,4 +22,25 @@ router.post("/edit", function(req,res){
     });
 });
 
+
+router.post("/new", function(req, res) {
+   MenuItem.create({}, function(err, newItem){
+       if(err) { console.log(err);
+       } else {
+           res.send(newItem);
+       }
+   });
+});
+
+router.post("/delete", function(req, res) {
+    MenuItem.findOneAndDelete({_id: req.body._id}, function(err){
+        if(err) {console.log(err);
+        } else {
+            res.send("item deleted");
+
+        }
+    
+    });
+});
+
 module.exports = router;
