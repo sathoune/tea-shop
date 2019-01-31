@@ -119,7 +119,7 @@ function updateOrderTable(){
     var orderID = $(this).parent().parent()[0].id;
     var newTable = $(this).val();
     
-    sendDataToUpdate('/order/edit-table', {_id: orderID, table: newTable}, callback);
+    sendRequest('/order/edit-table', {_id: orderID, table: newTable}, callback);
     function callback(data){
         // TODO create movement of tables with flexbox and css
     }
@@ -127,7 +127,7 @@ function updateOrderTable(){
 
 
 function updateSumOfPrices(orderID){
-    sendDataToUpdate('/order/edit-sum', { _id: orderID }, callback);
+    sendRequest('/order/edit-sum', { _id: orderID }, callback);
     function callback(data){
         $("#"+orderID+".order" + " .sum").val(data.sum); 
     }
@@ -135,7 +135,7 @@ function updateSumOfPrices(orderID){
 
 function updateSumOfDiscountedPrices(orderID){
     
-    sendDataToUpdate('/order/edit-discounted-sum', { _id: orderID}, callback);
+    sendRequest('/order/edit-discounted-sum', { _id: orderID}, callback);
     function callback(data){
         $("#"+orderID+".order" + " .discounted-sum").val(data.discountedSum); 
 
@@ -146,7 +146,7 @@ function updateDiscount(){
     var orderID = $(this).parent().parent()[0].id;
     var newDiscount = $(this).val();
     
-    sendDataToUpdate('/order/edit-discount', {_id: orderID, discount: newDiscount}, callback);
+    sendRequest('/order/edit-discount', {_id: orderID, discount: newDiscount}, callback);
     function callback(data){
         $("#"+orderID+".order" + " .discounted-sum").val(data.discountedSum); 
         data.arrayOfPrices.forEach(function(item){
@@ -160,7 +160,7 @@ function updateToGoDiscount(){
     var orderID = $(this).parent().parent().parent()[0].id;
     var discountToGo = $(this).is(":checked");
 
-    sendDataToUpdate('/order/edit-discount-togo', {_id: orderID, discountToGo: discountToGo}, callback);
+    sendRequest('/order/edit-discount-togo', {_id: orderID, discountToGo: discountToGo}, callback);
     function callback(data){
         $("#"+orderID+".order" + " .discounted-sum").val(data.discountedSum); 
         data.arrayOfPrices.forEach(function(item){
@@ -171,7 +171,7 @@ function updateToGoDiscount(){
 }
 
 function closeOrder(orderID){
-    sendDataToUpdate('/order/close', {_id: orderID}, callback);
+    sendRequest('/order/close', {_id: orderID}, callback);
     function callback(data){
         $("#"+data+".order").remove();
     }

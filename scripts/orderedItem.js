@@ -61,7 +61,7 @@ function updateItemName(){
     var itemID = $(this).parent()[0].id;
     var orderID = $(this).parent().parent().parent()[0].id;
     var name = $(this).val()
-    sendDataToUpdate('/ordered-item/update-name', {item_id: itemID, name: name, order_id: orderID}, callback);
+    sendRequest('/ordered-item/update-name', {item_id: itemID, name: name, order_id: orderID}, callback);
     
     function callback(data){
       if(data){
@@ -85,7 +85,7 @@ function updateItemType(){
   var itemID = $(this).parent()[0].id;
   var orderID = $(this).parent().parent().parent()[0].id;
 
-    sendDataToUpdate('/ordered-item/update-type', {item_id: itemID, type: $(this).val(), order_id: orderID}, callback);
+    sendRequest('/ordered-item/update-type', {item_id: itemID, type: $(this).val(), order_id: orderID}, callback);
     
     function callback(data){
       $(`#${itemID}.item .price`).val(data.price);
@@ -101,7 +101,7 @@ function updateItemQuantity(){
   var itemID = $(this).parent()[0].id;
   var orderID = $(this).parent().parent().parent()[0].id;
 
-    sendDataToUpdate('/ordered-item/update-quantity', {item_id: itemID, quantity: $(this).val(), order_id: orderID}, callback);
+    sendRequest('/ordered-item/update-quantity', {item_id: itemID, quantity: $(this).val(), order_id: orderID}, callback);
     
     function callback(data){
         $(`#${itemID}.item .price`).val(data.price);

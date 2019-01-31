@@ -4,7 +4,7 @@ function openMenu(){
     $("#show-menu").off("click").on("click", showBackCurrentOrders);
     
     createMenuTemplate();
-    sendDataToUpdate("/menu", {}, callback);
+    sendRequest("/menu", {}, callback);
     function callback(data){
         menuLabels();
         data.forEach(function(item){
@@ -78,7 +78,7 @@ function updateMenuItem(itemID){
     };
     
         
-    sendDataToUpdate("/menu/edit", {newData, _id: itemID}, callback);
+    sendRequest("/menu/edit", {newData, _id: itemID}, callback);
 
     function callback(data){
       console.log("item edited");  
@@ -87,7 +87,7 @@ function updateMenuItem(itemID){
 }
 
 function newMenuItem(){
-    sendDataToUpdate("/menu/new", {}, callback);
+    sendRequest("/menu/new", {}, callback);
     function callback(data){
         var div = createMenuItemDiv(data._id);
         $('#menu-container').prepend(div);
@@ -96,7 +96,7 @@ function newMenuItem(){
 }
 
 function deleteMenuItem(itemID){
-    sendDataToUpdate("/menu/delete", {_id: itemID}, callback);
+    sendRequest("/menu/delete", {_id: itemID}, callback);
     function callback(data){
         $(`#${itemID}.menu-item`).remove();
         console.log("item deleted");

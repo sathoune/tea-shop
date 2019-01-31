@@ -1,6 +1,6 @@
  
     
-function sendDataToUpdate(url, newData, callback){
+function sendRequest(url, newData, callback){
     $.ajax({
     	method: 'post',
     	url: url,

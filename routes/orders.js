@@ -67,7 +67,7 @@ router.post("/edit-sum", function(req, res){
     if(err) { console.log(err); }
     else {
       foundOrder = foundOrder[0];
-      OrderedItem.find({_id: {$in: foundOrder.orderedItems}}, function(err, foundItems){
+      OrderedItem.find({_id: {$in: foundOrder.orderedItems}}, (err, foundItems) =>{
         if(err) { console.log(err); }
         else {
           var sum = pricesAndSums.calculateSum(foundItems);
