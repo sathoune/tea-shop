@@ -1,5 +1,8 @@
 function openMenu(){
     $("#master").hide();
+    $("#show-menu").html("back to orders");
+    $("#show-menu").off("click").on("click", showBackCurrentOrders);
+    
     createMenuTemplate();
     sendDataToUpdate("/menu", {}, callback);
     function callback(data){
@@ -98,4 +101,11 @@ function deleteMenuItem(itemID){
         console.log(data);
         $(`#${itemID}.menu-item`).remove();
     }
+}
+
+function showBackCurrentOrders(){
+    $('#master').show();
+    $('#menu').remove();
+    $('#show-menu').html("Look at the menu");
+    $('#show-menu').off("click").on("click", openMenu);
 }
