@@ -25,8 +25,7 @@ function createArchiveContainers(){
         day: now.getDate(),
     };
     var newDate = `${date.year}-${date.month}-${date.day}`;
-    console.log(date)
-    console.log(now);
+
     var archive = "<div id='archive'></div";
     var archiveContainer = "<div id='archived-orders'></div>";
     var archivePanel = "<div id='archive-panel'></div>";
@@ -38,6 +37,19 @@ function createArchiveContainers(){
     var archiveContainers = [archivePanel, archiveContainer];
     $('#archive').append(archiveContainers);
     $('#archive-panel').append(dateInput);
+    $('#day-for-display').on('change' , () => { 
+        $('#archived-orders').empty();
+        let dayForDisplay = $('#day-for-display').val()
+        sendRequest('/archive', {date: dayForDisplay}, (data)=>{
+            if(data){
+                data.forEach(constructArchiveDiv);   
+            } else {
+                console.log('this day is not a day');
+                //make message
+            }
+        });
+    }); 
+    
 }
 
 function constructArchiveDiv(orderData){
