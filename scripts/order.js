@@ -1,3 +1,5 @@
+// Dynamically create order
+
 function createOrder(){
     $.ajax({
         	method: 'post',
@@ -104,6 +106,12 @@ function createOrderPanel(order_id){
     
 }
  
+ 
+ 
+ 
+// Editing scripts
+ 
+ 
 
 
 function updateOrderTable(){
@@ -129,7 +137,6 @@ function updateSumOfDiscountedPrices(orderID){
     
     sendDataToUpdate('/order/edit-discounted-sum', { _id: orderID}, callback);
     function callback(data){
-        console.log(data);
         $("#"+orderID+".order" + " .discounted-sum").val(data.discountedSum); 
 
     }

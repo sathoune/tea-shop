@@ -1,3 +1,4 @@
+// create item
 
 function createItem(parentID){
     var parentSelector = "#"+parentID+".order .item-container";
@@ -7,7 +8,7 @@ function createItem(parentID){
         	data: JSON.stringify({orderID: parentID}),
         	contentType: "application/json",
         	success: function(orderedItem){
-    			createItemDiv(orderedItem._id, parentSelector)
+    			createItemDiv(orderedItem._id, parentSelector);
             }
                 
         });
@@ -22,7 +23,7 @@ function createItemDiv(item_id, parentSelector){
 }
 
 function insertInputsInto(div){
-    var nameInput = '<input type="text" class="name" list="tees">'
+    var nameInput = '<input type="text" class="name" list="tees">';
     var codeInput = '<input type="text" class="registerCode" readonly>';
     var priceInput = '<input class="price" type="number" readonly>';
     var quantityInput = '<input class="quantity" type="number" name="quantity" min="0" value="1">';
@@ -51,6 +52,9 @@ function insertInputsInto(div){
 
         
 
+
+
+// editing scripts
  
 
 function updateItemName(){
@@ -100,7 +104,6 @@ function updateItemQuantity(){
     sendDataToUpdate('/ordered-item/update-quantity', {item_id: itemID, quantity: $(this).val(), order_id: orderID}, callback);
     
     function callback(data){
-      console.log(data);
         $(`#${itemID}.item .price`).val(data.price);
         $(`#${itemID}.item .discounted-price`).val(data.discountedPrice);
 

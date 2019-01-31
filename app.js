@@ -27,9 +27,11 @@ mongoose.connect(dbURL, {useNewUrlParser: true}, function(err){
 var indexRoutes         = require("./routes/index"),
     orderRoutes         = require("./routes/orders"),
     orderedItemRoutes   = require("./routes/orderedItems");
+    menuRoutes          = require("./routes/menu");
 
 app.use("/order",           orderRoutes);
 app.use("/ordered-item",    orderedItemRoutes);
+app.use("/menu",    menuRoutes);
 app.use("/",                indexRoutes);
 
 
