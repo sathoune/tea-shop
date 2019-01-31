@@ -4,8 +4,7 @@ function openArchive(){
     $("#show-archive").off("click").on("click", closeArchive);
     createArchiveContainers();
     
-    
-    sendRequest("/archive/", {}, callback);
+    sendRequest("/archive/", {date: new Date()}, callback);
     function callback(data){
         data.forEach(constructArchiveDiv);
     }
@@ -19,12 +18,26 @@ function closeArchive(){
 }
 
 function createArchiveContainers(){
+    var now = new Date();
+    var date ={
+        year: now.getFullYear(),
+        month: (1 + now.getMonth()).toString().padStart(2, '0'),
+        day: now.getDate(),
+    };
+    var newDate = `${date.year}-${date.month}-${date.day}`;
+    console.log(date)
+    console.log(now);
     var archive = "<div id='archive'></div";
     var archiveContainer = "<div id='archived-orders'></div>";
     var archivePanel = "<div id='archive-panel'></div>";
+    var dateInput = `<input type="date" id="day-for-display" name="trip-start"
+       value='${newDate}' 
+       min="2019-01-01" max="2025-12-31">`;
+
     $('body').append(archive);
     var archiveContainers = [archivePanel, archiveContainer];
     $('#archive').append(archiveContainers);
+    $('#archive-panel').append(dateInput);
 }
 
 function constructArchiveDiv(orderData){

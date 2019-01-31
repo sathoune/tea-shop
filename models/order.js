@@ -1,7 +1,7 @@
 var mongoose = require("mongoose");
 
 var OrderSchema = new mongoose.Schema({
-    created:  { type: Date, default: Date.now },
+    created:  { type: Date, default: new Date() },
     discount: { type: String, default: "0" },
     discountToGo: { type: Boolean, default: false},
     closed: { type: Boolean, default: false },

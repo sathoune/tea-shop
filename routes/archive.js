@@ -5,7 +5,12 @@ var OrderedItem = require("../models/orderedItem");
 
 
 router.post("/", (req, res) => {
-    Order.find({}, (err, foundOrders) => {
+    var now = new Date(req.body.date);
+    var dateCriteria = {
+        $gte: new Date(now.getFullYear(), now.getMonth(), now.getDate()),
+        $lt: new Date(now.getFullYear(), now.getMonth(), now.getDate()+1),
+    };
+    Order.find({created: dateCriteria}, (err, foundOrders) => {
         if(err) { console.log(err);
         } else {
             res.send(foundOrders);
