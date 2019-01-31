@@ -14,13 +14,19 @@ router.post("/", (req, res) => {
 });
 
 router.post("/show-ordered-items", function(req,res){
-    OrderedItem.find({_id: { $in: req.body.orderedItems}}, (err, foundItems) => {
-       
-       if(err) { console.log(err);
+    Order.findById(req.body, (err, foundOrder)=>{
+       if(err){ console.log(err);
        } else {
-           res.send(foundItems);
+         OrderedItem.find({_id: { $in: foundOrder.orderedItems}}, (err, foundItems) => {
+       
+           if(err) { console.log(err);
+           } else {
+               res.send(foundItems);
+           }
+        });  
        }
     });
+    
 });
 
 module.exports = router;

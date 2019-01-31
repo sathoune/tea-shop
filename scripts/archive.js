@@ -42,23 +42,28 @@ function constructOrderDisplay(orderData){
   var expandButton = `<button class="expand-button">Expand</button>`;
   var inputs = [dateInput, table, sum, discountedSum, expandButton];
   $('#'+orderData._id).append(inputs);
-  $(`#${orderData._id} .expand-button`).on("click", orderData, expandOrder);
+  $(`#${orderData._id} .expand-button`).on("click", expandOrder);
 
 }
 
-function expandOrder(event){
+function expandOrder(){
+    var orderID = $(this).parent()[0].id;
     var itemContainer = `<div class='item-container'></div>`;
     var panelContainer = `<div class='panel'>NAZWA | TYP | ILOŚĆ |  CENA  |  PO ZNIŻCE</div>`;
     // Need labels
 
-    $(`#${event.data._id}.archived-order`).append([panelContainer, itemContainer]);
-    sendRequest("/archive/show-ordered-items", {orderedItems: event.data.orderedItems}, callback);
+    $(`#${orderID}.archived-order`).append([panelContainer, itemContainer]);
+    sendRequest("/archive/show-ordered-items", {_id: orderID}, callback);
     function callback(data){
         data.forEach((item) => {
-            constructItemDisplay(event.data._id, item)
+            constructItemDisplay(event.data._id, item);
         });
     }
 
+}
+
+function collapseOrder(){
+    console.log('lul');
 }
 
 function constructItemDisplay(orderID, itemObject){
