@@ -47,23 +47,31 @@ function constructOrderDisplay(orderData){
 }
 
 function expandOrder(){
+    $(this).html("Collapse");
+    $(this).off("click").on("click", collapseOrder);
+    
     var orderID = $(this).parent()[0].id;
     var itemContainer = `<div class='item-container'></div>`;
     var panelContainer = `<div class='panel'>NAZWA | TYP | ILOŚĆ |  CENA  |  PO ZNIŻCE</div>`;
     // Need labels
-
+    
     $(`#${orderID}.archived-order`).append([panelContainer, itemContainer]);
     sendRequest("/archive/show-ordered-items", {_id: orderID}, callback);
     function callback(data){
         data.forEach((item) => {
-            constructItemDisplay(event.data._id, item);
+            constructItemDisplay(orderID, item);
         });
     }
-
+    
 }
 
 function collapseOrder(){
-    console.log('lul');
+    $(this).html("Expand");
+    $(this).off("click").on("click", expandOrder);
+    
+    var orderID = $(this).parent()[0].id;
+    $(`#${orderID}.archived-order .item-container`).remove();
+    $(`#${orderID}.archived-order .panel`).remove();
 }
 
 function constructItemDisplay(orderID, itemObject){
