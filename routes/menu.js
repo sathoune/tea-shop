@@ -10,7 +10,16 @@ router.post("/", function(req,res){
             res.send(menu);
         }
         
-    })
-})
+    });
+});
+
+router.post("/edit", function(req,res){
+    MenuItem.findOneAndUpdate({_id: req.body._id}, req.body.newData, function(err){
+       if(err) { console.log(err);
+       } else {
+           res.send("well played");
+       }
+    });
+});
 
 module.exports = router;
