@@ -81,7 +81,7 @@ function updateMenuItem(itemID){
     sendDataToUpdate("/menu/edit", {newData, _id: itemID}, callback);
 
     function callback(data){
-      console.log(data);  
+      console.log("item edited");  
     }
     
 }
@@ -98,8 +98,8 @@ function newMenuItem(){
 function deleteMenuItem(itemID){
     sendDataToUpdate("/menu/delete", {_id: itemID}, callback);
     function callback(data){
-        console.log(data);
         $(`#${itemID}.menu-item`).remove();
+        console.log("item deleted");
     }
 }
 

@@ -26,12 +26,14 @@ mongoose.connect(dbURL, {useNewUrlParser: true}, function(err){
 // routes
 var indexRoutes         = require("./routes/index"),
     orderRoutes         = require("./routes/orders"),
-    orderedItemRoutes   = require("./routes/orderedItems");
-    menuRoutes          = require("./routes/menu");
+    orderedItemRoutes   = require("./routes/orderedItems"),
+    menuRoutes          = require("./routes/menu"),
+    archiveRoutes       = require("./routes/archive");
 
 app.use("/order",           orderRoutes);
 app.use("/ordered-item",    orderedItemRoutes);
 app.use("/menu",    menuRoutes);
+app.use("/archive",    archiveRoutes);
 app.use("/",                indexRoutes);
 
 
