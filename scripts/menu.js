@@ -8,7 +8,7 @@ function openMenu(){
     function callback(data){
         menuLabels();
         data.forEach(function(item){
-            var div = createItemDiv(item._id);
+            var div = createMenuItemDiv(item._id);
             $('#menu-container').append(div);
             setupMenuItem(item, div);
         });
@@ -16,7 +16,7 @@ function openMenu(){
     }
 }
 
-function createItemDiv(menuID) {
+function createMenuItemDiv(menuID) {
     return  `<div id=${menuID} class='menu-item'></div>`;
 
 }
@@ -89,7 +89,7 @@ function updateMenuItem(itemID){
 function newMenuItem(){
     sendDataToUpdate("/menu/new", {}, callback);
     function callback(data){
-        var div = createItemDiv(data._id);
+        var div = createMenuItemDiv(data._id);
         $('#menu-container').prepend(div);
         setupMenuItem(data)
     }

@@ -4,4 +4,5 @@ function createHeader(){
     var headerNavigation = [createOrder, showMenu]
     $('body').prepend(headerNavigation);
     $("#show-menu").on("click", openMenu);
+    
 }
