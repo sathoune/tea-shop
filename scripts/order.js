@@ -1,17 +1,9 @@
 // Dynamically create order
 
 function createOrder(){
-    $.ajax({
-        	method: 'post',
-        	url: '/order/new',
-        	contentType: "application/json",
-        	success: function(data){
-        	    createOrderDiv(data._id);
-            }
-                
-    });
-    
-    
+    sendRequest('/order/new', {}, 
+    (emptyOrder) => {createOrderDiv(emptyOrder._id);});
+
 }
 
 function createOrderDiv(order_id, itemsQuantity=4){
@@ -102,8 +94,6 @@ function createOrderPanel(order_id){
     var orderPanelDiv = `<div class='item-container'></div>`
     var orderSelector = `#${order_id}.order`;
     $(orderSelector).append(orderPanelDiv);
-    
-    
 }
  
  
@@ -127,52 +117,45 @@ function updateOrderTable(){
 
 
 function updateSumOfPrices(orderID){
-    sendRequest('/order/edit-sum', { _id: orderID }, callback);
-    function callback(data){
-        $("#"+orderID+".order" + " .sum").val(data.sum); 
-    }
+    sendRequest('/order/edit-sum', { _id: orderID }, 
+    (updatedOrder) => {$("#"+orderID+".order" + " .sum").val(updatedOrder.sum);});
 }
 
 function updateSumOfDiscountedPrices(orderID){
     
-    sendRequest('/order/edit-discounted-sum', { _id: orderID}, callback);
-    function callback(data){
-        $("#"+orderID+".order" + " .discounted-sum").val(data.discountedSum); 
-
-    }
+    sendRequest('/order/edit-discounted-sum', { _id: orderID }, 
+    (updatedOrder) => {$("#"+orderID+".order" + " .discounted-sum").val(updatedOrder.discountedSum);});
 }
 
 function updateDiscount(){
     var orderID = $(this).parent().parent()[0].id;
     var newDiscount = $(this).val();
     
-    sendRequest('/order/edit-discount', {_id: orderID, discount: newDiscount}, callback);
-    function callback(data){
+    sendRequest('/order/edit-discount', {_id: orderID, discount: newDiscount}, 
+    (data) => {
         $("#"+orderID+".order" + " .discounted-sum").val(data.discountedSum); 
-        data.arrayOfPrices.forEach(function(item){
+        data.arrayOfPrices.forEach((item) => 
+        {
             $(`#${item.item_id}.item .discounted-price`).val(item.discountedPrice);
-        })
-   
-    }
+        });    
+    });
+    
 }
 
 function updateToGoDiscount(){
     var orderID = $(this).parent().parent().parent()[0].id;
     var discountToGo = $(this).is(":checked");
 
-    sendRequest('/order/edit-discount-togo', {_id: orderID, discountToGo: discountToGo}, callback);
-    function callback(data){
+    sendRequest('/order/edit-discount-togo', {_id: orderID, discountToGo: discountToGo}, 
+    (data) => {
         $("#"+orderID+".order" + " .discounted-sum").val(data.discountedSum); 
         data.arrayOfPrices.forEach(function(item){
             $(`#${item.item_id}.item .discounted-price`).val(item.discountedPrice);
         });
    
-    }
+    });
 }
 
 function closeOrder(orderID){
-    sendRequest('/order/close', {_id: orderID}, callback);
-    function callback(data){
-        $("#"+data+".order").remove();
-    }
+    sendRequest('/order/close', {_id: orderID}, (data) => { $("#"+data+".order").remove();});
 }

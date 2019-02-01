@@ -7,15 +7,19 @@ function openArchive(){
     sendRequest("/archive/", {date: new Date()}, (data) => {
         var sum = 0;
         var discountedSum = 0;
-        data.forEach((item)=>{
-           if(item.sum){
-               sum+= Number(item.sum);
-           } 
-           if(item.discountedSum){
-               discountedSum += Number(item.discountedSum);
-           }
+        data.forEach((order)=>{
+            if(order.closed){
+             
+               if(order.sum){
+                   sum+= Number(order.sum);
+               } 
+               if(order.discountedSum){
+                   discountedSum += Number(order.discountedSum);
+               }
+               constructArchiveDiv(order);   
+            }
         });
-        data.forEach(constructArchiveDiv); 
+        // data.forEach(constructArchiveDiv); 
         setSums(sum, discountedSum);
     });
 
