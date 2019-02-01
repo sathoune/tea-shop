@@ -135,4 +135,21 @@ router.post('/update-quantity', (req,res) => {
   });
 });
 
+router.post("/delete", (req,res)=>{
+  Order.find({orderedItems: req.body._id}, (err, foundOrder) => {
+    if(err) { console.log(err); }
+    else {
+      var indexOfDeletedItem = foundOrder[0].orderedItems.indexOf(req.body._id);
+      foundOrder[0].orderedItems.splice(indexOfDeletedItem, 1);
+      foundOrder[0].save();
+      
+      OrderedItem.findOneAndDelete({_id: req.body._id}, (err)=>{
+        if(err) { console.log(err); }
+        else { res.send('item deleted'); }
+        });
+    }
+  });
+  
+});
+
 module.exports = router;
