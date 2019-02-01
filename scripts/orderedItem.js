@@ -2,16 +2,9 @@
 
 function createItem(parentID){
     var parentSelector = "#"+parentID+".order .item-container";
-    $.ajax({
-        	method: 'post',
-        	url: '/ordered-item/new',
-        	data: JSON.stringify({orderID: parentID}),
-        	contentType: "application/json",
-        	success: function(orderedItem){
-    			createItemDiv(orderedItem._id, parentSelector);
-            }
-                
-        });
+    sendRequest('/ordered-item/new', {orderID: parentID}, 
+    (emptyItem) => { createItemDiv(emptyItem._id, parentSelector);});
+    
 }
 
 function createItemDiv(item_id, parentSelector){
@@ -61,9 +54,8 @@ function updateItemName(){
     var itemID = $(this).parent()[0].id;
     var orderID = $(this).parent().parent().parent()[0].id;
     var name = $(this).val()
-    sendRequest('/ordered-item/update-name', {item_id: itemID, name: name, order_id: orderID}, callback);
-    
-    function callback(data){
+    sendRequest('/ordered-item/update-name', {item_id: itemID, name: name, order_id: orderID}, 
+    (data) => {
       if(data){
         $(`#${itemID}.item .price`).val(data.price);
         $(`#${itemID}.item .discounted-price`).val(data.discountedPrice);
@@ -74,41 +66,38 @@ function updateItemName(){
         updateSumOfPrices(orderID);
         updateSumOfDiscountedPrices(orderID)
   
-      } else {
-        $(`#${itemID}.item .name`).val("");
-      }
-      
-    }
+      } else { $(`#${itemID}.item .name`).val("");}
+    });
 }
 
 function updateItemType(){
   var itemID = $(this).parent()[0].id;
   var orderID = $(this).parent().parent().parent()[0].id;
 
-    sendRequest('/ordered-item/update-type', {item_id: itemID, type: $(this).val(), order_id: orderID}, callback);
-    
-    function callback(data){
-      $(`#${itemID}.item .price`).val(data.price);
-      $(`#${itemID}.item .discounted-price`).val(data.discountedPrice);
+    sendRequest('/ordered-item/update-type', {item_id: itemID, type: $(this).val(), order_id: orderID}, 
+    (updatedItem) => {
+      $(`#${itemID}.item .price`).val(updatedItem.price);
+      $(`#${itemID}.item .discounted-price`).val(updatedItem.discountedPrice);
 
       updateSumOfPrices(orderID);
       updateSumOfDiscountedPrices(orderID)
+    });
     
-    }
 }
 
 function updateItemQuantity(){
   var itemID = $(this).parent()[0].id;
   var orderID = $(this).parent().parent().parent()[0].id;
 
-    sendRequest('/ordered-item/update-quantity', {item_id: itemID, quantity: $(this).val(), order_id: orderID}, callback);
-    
-    function callback(data){
-        $(`#${itemID}.item .price`).val(data.price);
-        $(`#${itemID}.item .discounted-price`).val(data.discountedPrice);
+    sendRequest('/ordered-item/update-quantity', {item_id: itemID, quantity: $(this).val(), order_id: orderID}, 
+    (updatedItem) => {
+        $(`#${itemID}.item .price`).val(updatedItem.price);
+        $(`#${itemID}.item .discounted-price`).val(updatedItem.discountedPrice);
 
         updateSumOfPrices(orderID);
         updateSumOfDiscountedPrices(orderID)
-    }
+      
+      
+    });
 }
 
