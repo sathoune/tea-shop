@@ -78,11 +78,12 @@ function createOrderBottomPanel(order_id){
     var bottomPanelDiv = `<div style="order: 4;"class="bottom-panel"></div>`;
     var bottomPanelDivSelector = orderSelector + " .bottom-panel";
     $(orderSelector).append(bottomPanelDiv);
-    
+    var deleteButton    = `<button class='delete-button' onclick='deleteOrder("${order_id}")'>Delete Order</button>`;  
     var sumInput = "<label>sum</label><input type='number' value='0' class='sum' readonly>"
     var discountedSumInput = "<label>after discount</label><input type='number' value='0' class='discounted-sum' readonly>"
     
     var bottomPanelElements = [
+        deleteButton, 
         sumInput,
         discountedSumInput,
         ];
@@ -181,9 +182,7 @@ function updateOrderValues(orderData){
     $(`#${orderData._id}.order .discounted-sum`).val(orderData.discountedSum);
     
 }
-function updateItemValues(itemData){
-    
-}
+
 
 
 function restoreOrderDiv(order_id, item_ids){
@@ -195,4 +194,11 @@ function restoreOrderDiv(order_id, item_ids){
     createOrderBottomPanel(order_id);
     createOrderPanel(order_id);
     item_ids.forEach((item_id) => { restoreItem(order_id, item_id); });
+}
+
+function deleteOrder(order_id){
+    sendRequest('/order/delete', {_id: order_id}, (res) => {
+       console.log(res); 
+       $(`#${order_id}.order`).remove();
+    });
 }

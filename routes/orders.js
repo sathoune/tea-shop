@@ -194,5 +194,22 @@ router.post("/old", (req, res) =>
   }
 );
 
+router.post("/delete", (req, res) => {
+  Order.findById(req.body._id, (err, foundOrder) => {
+    var promise = new Promise((resolve, reject)=> {
+      Order.findOneAndDelete({_id: req.body._id}, (err) => {
+      if(err) { console.log(err); }
+      });
+      foundOrder.orderedItems.forEach((orderedItem) => {
+        OrderedItem.findOneAndDelete({_id: orderedItem}, (err) => {
+          if(err) { console.log(err) }
+        });
+      });
+      resolve();
+    });
+    promise.then((resolve) => { res.send("order deleted from db") } );
+  });
+});
+
 
 module.exports = router;
