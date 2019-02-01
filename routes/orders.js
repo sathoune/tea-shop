@@ -184,4 +184,15 @@ router.post('/close', (req, res) => {
   });
 });
 
+router.post("/old", (req, res) =>
+  {
+    Order.find({closed: false}, (err, openOrders) => 
+    {
+      res.send(openOrders);      
+    });
+
+  }
+);
+
+
 module.exports = router;

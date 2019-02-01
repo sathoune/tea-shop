@@ -101,3 +101,25 @@ function updateItemQuantity(){
     });
 }
 
+function restoreItem(parentID, itemID){
+    var parentSelector = "#"+parentID+".order .item-container";
+    sendRequest('/ordered-item/show', {_id: itemID}, (foundItem) => {
+    var promise = new Promise((resolve,reject) => {
+      createItemDiv(itemID, parentSelector); 
+      resolve();
+    });
+    promise.then((resolve) => {
+      setValues(foundItem);          
+      }); 
+    });
+    
+}
+
+function setValues(item){
+  var itemSelector = `#${item._id}.item`;
+  $(itemSelector + ' .name').val(item.name);
+  $(itemSelector + ' .type').val(item.type);
+  $(itemSelector + ' .quantity').val(item.quantity);
+  $(itemSelector + ' .price').val(item.price);
+  $(itemSelector + ' .discounted-price').val(item.discountedPrice);
+}

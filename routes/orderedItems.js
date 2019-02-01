@@ -24,6 +24,14 @@ router.post("/new", (req, res) => {
   });
 });
 
+router.post("/show", (req, res) =>
+{
+  OrderedItem.findById({_id: req.body._id}, (err, foundItem) => {
+    if(err) { console.log(err); }
+    else { res.send(foundItem); } 
+  });
+});
+
 router.post('/update-name', (req,res) => {
   MenuItem.findOne({name: { $regex: new RegExp(req.body.name,  "i")}}, 
   (err, foundMenuItem) => {

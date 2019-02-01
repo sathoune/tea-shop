@@ -159,3 +159,52 @@ function updateToGoDiscount(){
 function closeOrder(orderID){
     sendRequest('/order/close', {_id: orderID}, (data) => { $("#"+data+".order").remove();});
 }
+
+function findOpenOrders(){
+    sendRequest('/order/old', {}, 
+    (openOrders) =>
+    {
+        openOrders.forEach(restoreOrder);
+    });
+}
+
+function restoreOrder(orderData){
+    var promise = new Promise((resolve, reject) =>{
+        restoreOrderDiv(orderData._id, orderData.orderedItems);  
+        resolve();
+        
+    });
+    promise.then((resolve)=>{
+        updateOrderValues(orderData);  
+    });
+}
+
+function updateOrderValues(orderData){
+    $(`#${orderData._id}.order .table`).val(orderData.table);
+    $(`#${orderData._id}.order .discount`).val(orderData.discount);
+    $(`#${orderData._id}.order .table`).val(orderData.table);
+    $(`#${orderData._id}.order .sum`).val(orderData.sum);
+    $(`#${orderData._id}.order .discounted-sum`).val(orderData.discountedSum);
+    
+}
+function updateItemValues(itemData){
+    
+}
+
+
+function restoreOrderDiv(order_id, item_ids){
+    
+    var div = `<div id=${order_id} class='order' style="display: flex; flex-direction: column;"></div>`;     
+    
+    $("#master").append(div);
+    createOrderTopPanel(order_id);
+    createOrderLabels(order_id); 
+    createOrderBottomPanel(order_id);
+    createOrderPanel(order_id);
+    item_ids.forEach((item_id) => {
+           restoreItem(order_id, item_id); 
+        });
+           
+   
+
+}

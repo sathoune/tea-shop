@@ -3,6 +3,7 @@ $(document).ready(function(){
     createListenersItemInputs();
     createHeader();
     createListenersOrderInputs();
+    findOpenOrders();
     });
 
 
