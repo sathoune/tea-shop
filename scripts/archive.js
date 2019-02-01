@@ -7,22 +7,16 @@ function openArchive(){
     sendRequest("/archive/", {date: new Date()}, (data) => {
         var sum = 0;
         var discountedSum = 0;
-        data.forEach((order)=>{
+        data.forEach((order) => {
             if(order.closed){
-             
-               if(order.sum){
-                   sum+= Number(order.sum);
-               } 
-               if(order.discountedSum){
-                   discountedSum += Number(order.discountedSum);
-               }
+               if(order.sum){ sum+= Number(order.sum); } 
+               if(order.discountedSum){ discountedSum += Number(order.discountedSum); }
                constructArchiveDiv(order);   
             }
         });
         // data.forEach(constructArchiveDiv); 
         setSums(sum, discountedSum);
     });
-
 }
 
 function closeArchive(){
@@ -60,12 +54,8 @@ function createArchiveContainers(){
                 var sum = 0;
                 var discountedSum = 0;
                 data.forEach((item)=>{
-                   if(item.sum){
-                       sum+= Number(item.sum);
-                   } 
-                   if(item.discountedSum){
-                       discountedSum += Number(item.discountedSum);
-                   }
+                   if(item.sum){ sum+= Number(item.sum); } 
+                   if(item.discountedSum){ discountedSum += Number(item.discountedSum);}
                 });
                 data.forEach(constructArchiveDiv); 
                 setSums(sum, discountedSum);
@@ -108,13 +98,12 @@ function expandOrder(){
     // Need labels
     
     $(`#${orderID}.archived-order`).append([panelContainer, itemContainer]);
-    sendRequest("/archive/show-ordered-items", {_id: orderID}, callback);
-    function callback(data){
+    sendRequest("/archive/show-ordered-items", {_id: orderID}, (data) => 
+    {  
         data.forEach((item) => {
             constructItemDisplay(orderID, item);
         });
-    }
-    
+    });
 }
 
 function collapseOrder(){
