@@ -1,6 +1,56 @@
+body {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
 
-#main-form {
-    margin-top: 5em;
-    margin-left: 5em;
-    background-color: gray;
 }
+
+.navigation-button {
+    margin: 1% 1% 1% 1%;
+}
+
+#header {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+
+.top-panel{
+    display: flex;
+    justify-content: space-between;
+}
+
+.bottom-panel {
+    display: flex;
+    margin-left: auto;
+}
+
+.deleteButton {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+.labels{
+    margin: 0.5% 0% 0.5% 0%;
+}
+
+.order {
+    margin: 1% 0% 1% 0%;
+}
+
+.registerCode{
+    width: 2em;
+}
+
+.price, .discounted-price, .quantity, .sum, .discounted-sum{
+    width: 4em;
+}
+
+.name {
+    width: 20em;
+}
+.type{
+    width: 5em;
+} 
