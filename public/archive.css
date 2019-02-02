@@ -1,0 +1,24 @@
+.order-table, .order-sum {
+    width: 5em;
+}
+
+.type {
+    width: 6em;
+}
+
+#archived-orders {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.archived-order {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: space-between;
+}
+
+.expand-button {
+    width: 5em;
+}

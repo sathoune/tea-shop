@@ -77,23 +77,26 @@ function constructArchiveDiv(orderData){
 
 function constructOrderDisplay(orderData){
     if(!orderData.table) { orderData.table = '' };
+    var summaryDiv = `<div class='div-summary'></div>`
+    
     var sendBackButton = `<button class='send-back' onclick='sendOrderBack("${orderData._id}")'><--</button>`
-  var dateInput = `<input type='text' class='order-date' value='${new Date(orderData.created)}' readonly>`;
-  var table = `<input type='text' class='order-table' value='${orderData.table}' readonly>`;
-  var sum = `<input type='text' class='order-sum' value='${orderData.sum}' readonly>`;
-  var discountedSum = `<input type='text' class='order-sum' value='${orderData.discountedSum}' readonly>`;
-  var expandButton = `<button class="expand-button">Expand</button>`;
-  var inputs = [sendBackButton, dateInput, table, sum, discountedSum, expandButton];
-  $('#'+orderData._id).append(inputs);
-  $(`#${orderData._id} .expand-button`).on("click", expandOrder);
+    var dateInput = `<input type='text' class='order-date' value='${new Date(orderData.created)}' readonly>`;
+    var table = `<input type='text' class='order-table' value='${orderData.table}' readonly>`;
+    var sum = `<input type='text' class='order-sum' value='${orderData.sum}' readonly>`;
+    var discountedSum = `<input type='text' class='order-sum' value='${orderData.discountedSum}' readonly>`;
+    var expandButton = `<button class="expand-button">Expand</button>`;
+    
+    var inputs = [sendBackButton, dateInput, table, sum, discountedSum, expandButton];
+    $('#'+orderData._id).append(summaryDiv);
+    $(`#${orderData._id} .div-summary`).append(inputs);
+    $(`#${orderData._id} .expand-button`).on("click", expandOrder);
 
 }
 
 function expandOrder(){
     $(this).html("Collapse");
     $(this).off("click").on("click", collapseOrder);
-    
-    var orderID = $(this).parent()[0].id;
+    var orderID = $(this).parent().parent()[0].id;
     var itemContainer = `<div class='item-container'></div>`;
     var panelContainer = `<div class='panel'>NAZWA | TYP | ILOŚĆ |  CENA  |  PO ZNIŻCE</div>`;
     // Need labels
@@ -111,7 +114,7 @@ function collapseOrder(){
     $(this).html("Expand");
     $(this).off("click").on("click", expandOrder);
     
-    var orderID = $(this).parent()[0].id;
+    var orderID = $(this).parent().parent()[0].id;
     $(`#${orderID}.archived-order .item-container`).remove();
     $(`#${orderID}.archived-order .panel`).remove();
 }
