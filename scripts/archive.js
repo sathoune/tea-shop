@@ -76,13 +76,14 @@ function constructArchiveDiv(orderData){
 }
 
 function constructOrderDisplay(orderData){
-
+    if(!orderData.table) { orderData.table = '' };
+    var sendBackButton = `<button class='send-back' onclick='sendOrderBack("${orderData._id}")'><--</button>`
   var dateInput = `<input type='text' class='order-date' value='${new Date(orderData.created)}' readonly>`;
   var table = `<input type='text' class='order-table' value='${orderData.table}' readonly>`;
   var sum = `<input type='text' class='order-sum' value='${orderData.sum}' readonly>`;
   var discountedSum = `<input type='text' class='order-sum' value='${orderData.discountedSum}' readonly>`;
   var expandButton = `<button class="expand-button">Expand</button>`;
-  var inputs = [dateInput, table, sum, discountedSum, expandButton];
+  var inputs = [sendBackButton, dateInput, table, sum, discountedSum, expandButton];
   $('#'+orderData._id).append(inputs);
   $(`#${orderData._id} .expand-button`).on("click", expandOrder);
 
@@ -134,4 +135,10 @@ function setSums(sum, discountedSum){
     var sumInput = `<input class="day-sum" type="number" value='${sum}' readonly>`;
     var discountedSumInput = `<input class="day-sum" type="number" value='${discountedSum}' readonly>`;
     $('#archive-panel').append([sumInput, discountedSumInput]);
+}
+
+function sendOrderBack(orderID){
+    sendRequest('/archive/reopen', {_id: orderID}, (data)=>{
+       $(`#${orderID}.archived-order`).remove();
+    });
 }

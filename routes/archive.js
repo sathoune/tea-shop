@@ -31,4 +31,13 @@ router.post("/show-ordered-items", (req,res) => {
     });
 });
 
+router.post("/reopen", (req, res) => {
+    Order.findOneAndUpdate({_id: req.body._id}, {closed: false}, 
+    (err) => {
+       if(err) { console.log(err); }
+       else { res.send('order reopened'); }
+    });
+    
+});
+
 module.exports = router;
