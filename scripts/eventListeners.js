@@ -3,21 +3,22 @@ $(document).ready(function(){
     createListenersItemInputs();
     createHeader();
     createListenersOrderInputs();
+    createNavigation();
     findOpenOrders();
     });
 
 
 function createListenersItemInputs(){
-    $('#master').on('change', 'div .name', updateItemName);
-    $('#master').on('change', 'div .type', updateItemType);
-    $('#master').on('change', 'div .quantity', updateItemQuantity);
-    $('#master').on('keyup', 'div .quantity', updateItemQuantity);
+    $('#record-view').on('change', 'div .name', updateItemName);
+    $('#record-view').on('change', 'div .type', updateItemType);
+    $('#record-view').on('change', 'div .quantity', updateItemQuantity);
+    $('#record-view').on('keyup', 'div .quantity', updateItemQuantity);
 }
 
 function createListenersOrderInputs(){
-    $('#master').on('change', '.discount', updateDiscount);
-    $('#master').on('keydown', '.discount', updateDiscount);
-    $('#master').on('change', '.discount-to-go', updateToGoDiscount);
-    $('#master').on('change', '.table', updateOrderTable);
+    $('#record-view').on('change', '.discount', updateDiscount);
+    $('#record-view').on('keydown', '.discount', updateDiscount);
+    $('#record-view').on('change', '.discount-to-go', updateToGoDiscount);
+    $('#record-view').on('change', '.table', updateOrderTable);
     
 }

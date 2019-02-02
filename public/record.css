@@ -1,0 +1,69 @@
+body {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 1.3em;
+    background-color: buttonface;
+
+}
+
+button, input, select {
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 1em;
+}
+
+.navigation-button {
+    margin: 1% 1% 1% 1%;
+}
+
+#header {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+
+.top-panel{
+    display: flex;
+}
+
+.discount-label, .sum-label {
+    margin-left: auto;
+}
+.bottom-panel {
+    display: flex;
+}
+
+
+.labels{
+    margin: 0.5% 0% 0.5% 0%;
+}
+
+.order {
+    margin: 1% 0% 1% 0%;
+}
+
+.registerCode{
+    width: 2em;
+}
+
+.price, .discounted-price, .quantity, .sum, .discounted-sum{
+    width: 4em;
+}
+
+.name {
+    width: 20em;
+}
+.type{
+    width: 7em;
+} 
+
+.hint, .discounted-sum-label {
+    width: 10em;
+}
+
+.discounted-sum-label {
+    text-align: right;
+}

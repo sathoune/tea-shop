@@ -29,7 +29,7 @@ function insertInputsInto(div){
                           <option value="opakowanie">opakowanie</option>
                           <option value="gram">gram</option>
                         </select>`;
-  var hintInput = '<input class="hint" type="text>';
+  var hintInput = '<input class="hint" type="text">';
   var discountedPriceInput = '<input class="discounted-price" type="number" readonly>';
   var inputElements = [
     deleteButton,
