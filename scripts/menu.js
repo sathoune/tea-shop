@@ -29,7 +29,7 @@ function setupMenuItem(menuValues){
     var price1Input = `<input type='text' class='menu-price1' value='${menuValues.prices.gaiwan}'>`;
     var price2Input = `<input type='text' class='menu-price2' value='${menuValues.prices.package}'>`;
     var price3Input = `<input type='text' class='menu-price3' value='${menuValues.prices.bulk}'>`;
-    var updateButton = `<button onclick="updateMenuItem('${menuValues._id}')">update</button>`;
+    var updateButton = `<button class='update-button' onclick="updateMenuItem('${menuValues._id}')">update</button>`;
     
     var itemElements = [deleteButton, codeInput, nameInput, price0Input, price1Input, price2Input, price3Input, updateButton];
     
@@ -50,7 +50,7 @@ function createMenuTemplate(){
 }
 
 function menuLabels(){
-    var createNewButton = '<button onclick="newMenuItem()">Add Position</button>'
+    var createNewButton = '<button class="new-order-button" onclick="newMenuItem()">Add Position</button>'
     var codeInput = `<input type='text' class='menu-code' value='Code'>`;
     var nameInput = `<input type='text' class='menu-name' value='Name'>`;
     var price0Input = `<input type='text' class='menu-price' value='Default price'>`;
