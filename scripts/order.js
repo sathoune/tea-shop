@@ -3,186 +3,143 @@
 function createOrder(){
     sendRequest('/order/new', {}, 
     (emptyOrder) => {createOrderDiv(emptyOrder._id);});
-
 }
 
 function createNavigation(){
-    var topPanel = "<div id='top-panel'></div>";
-    var createOrder = "<button id='create-order' style='height: 2em;' onclick='createOrder()'>Create A Brand New Tasty Order</button>";
-    var orderDiv = "<div id='order-display'></div>";
+    const   topPanel = "<div id='top-panel'></div>",
+            createOrder = "<button id='create-order' onclick='createOrder()'>Nowe zamówienie</button>",
+            orderDiv = "<div id='order-display'></div>";
     $('#record-view').append([topPanel, orderDiv]);
     $('#top-panel').append(createOrder);
 }
 
-function createOrderDiv(order_id, itemsQuantity=4){
-    var div = `<div id=${order_id} class='order' style="display: flex; flex-direction: column;"></div>`;     
-    
+function createOrderDiv(orderId, itemsQuantity=4){
+    const div = `<div id=${orderId} class='order'></div>`;     
     $("#order-display").prepend(div);
-    createOrderTopPanel(order_id);
-    createOrderLabels(order_id); 
-    createOrderBottomPanel(order_id);
-    createOrderPanel(order_id);
+    createOrderTopPanel(orderId);
+    createOrderLabels(orderId); 
+    createOrderBottomPanel(orderId);
+    createOrderItemPanel(orderId, itemsQuantity);
+}
 
+function createOrderTopPanel(orderId){
+    const   topPanelDiv = `<div class="top-panel"></div>`;
+    const   tableInput = "<input type='text' class='table' placeholder='stolik'>",
+            discountInput = "<label class='discount-label'>Discount:</label><input type='number' class='discount' value='0' min='0' max='100'>%",
+            discountToGoCheckbox = "<label><input class='discount-to-go' type='checkbox' name='checkbox' value='discountToGo'>na wagę</label>",
+            sendButton = `<button onclick='closeOrder("${orderId}")'>Send away</button>`,
+            addItemButton = `<button onclick='createItem("${orderId}")'>Add brand new item</button>`;
+    const TopPanelElements = [
+            addItemButton,
+            tableInput, 
+            discountInput, 
+            discountToGoCheckbox, 
+            sendButton,
+        ];
+    $(`#${orderId}.order`).append(topPanelDiv);
+    $(`#${orderId}.order .top-panel`).append(TopPanelElements);
+}
+
+function createOrderLabels(orderId){
+    const labelsDiv = `<div class="labels"></div>`;
+    const   labelCode = `<span>Code </span>`,
+            labelName = `<span>Name </span>`,
+            labelType = `<span>Type </span>`,
+            labelQuantity = `<span>Quantity </span>`,
+            labelPrice = `<span>Price </span>`,
+            labelHint = `<span>Hint </span>`,
+            labelDiscountedPrice = `<span>Discounted Price </span>`;
+    const labels = [
+            labelCode,
+            labelName,
+            labelType,
+            labelQuantity,
+            labelPrice,
+            labelHint,
+            labelDiscountedPrice,
+        ];
+    $(`#${orderId}.order`).append(labelsDiv);
+    $(`#${orderId}.order .labels`).append(labels);
+}
+
+function createOrderBottomPanel(orderId){
+    const   bottomPanelDiv = `<div class="bottom-panel"></div>`;
+    const   deleteButton    = `<button class='delete-button' onclick='deleteOrder("${orderId}")'>Delete Order</button>`,  
+            sumInput = "<label class='sum-label'>sum</label><input type='number' value='0' class='sum' readonly>",
+            discountedSumInput = "<label class='discounted-sum-label'>after discount</label><input type='number' value='0' class='discounted-sum' readonly>"
+    const bottomPanelElements = [
+            deleteButton, 
+            sumInput,
+            discountedSumInput,
+        ];
+    $(`#${orderId}.order`).append(bottomPanelDiv);
+    $(`#${orderId}.order .bottom-panel`).append(bottomPanelElements);
+}
+
+function createOrderItemPanel(orderId, itemsQuantity){
+    const orderPanelDiv = `<div class='item-container'></div>`
+    $(`#${orderId}.order`).append(orderPanelDiv);
     for(var i=0; i<itemsQuantity; i++){
-        createItem(order_id);
+        createItem(orderId);
     }
-   
-    
 }
-
-function createOrderTopPanel(order_id){
-    var orderSelector = `#${order_id}.order`;
-    var topPanelDiv = `<div class="top-panel"></div>`;
-    var topPanelDivSelector = orderSelector + " .top-panel";
-    $(orderSelector).append(topPanelDiv);
-    
-    var tableInput = "<input type='text' class='table' placeholder='stolik'>";
-    var discountInput = "<label class='discount-label'>Discount:</label><input type='number' class='discount' value='0' min='0' max='100'>%";
-    var discountToGoCheckbox = "<label><input class='discount-to-go' type='checkbox' name='checkbox' value='discountToGo'>na wagę</label>";
-    var sendButton = `<button onclick='closeOrder("${order_id}")'>Send away</button>`;
-    var addItemButton = `<button onclick='createItem("${order_id}")'>Add brand new item</button>`;
-
-    
-    var TopPanelElements = [
-        addItemButton,
-        tableInput, 
-        discountInput, 
-        discountToGoCheckbox, 
-        sendButton,
-        ];
-    $(topPanelDivSelector).append(TopPanelElements);
-}
-
-function createOrderLabels(order_id){
-  
-    var orderSelector = `#${order_id}.order`;
-    var labelsDiv = `<div class="labels"></div>`;
-    var labelsDivSelector = orderSelector + " .labels";
-    $(orderSelector).append(labelsDiv);
-    
-    var labelCode = `<span>Code </span>`;
-    var labelName = `<span>Name </span>`;
-    var labelType = `<span>Type </span>`;
-    var labelQuantity = `<span>Quantity </span>`;
-    var labelPrice = `<span>Price </span>`;
-    var labelHint = `<span>Hint </span>`;
-    var labelDiscountedPrice = `<span>Discounted Price </span>`;
-    
-    var labels = [
-        labelCode,
-        labelName,
-        labelType,
-        labelQuantity,
-        labelPrice,
-        labelHint,
-        labelDiscountedPrice,
-        ];
-    $(labelsDivSelector).append(labels);
-    
-}
-
-function createOrderBottomPanel(order_id){
-    var orderSelector = `#${order_id}.order`;
-    var bottomPanelDiv = `<div style="order: 4;"class="bottom-panel"></div>`;
-    var bottomPanelDivSelector = orderSelector + " .bottom-panel";
-    $(orderSelector).append(bottomPanelDiv);
-    var deleteButton    = `<button class='delete-button' onclick='deleteOrder("${order_id}")'>Delete Order</button>`;  
-    var sumInput = "<label class='sum-label'>sum</label><input type='number' value='0' class='sum' readonly>"
-    var discountedSumInput = "<label class='discounted-sum-label'>after discount</label><input type='number' value='0' class='discounted-sum' readonly>"
-    
-    var bottomPanelElements = [
-        deleteButton, 
-        sumInput,
-        discountedSumInput,
-        ];
-    
-    $(bottomPanelDivSelector).append(bottomPanelElements);
-}
-
-function createOrderPanel(order_id){
-    var orderPanelDiv = `<div class='item-container'></div>`
-    var orderSelector = `#${order_id}.order`;
-    $(orderSelector).append(orderPanelDiv);
-}
- 
- 
- 
  
 // Editing scripts
  
- 
-
-
 function updateOrderTable(){
-    
-    var orderID = $(this).parent().parent()[0].id;
-    var newTable = $(this).val();
-    
-    sendRequest('/order/edit-table', {_id: orderID, table: newTable}, callback);
-    function callback(data){
-        // TODO create movement of tables with flexbox and css
-    }
+    const orderId = $(this).parent().parent()[0].id;
+    sendRequest('/order/edit-table', {_id: orderId, table: $(this).val()}, 
+    (data) => {
+       // TODO create movement of tables with flexbox and css
+    });
 }
 
-
-function updateSumOfPrices(orderID){
-    sendRequest('/order/edit-sum', { _id: orderID }, 
-    (updatedOrder) => {$("#"+orderID+".order" + " .sum").val(updatedOrder.sum);});
+function updateSumOfPrices(orderId){
+    sendRequest('/order/edit-sum', { _id: orderId }, 
+    (updatedOrder) => {$(`#${orderId}.order .sum`).val(updatedOrder.sum);});
 }
 
-function updateSumOfDiscountedPrices(orderID){
-    
-    sendRequest('/order/edit-discounted-sum', { _id: orderID }, 
-    (updatedOrder) => {$("#"+orderID+".order" + " .discounted-sum").val(updatedOrder.discountedSum);});
+function updateSumOfDiscountedPrices(orderId){
+    sendRequest('/order/edit-discounted-sum', { _id: orderId }, 
+    (updatedOrder) => {$(`#${orderId}.order .discounted-sum`).val(updatedOrder.discountedSum);});
 }
 
 function updateDiscount(){
-    var orderID = $(this).parent().parent()[0].id;
-    var newDiscount = $(this).val();
-    
-    sendRequest('/order/edit-discount', {_id: orderID, discount: newDiscount}, 
+    const orderId = $(this).parent().parent()[0].id;
+    sendRequest('/order/edit-discount', {_id: orderId, discount: $(this).val()}, 
     (data) => {
-        $("#"+orderID+".order" + " .discounted-sum").val(data.discountedSum); 
+        $(`#${orderId}.order  .discounted-sum`).val(data.discountedSum); 
         data.arrayOfPrices.forEach((item) => 
-        {
-            $(`#${item.item_id}.item .discounted-price`).val(item.discountedPrice);
-        });    
+        { $(`#${item.item_id}.item .discounted-price`).val(item.discountedPrice); });    
     });
-    
 }
 
 function updateToGoDiscount(){
-    var orderID = $(this).parent().parent().parent()[0].id;
-    var discountToGo = $(this).is(":checked");
-
-    sendRequest('/order/edit-discount-togo', {_id: orderID, discountToGo: discountToGo}, 
+    const orderID = $(this).parent().parent().parent()[0].id;
+    sendRequest('/order/edit-discount-togo', {_id: orderID, discountToGo: $(this).is(":checked")}, 
     (data) => {
-        $("#"+orderID+".order" + " .discounted-sum").val(data.discountedSum); 
-        data.arrayOfPrices.forEach(function(item){
-            $(`#${item.item_id}.item .discounted-price`).val(item.discountedPrice);
-        });
-   
+        $(`#${orderID}.order .discounted-sum`).val(data.discountedSum); 
+        data.arrayOfPrices.forEach((item) => { $(`#${item.item_id}.item .discounted-price`).val(item.discountedPrice); });
     });
 }
 
 function closeOrder(orderID){
-    sendRequest('/order/close', {_id: orderID}, (data) => { $("#"+data+".order").remove();});
+    sendRequest('/order/close', {_id: orderID}, (data) => { $(`#${data}.order`).remove();});
 }
 
 function findOpenOrders(){
-    sendRequest('/order/old', {}, 
-    (openOrders) => { openOrders.forEach(restoreOrder); });
+    sendRequest('/order/old', {}, (openOrders) => { openOrders.forEach(restoreOrder); });
 }
 
 function restoreOrder(orderData){
-    var promise = new Promise((resolve, reject) => {
+    const promise = new Promise((resolve, reject) => {
         restoreOrderDiv(orderData._id, orderData.orderedItems);  
         resolve();        
     });
-    promise.then((resolve)=>{ updateOrderValues(orderData); });
+    promise.then( (resolve) => { restoreOrderValues(orderData); });
 }
 
-function updateOrderValues(orderData){
+function restoreOrderValues(orderData){
     $(`#${orderData._id}.order .table`)         .val(orderData.table);
     $(`#${orderData._id}.order .discount`)      .val(orderData.discount);
     $(`#${orderData._id}.order .table`)         .val(orderData.table);
@@ -193,20 +150,17 @@ function updateOrderValues(orderData){
 
 
 
-function restoreOrderDiv(order_id, item_ids){
-    var div = `<div id=${order_id} class='order' style="display: flex; flex-direction: column;"></div>`;     
+function restoreOrderDiv(orderId, itemIds){
+    const div = `<div id=${orderId} class='order' style="display: flex; flex-direction: column;"></div>`;     
     
     $("#order-display").append(div);
-    createOrderTopPanel(order_id);
-    createOrderLabels(order_id); 
-    createOrderBottomPanel(order_id);
-    createOrderPanel(order_id);
-    item_ids.forEach((item_id) => { restoreItem(order_id, item_id); });
+    createOrderTopPanel(orderId);
+    createOrderLabels(orderId); 
+    createOrderBottomPanel(orderId);
+    createOrderItemPanel(orderId);
+    itemIds.forEach( (itemId) => { restoreItem(orderId, itemId); });
 }
 
-function deleteOrder(order_id){
-    sendRequest('/order/delete', {_id: order_id}, (res) => {
-       console.log(res); 
-       $(`#${order_id}.order`).remove();
-    });
+function deleteOrder(orderId){
+    sendRequest('/order/delete', {_id: orderId}, (res) => { $(`#${orderId}.order`).remove(); });
 }

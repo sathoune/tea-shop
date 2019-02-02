@@ -1,134 +1,111 @@
 // create item
 
-function createItem(parentID){
-    var parentSelector = "#"+parentID+".order .item-container";
-    sendRequest('/ordered-item/new', {orderID: parentID}, 
+function createItem(orderId){
+    const parentSelector = "#"+orderId+".order .item-container";
+    sendRequest('/ordered-item/new', {orderID: orderId}, 
     (emptyItem) => { createItemDiv(emptyItem._id, parentSelector);});
-    
 }
 
 function createItemDiv(item_id, parentSelector){
-    var div = `<div id=${item_id} class='item'></div>`;     
-    
+    const div = `<div id=${item_id} class='item'></div>`;     
     $(parentSelector).append(div);  
     insertInputsInto($(`#${item_id}`));
-    
 }
 
 function insertInputsInto(div){
-  const itemID = div[0].id;
-  var deleteButton    = `<button class='delete-button' onclick='deleteItem("${itemID}")'>x</button>`;  
-  var nameInput       = '<input type="text" class="name" list="tees">';
-  var codeInput       = '<input type="text" class="registerCode" readonly>';
-  var priceInput      = '<input class="price" type="number" readonly>';
-  var quantityInput   = '<input class="quantity" type="number" name="quantity" min="0" value="1">';
-  var typeInput       = `<select class="type">
-                          <option value="sztuka">sztuka</option>
-                          <option value="czajnik">czajnik</option>
-                          <option value="gaiwan">gaiwan</option>
-                          <option value="opakowanie">opakowanie</option>
-                          <option value="gram">gram</option>
-                        </select>`;
-  var hintInput = '<input class="hint" type="text">';
-  var discountedPriceInput = '<input class="discounted-price" type="number" readonly>';
-  var inputElements = [
-    deleteButton,
-    codeInput,
-    nameInput,
-    typeInput,
-    quantityInput,
-    priceInput,
-    hintInput,
-    discountedPriceInput,
-  ];
-      
+    const   itemID = div[0].id;
+    const   deleteButton          = `<button class='delete-button' onclick='removeItemFromDisplay("${itemID}")'>x</button>`, 
+            nameInput             = '<input type="text" class="name" list="tees">',
+            codeInput             = '<input type="text" class="registerCode" readonly>',
+            priceInput            = '<input type="number" class="price" readonly>',
+            quantityInput         = '<input type="number" class="quantity" name="quantity" min="0" value="1">',
+            hintInput             = '<input type="text" class="hint">',
+            discountedPriceInput  = '<input type="number" class="discounted-price" readonly>',
+            typeInput             = `<select class="type">
+                                        <option value="sztuka">sztuka</option>
+                                        <option value="czajnik">czajnik</option>
+                                        <option value="gaiwan">gaiwan</option>
+                                        <option value="opakowanie">opakowanie</option>
+                                        <option value="gram">gram</option>
+                                    </select>`;
+  const inputElements = [
+        deleteButton,
+        codeInput,
+        nameInput,
+        typeInput,
+        quantityInput,
+        priceInput,
+        hintInput,
+        discountedPriceInput,
+    ];
     div.append(inputElements);
-    
 }
 
-        
-
-
-
 // editing scripts
- 
 
 function updateItemName(){
-    var itemID = $(this).parent()[0].id;
-    var orderID = $(this).parent().parent().parent()[0].id;
-    var name = $(this).val()
-    sendRequest('/ordered-item/update-name', {item_id: itemID, name: name, order_id: orderID}, 
+    const itemId = $(this).parent()[0].id,
+          orderId = $(this).parent().parent().parent()[0].id;
+    const nameValue = $(this).val()
+    sendRequest('/ordered-item/update-name', {item_id: itemId, name: nameValue, order_id: orderId}, 
     (data) => {
-      if(data){
-        $(`#${itemID}.item .price`)           .val(data.price);
-        $(`#${itemID}.item .discounted-price`).val(data.discountedPrice);
-        $(`#${itemID}.item .registercode`)    .val(data.registerCode);
-        if(data.name != name){
-          $(`#${itemID}.item .name`).val(data.name);
-        }
-        updateSumOfPrices(orderID);
-        updateSumOfDiscountedPrices(orderID)
-  
-      } else { $(`#${itemID}.item .name`).val("");}
+        if(data){
+            $(`#${itemId}.item .price`)           .val(data.price);
+            $(`#${itemId}.item .discounted-price`).val(data.discountedPrice);
+            $(`#${itemId}.item .registercode`)    .val(data.registerCode);
+            if(data.name != nameValue){ $(`#${itemId}.item .name`).val(data.name); }
+            updateSumOfPrices(orderId);
+            updateSumOfDiscountedPrices(orderId)
+        } else { $(`#${itemId}.item .name`).val("");}
     });
 }
 
 function updateItemType(){
-  var itemID = $(this).parent()[0].id;
-  var orderID = $(this).parent().parent().parent()[0].id;
-
-    sendRequest('/ordered-item/update-type', {item_id: itemID, type: $(this).val(), order_id: orderID}, 
+    const   itemId  = $(this).parent()[0].id,
+            orderId = $(this).parent().parent().parent()[0].id;
+    sendRequest('/ordered-item/update-type', {item_id: itemId, type: $(this).val(), order_id: orderId}, 
     (updatedItem) => {
-      $(`#${itemID}.item .price`)             .val(updatedItem.price);
-      $(`#${itemID}.item .discounted-price`)  .val(updatedItem.discountedPrice);
-
-      updateSumOfPrices(orderID);
-      updateSumOfDiscountedPrices(orderID)
+        $(`#${itemId}.item .price`)             .val(updatedItem.price);
+        $(`#${itemId}.item .discounted-price`)  .val(updatedItem.discountedPrice);
+        updateSumOfPrices(orderId);
+        updateSumOfDiscountedPrices(orderId)
     });
     
 }
 
 function updateItemQuantity(){
-  var itemID = $(this).parent()[0].id;
-  var orderID = $(this).parent().parent().parent()[0].id;
-
-    sendRequest('/ordered-item/update-quantity', {item_id: itemID, quantity: $(this).val(), order_id: orderID}, 
+    const   itemId      = $(this).parent()[0].id,
+            orderId     = $(this).parent().parent().parent()[0].id;
+    sendRequest('/ordered-item/update-quantity', {item_id: itemId, quantity: $(this).val(), order_id: orderId}, 
     (updatedItem) => {
-        $(`#${itemID}.item .price`)             .val(updatedItem.price);
-        $(`#${itemID}.item .discounted-price`)  .val(updatedItem.discountedPrice);
-
-        updateSumOfPrices(orderID);
-        updateSumOfDiscountedPrices(orderID)
-      
-      
+        $(`#${itemId}.item .price`)             .val(updatedItem.price);
+        $(`#${itemId}.item .discounted-price`)  .val(updatedItem.discountedPrice);
+        updateSumOfPrices(orderId);
+        updateSumOfDiscountedPrices(orderId)
     });
 }
 
-function restoreItem(parentID, itemID){
-    var parentSelector = "#"+parentID+".order .item-container";
-    sendRequest('/ordered-item/show', {_id: itemID}, (foundItem) => {
+function restoreItem(orderId, itemId){
+    const orderSelector = "#"+orderId+".order .item-container";
+    sendRequest('/ordered-item/show', {_id: itemId}, 
+    (foundItem) => {
     var promise = new Promise((resolve,reject) => {
-      createItemDiv(itemID, parentSelector); 
-      resolve();
+        createItemDiv(itemId, orderSelector); 
+        resolve();
     });
-    promise.then((resolve) => {
-      setValues(foundItem);          
-      }); 
-    });
-    
-}
-
-function setValues(item){
-  var itemSelector = `#${item._id}.item`;
-  $(itemSelector + ' .name')              .val(item.name);
-  $(itemSelector + ' .type')              .val(item.type);
-  $(itemSelector + ' .quantity')          .val(item.quantity);
-  $(itemSelector + ' .price')             .val(item.price);
-  $(itemSelector + ' .discounted-price')  .val(item.discountedPrice);
-}
-
-function deleteItem(itemID){
-  sendRequest('/ordered-item/delete', {_id: itemID}, (msg) => {
-    $(`#${itemID}.item`).remove();
+    promise.then((resolve) => { setItemValues(foundItem); }); 
   });
+}
+
+function setItemValues(itemObject){
+    const itemSelector = `#${itemObject._id}.item`;
+    $(`${itemSelector} .name`)              .val(itemObject.name);
+    $(`${itemSelector} .type`)              .val(itemObject.type);
+    $(`${itemSelector} .quantity`)          .val(itemObject.quantity);
+    $(`${itemSelector} .price`)             .val(itemObject.price);
+    $(`${itemSelector} .discounted-price`)  .val(itemObject.discountedPrice);
+}
+
+function removeItemFromDisplay(itemId){
+    sendRequest('/ordered-item/delete', {_id: itemId}, (msg) => { $(`#${itemId}.item`).remove(); });
 }
