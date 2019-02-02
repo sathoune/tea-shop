@@ -37,7 +37,7 @@ function createOrderTopPanel(order_id){
     $(orderSelector).append(topPanelDiv);
     
     var tableInput = "<input type='text' class='table' placeholder='stolik'>";
-    var discountInput = "<label>Discount:</label><input type='number' class='discount' value='0' min='0' max='100'>%";
+    var discountInput = "<label class='discount-label'>Discount:</label><input type='number' class='discount' value='0' min='0' max='100'>%";
     var discountToGoCheckbox = "<label><input class='discount-to-go' type='checkbox' name='checkbox' value='discountToGo'>na wagę</label>";
     var sendButton = `<button onclick='closeOrder("${order_id}")'>Send away</button>`;
     var addItemButton = `<button onclick='createItem("${order_id}")'>Add brand new item</button>`;
@@ -87,8 +87,8 @@ function createOrderBottomPanel(order_id){
     var bottomPanelDivSelector = orderSelector + " .bottom-panel";
     $(orderSelector).append(bottomPanelDiv);
     var deleteButton    = `<button class='delete-button' onclick='deleteOrder("${order_id}")'>Delete Order</button>`;  
-    var sumInput = "<label>sum</label><input type='number' value='0' class='sum' readonly>"
-    var discountedSumInput = "<label>after discount</label><input type='number' value='0' class='discounted-sum' readonly>"
+    var sumInput = "<label class='sum-label'>sum</label><input type='number' value='0' class='sum' readonly>"
+    var discountedSumInput = "<label class='discounted-sum-label'>after discount</label><input type='number' value='0' class='discounted-sum' readonly>"
     
     var bottomPanelElements = [
         deleteButton, 

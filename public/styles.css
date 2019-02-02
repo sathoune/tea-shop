@@ -3,7 +3,15 @@ body {
     flex-direction: column;
     flex-wrap: wrap;
     align-items: center;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 1.3em;
+    background-color: buttonface;
 
+}
+
+button, input, select {
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 1em;
 }
 
 .navigation-button {
@@ -19,18 +27,15 @@ body {
 
 .top-panel{
     display: flex;
-    justify-content: space-between;
 }
 
-.bottom-panel {
-    display: flex;
+.discount-label, .sum-label {
     margin-left: auto;
 }
-
-.deleteButton {
-    margin-left: 0;
-    margin-right: auto;
+.bottom-panel {
+    display: flex;
 }
+
 
 .labels{
     margin: 0.5% 0% 0.5% 0%;
@@ -52,5 +57,13 @@ body {
     width: 20em;
 }
 .type{
-    width: 5em;
+    width: 7em;
 } 
+
+.hint, .discounted-sum-label {
+    width: 10em;
+}
+
+.discounted-sum-label {
+    text-align: right;
+}
