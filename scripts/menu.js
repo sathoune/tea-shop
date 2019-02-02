@@ -1,5 +1,5 @@
 function openMenu(){
-    $("#master").hide();
+    $("#record-view").hide();
     $("#show-menu").html("back to orders");
     $("#show-menu").off("click").on("click", showBackCurrentOrders);
     
@@ -104,7 +104,7 @@ function deleteMenuItem(itemID){
 }
 
 function showBackCurrentOrders(){
-    $('#master').show();
+    $('#record-view').show();
     $('#menu').remove();
     $('#show-menu').html("Look at the menu");
     $('#show-menu').off("click").on("click", openMenu);

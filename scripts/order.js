@@ -6,10 +6,18 @@ function createOrder(){
 
 }
 
+function createNavigation(){
+    var topPanel = "<div id='top-panel'></div>";
+    var createOrder = "<button id='create-order' style='height: 2em;' onclick='createOrder()'>Create A Brand New Tasty Order</button>";
+    var orderDiv = "<div id='order-display'></div>";
+    $('#record-view').append([topPanel, orderDiv]);
+    $('#top-panel').append(createOrder);
+}
+
 function createOrderDiv(order_id, itemsQuantity=4){
     var div = `<div id=${order_id} class='order' style="display: flex; flex-direction: column;"></div>`;     
     
-    $("#master").prepend(div);
+    $("#order-display").prepend(div);
     createOrderTopPanel(order_id);
     createOrderLabels(order_id); 
     createOrderBottomPanel(order_id);
@@ -188,7 +196,7 @@ function updateOrderValues(orderData){
 function restoreOrderDiv(order_id, item_ids){
     var div = `<div id=${order_id} class='order' style="display: flex; flex-direction: column;"></div>`;     
     
-    $("#master").append(div);
+    $("#order-display").append(div);
     createOrderTopPanel(order_id);
     createOrderLabels(order_id); 
     createOrderBottomPanel(order_id);

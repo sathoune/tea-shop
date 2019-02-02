@@ -1,5 +1,5 @@
 function openArchive(){
-    $("#master").hide();
+    $("#record-view").hide();
     $("#show-archive").html("back to orders");
     $("#show-archive").off("click").on("click", closeArchive);
     createArchiveContainers();
@@ -20,7 +20,7 @@ function openArchive(){
 }
 
 function closeArchive(){
-    $('#master').show();
+    $('#record-view').show();
     $("#show-archive").html("Look at the past");
     $("#show-archive").off("click").on("click", openArchive);
     $('#archive').remove();
