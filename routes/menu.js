@@ -3,7 +3,7 @@ var router = express.Router({ mergeParams: true });
 var MenuItem = require("../models/menu");
 
 
-router.post("/", (req,res) => {
+router.post("/show/all", (req,res) => {
     MenuItem.find({}, (err, menu) => {
         if(err) { console.log(err);} 
         else { res.send(menu); }

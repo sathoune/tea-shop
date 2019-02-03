@@ -3,7 +3,7 @@ function openMenu(){
     $("#show-menu").html("back to orders");
     $("#show-menu").off("click").on("click", showBackCurrentOrders);
     createMenuTemplate();
-    sendRequest("/menu", {}, 
+    sendRequest("/menu/show/all", {}, 
     (data) => {
         menuLabels();
         data.forEach( (item) => {

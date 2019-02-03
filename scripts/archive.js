@@ -126,6 +126,6 @@ function setSums(sum, discountedSum){
     $('#archive-panel').append([sumInput, discountedSumInput]);
 }
 
-function sendOrderBack(orderID){
-    sendRequest('/archive/reopen', {_id: orderID}, (data) => { $(`#${orderID}.archived-order`).remove(); });
+function sendOrderBack(orderId){
+    sendRequest('/archive/reopen', {_id: orderId}, (data) => { $(`#${orderId}.archived-order`).remove(); });
 }

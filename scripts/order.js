@@ -88,38 +88,39 @@ function createOrderItemPanel(orderId, itemsQuantity){
  
 function updateOrderTable(){
     const orderId = $(this).parent().parent()[0].id;
-    sendRequest('/order/edit-table', {_id: orderId, table: $(this).val()}, 
+    sendRequest('/order/edit/table', {_id: orderId, table: $(this).val()}, 
     (data) => {
        // TODO create movement of tables with flexbox and css
     });
 }
 
 function updateSumOfPrices(orderId){
-    sendRequest('/order/edit-sum', { _id: orderId }, 
+    sendRequest('/order/edit/sum', { _id: orderId }, 
     (updatedOrder) => {$(`#${orderId}.order .sum`).val(updatedOrder.sum);});
 }
 
 function updateSumOfDiscountedPrices(orderId){
-    sendRequest('/order/edit-discounted-sum', { _id: orderId }, 
+    sendRequest('/order/edit/discounted-sum', { _id: orderId }, 
     (updatedOrder) => {$(`#${orderId}.order .discounted-sum`).val(updatedOrder.discountedSum);});
 }
 
 function updateDiscount(){
     const orderId = $(this).parent().parent()[0].id;
-    sendRequest('/order/edit-discount', {_id: orderId, discount: $(this).val()}, 
+    sendRequest('/order/edit/discount', {_id: orderId, discount: $(this).val()}, 
     (data) => {
         $(`#${orderId}.order  .discounted-sum`).val(data.discountedSum); 
-        data.arrayOfPrices.forEach((item) => 
-        { $(`#${item.item_id}.item .discounted-price`).val(item.discountedPrice); });    
+        data.orderedItems.forEach((item) => 
+        { $(`#${item._id}.item .discounted-price`).val(item.discountedPrice); });    
     });
 }
 
 function updateToGoDiscount(){
     const orderID = $(this).parent().parent().parent()[0].id;
-    sendRequest('/order/edit-discount-togo', {_id: orderID, discountToGo: $(this).is(":checked")}, 
+    sendRequest('/order/edit/discount-togo', {_id: orderID, discountToGo: $(this).is(":checked")}, 
     (data) => {
         $(`#${orderID}.order .discounted-sum`).val(data.discountedSum); 
-        data.arrayOfPrices.forEach((item) => { $(`#${item.item_id}.item .discounted-price`).val(item.discountedPrice); });
+        data.orderedItems.forEach((item) => 
+        { $(`#${item._id}.item .discounted-price`).val(item.discountedPrice); });
     });
 }
 
