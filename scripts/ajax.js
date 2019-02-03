@@ -1,14 +1,12 @@
  
     
 function sendRequest(url, newData, callback){
-    $.ajax({
+    $.ajax(
+    {
     	method: 'post',
     	url: url,
     	data: JSON.stringify(newData),
     	contentType: "application/json",
-    	success: function(data){
-    	    callback(data);
-    	},
+    	success: (data) => { callback(data); },
     });
-
 }
