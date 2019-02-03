@@ -3,7 +3,6 @@ function openArchive(){
     $("#show-archive").html("back to orders");
     $("#show-archive").off("click").on("click", closeArchive);
     createArchiveContainers();
-    
     sendRequest("/archive/", {date: new Date()}, (data) => {
         var sum = 0;
         var discountedSum = 0;
@@ -14,7 +13,6 @@ function openArchive(){
                constructArchiveDiv(order);   
             }
         });
-        // data.forEach(constructArchiveDiv); 
         setSums(sum, discountedSum);
     });
 }
@@ -27,33 +25,33 @@ function closeArchive(){
 }
 
 function createArchiveContainers(){
-    var now = new Date();
-    var date ={
+    const now = new Date();
+    const date ={
         year: now.getFullYear(),
         month: (1 + now.getMonth()).toString().padStart(2, '0'),
         day: now.getDate().toString().padStart(2, '0'),
     };
-    var newDate = `${date.year}-${date.month}-${date.day}`;
+    const newDate = `${date.year}-${date.month}-${date.day}`;
 
-    var archive = "<div id='archive'></div";
-    var archiveContainer = "<div id='archived-orders'></div>";
-    var archivePanel = "<div id='archive-panel'></div>";
-    var dateInput = `<input type="date" id="day-for-display" name="trip-start"
-       value='${newDate}' 
-       min="2019-01-01" max="2025-12-31">`;
-
+    const   archive             = "<div id='archive'></div";
+    const   archiveContainer    = "<div id='archived-orders'></div>",
+            archivePanel        = "<div id='archive-panel'></div>";
+    const   archiveContainers   = [archivePanel, archiveContainer];
+    const   dateInput           = `<input type="date" id="day-for-display" name="trip-start"
+       value='${newDate}' min="2019-01-01" max="2025-12-31">`;
     $('body').append(archive);
-    var archiveContainers = [archivePanel, archiveContainer];
+
     $('#archive').append(archiveContainers);
     $('#archive-panel').append(dateInput);
     $('#day-for-display').on('change' , () => { 
         $('#archived-orders').empty();
         let dayForDisplay = $('#day-for-display').val()
-        sendRequest('/archive', {date: dayForDisplay}, (data)=>{
+        sendRequest('/archive', {date: dayForDisplay}, 
+        (data) => {
             if(data){
                 var sum = 0;
                 var discountedSum = 0;
-                data.forEach((item)=>{
+                data.forEach((item) => {
                    if(item.sum){ sum+= Number(item.sum); } 
                    if(item.discountedSum){ discountedSum += Number(item.discountedSum);}
                 });
@@ -66,82 +64,68 @@ function createArchiveContainers(){
             }
         });
     }); 
-    
 }
 
 function constructArchiveDiv(orderData){
-  var orderDiv = `<div id='${orderData._id}' class='archived-order'></div>`;
+  const orderDiv = `<div id='${orderData._id}' class='archived-order'></div>`;
   $('#archived-orders').append(orderDiv);
   constructOrderDisplay(orderData);
 }
 
 function constructOrderDisplay(orderData){
     if(!orderData.table) { orderData.table = '' };
-    var summaryDiv = `<div class='div-summary'></div>`
-    
-    var sendBackButton = `<button class='send-back' onclick='sendOrderBack("${orderData._id}")'><--</button>`
-    var dateInput = `<input type='text' class='order-date' value='${new Date(orderData.created)}' readonly>`;
-    var table = `<input type='text' class='order-table' value='${orderData.table}' readonly>`;
-    var sum = `<input type='text' class='order-sum' value='${orderData.sum}' readonly>`;
-    var discountedSum = `<input type='text' class='order-sum' value='${orderData.discountedSum}' readonly>`;
-    var expandButton = `<button class="expand-button">Expand</button>`;
-    
-    var inputs = [sendBackButton, dateInput, table, sum, discountedSum, expandButton];
+    const   summaryDiv      = `<div class='div-summary'></div>`
+    const   sendBackButton  = `<button class='send-back' onclick='sendOrderBack("${orderData._id}")'><--</button>`,
+            dateInput       = `<input type='text' class='order-date' value='${new Date(orderData.created)}' readonly>`,
+            table           = `<input type='text' class='order-table' value='${orderData.table}' readonly>`,
+            sum             = `<input type='text' class='order-sum' value='${orderData.sum}' readonly>`,
+            discountedSum   = `<input type='text' class='order-sum' value='${orderData.discountedSum}' readonly>`,
+            expandButton    = `<button class="expand-button">Expand</button>`;
+    const   inputs          = [ sendBackButton, dateInput, table, sum, discountedSum, expandButton ];
     $('#'+orderData._id).append(summaryDiv);
     $(`#${orderData._id} .div-summary`).append(inputs);
     $(`#${orderData._id} .expand-button`).on("click", expandOrder);
-
 }
 
 function expandOrder(){
     $(this).html("Collapse");
     $(this).off("click").on("click", collapseOrder);
-    var orderID = $(this).parent().parent()[0].id;
-    var itemContainer = `<div class='item-container'></div>`;
-    var panelContainer = `<div class='panel'>NAZWA | TYP | ILOŚĆ |  CENA  |  PO ZNIŻCE</div>`;
+    const orderID = $(this).parent().parent()[0].id;
+    const itemContainer = `<div class='item-container'></div>`;
+    const panelContainer = `<div class='panel'>NAZWA | TYP | ILOŚĆ |  CENA  |  PO ZNIŻCE</div>`;
     // Need labels
-    
     $(`#${orderID}.archived-order`).append([panelContainer, itemContainer]);
     sendRequest("/archive/show-ordered-items", {_id: orderID}, (data) => 
-    {  
-        data.forEach((item) => {
-            constructItemDisplay(orderID, item);
-        });
-    });
+    { data.forEach( (item) => { constructItemDisplay(orderID, item); }); });
 }
 
 function collapseOrder(){
     $(this).html("Expand");
     $(this).off("click").on("click", expandOrder);
-    
-    var orderID = $(this).parent().parent()[0].id;
-    $(`#${orderID}.archived-order .item-container`).remove();
-    $(`#${orderID}.archived-order .panel`).remove();
+    const orderId = $(this).parent().parent()[0].id;
+    $(`#${orderId}.archived-order .item-container`).remove();
+    $(`#${orderId}.archived-order .panel`).remove();
 }
 
-function constructItemDisplay(orderID, itemObject){
-    var itemDiv = `<div id='${itemObject._id}' class='item-div'></div>`;
-    var nameInput = `<input type="text" class="name" value='${itemObject.name}' readonly>`;
-    var priceInput = `<input class="price" type="number" value='${itemObject.price}' readonly>`;
-    var quantityInput = `<input class="quantity" type="number" value='${itemObject.quantity}' readonly>`;
-    var typeInput = `<input class="type" type="text" value='${itemObject.type}' readonly>`;
-    var discountedPriceInput = `<input class="discounted-price" type="number" value='${itemObject.discountedPrice}' readonly>`;
-
-    var inputs = [nameInput, typeInput, quantityInput, priceInput, discountedPriceInput];
-    $(`#${orderID}.archived-order .item-container`).append(itemDiv);
+function constructItemDisplay(orderId, itemObject){
+    const   itemDiv             = `<div id='${itemObject._id}' class='item-div'></div>`,
+            nameInput           = `<input type="text" class="name" value='${itemObject.name}' readonly>`,
+            priceInput          = `<input class="price" type="number" value='${itemObject.price}' readonly>`,
+            quantityInput       = `<input class="quantity" type="number" value='${itemObject.quantity}' readonly>`,
+            typeInput           = `<input class="type" type="text" value='${itemObject.type}' readonly>`,
+            discountedPriceInput= `<input class="discounted-price" type="number" value='${itemObject.discountedPrice}' readonly>`;
+    const inputs = [nameInput, typeInput, quantityInput, priceInput, discountedPriceInput];
+    $(`#${orderId}.archived-order .item-container`).append(itemDiv);
     $(`#${itemObject._id}.item-div`).append(inputs);
-    
 }
 
 function setSums(sum, discountedSum){
     $('#archive-panel .day-sum').remove();
-    var sumInput = `<input class="day-sum" type="number" value='${sum}' readonly>`;
-    var discountedSumInput = `<input class="day-sum" type="number" value='${discountedSum}' readonly>`;
+    const   sumInput            = `<input class="day-sum" type="number" value='${sum}' readonly>`,
+            discountedSumInput  = `<input class="day-sum" type="number" value='${discountedSum}' readonly>`;
     $('#archive-panel').append([sumInput, discountedSumInput]);
 }
 
-function sendOrderBack(orderID){
-    sendRequest('/archive/reopen', {_id: orderID}, (data)=>{
-       $(`#${orderID}.archived-order`).remove();
-    });
+function sendOrderBack(orderId){
+    sendRequest('/archive/reopen', {_id: orderId}, (data) => { $(`#${orderId}.archived-order`).remove(); });
 }
