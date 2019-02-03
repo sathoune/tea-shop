@@ -1,6 +1,6 @@
 function openArchive(){
     $("#record-view").hide();
-    $("#show-archive").html("back to orders");
+    $("#show-archive").html(`<i class="fas fa-chevron-left"></i> Wróć do zamówień <i class="fas fa-chevron-left"></i>`);
     $("#show-archive").off("click").on("click", closeArchive);
     createArchiveContainers();
     sendRequest("/archive/", {date: new Date()}, (data) => {
@@ -19,7 +19,7 @@ function openArchive(){
 
 function closeArchive(){
     $('#record-view').show();
-    $("#show-archive").html("Look at the past");
+    $("#show-archive").html(`<i class="fas fa-archive"></i> Look at the past <i class="fas fa-archive"></i>`);
     $("#show-archive").off("click").on("click", openArchive);
     $('#archive').remove();
 }
@@ -75,12 +75,12 @@ function constructArchiveDiv(orderData){
 function constructOrderDisplay(orderData){
     if(!orderData.table) { orderData.table = '' };
     const   summaryDiv      = `<div class='div-summary'></div>`
-    const   sendBackButton  = `<button class='send-back' onclick='sendOrderBack("${orderData._id}")'><--</button>`,
+    const   sendBackButton  = `<button class='send-back' onclick='sendOrderBack("${orderData._id}")'><i class="fas fa-long-arrow-alt-left"></i> Otwórz ponownie</button>`,
             dateInput       = `<input type='text' class='order-date' value='${new Date(orderData.created)}' readonly>`,
             table           = `<input type='text' class='order-table' value='${orderData.table}' readonly>`,
             sum             = `<input type='text' class='order-sum' value='${orderData.sum}' readonly>`,
             discountedSum   = `<input type='text' class='order-sum' value='${orderData.discountedSum}' readonly>`,
-            expandButton    = `<button class="expand-button">Expand</button>`;
+            expandButton    = `<button class="expand-button">Rozwiń <i class="fas fa-search-plus"></i></button>`;
     const   inputs          = [ sendBackButton, dateInput, table, sum, discountedSum, expandButton ];
     $('#'+orderData._id).append(summaryDiv);
     $(`#${orderData._id} .div-summary`).append(inputs);
@@ -88,7 +88,7 @@ function constructOrderDisplay(orderData){
 }
 
 function expandOrder(){
-    $(this).html("Collapse");
+    $(this).html(`Zwiń <i class="fas fa-search-minus"></i>`);
     $(this).off("click").on("click", collapseOrder);
     const orderID = $(this).parent().parent()[0].id;
     const itemContainer = `<div class='item-container'></div>`;
@@ -100,7 +100,7 @@ function expandOrder(){
 }
 
 function collapseOrder(){
-    $(this).html("Expand");
+    $(this).html(`Rozwiń <i class="fas fa-search-plus"></i>`);
     $(this).off("click").on("click", expandOrder);
     const orderId = $(this).parent().parent()[0].id;
     $(`#${orderId}.archived-order .item-container`).remove();

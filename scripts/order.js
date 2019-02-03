@@ -7,7 +7,7 @@ function createOrder(){
 
 function createNavigation(){
     const   topPanel = "<div id='top-panel'></div>",
-            createOrder = "<button id='create-order' onclick='createOrder()'>Nowe zamówienie</button>",
+            createOrder = `<button id='create-order' onclick='createOrder()'><i class="fas fa-folder-plus"></i> Nowe zamówienie <i class="fas fa-folder-plus"></i></button>`,
             orderDiv = "<div id='order-display'></div>";
     $('#record-view').append([topPanel, orderDiv]);
     $('#top-panel').append(createOrder);
@@ -27,8 +27,10 @@ function createOrderTopPanel(orderId){
     const   tableInput = "<input type='text' class='table' placeholder='stolik'>",
             discountInput = "<label class='discount-label'>Discount:</label><input type='number' class='discount' value='0' min='0' max='100'>%",
             discountToGoCheckbox = "<label><input class='discount-to-go' type='checkbox' name='checkbox' value='discountToGo'>na wagę</label>",
-            sendButton = `<button onclick='closeOrder("${orderId}")'>Send away</button>`,
-            addItemButton = `<button onclick='createItem("${orderId}")'>Add brand new item</button>`;
+            sendButton = `<button onclick='closeOrder("${orderId}")'>Zamknij zamówienie <i class="fas fa-pencil-alt"></i>
+
+</button>`,
+            addItemButton = `<button onclick='createItem("${orderId}")'><i class="fas fa-plus"></i> Dodaj rząd</button>`;
     const TopPanelElements = [
             addItemButton,
             tableInput, 
@@ -62,9 +64,11 @@ function createOrderLabels(orderId){
     $(`#${orderId}.order .labels`).append(labels);
 }
 
+
 function createOrderBottomPanel(orderId){
     const   bottomPanelDiv = `<div class="bottom-panel"></div>`;
-    const   deleteButton    = `<button class='delete-button' onclick='deleteOrder("${orderId}")'>Delete Order</button>`,  
+    const   deleteButton    = `<button class='delete-button' onclick='deleteOrder("${orderId}")'>
+    <i class="fas fa-dumpster"></i> Usuń zamówienie <i class="fas fa-dumpster"></i></button>`,  
             sumInput = "<label class='sum-label'>sum</label><input type='number' value='0' class='sum' readonly>",
             discountedSumInput = "<label class='discounted-sum-label'>after discount</label><input type='number' value='0' class='discounted-sum' readonly>"
     const bottomPanelElements = [

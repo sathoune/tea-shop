@@ -1,6 +1,8 @@
 function createHeader(){
-    const   showMenu            = "<button id='show-menu' class='navigation-button'>Look at the menu</button>",
-            showArchive         = "<button id='show-archive' class='navigation-button'>Look at the past</button>";
+    const   showMenu            = `<button id='show-menu' class='navigation-button'>
+    <i class="fas fa-book-open"></i> Menu <i class="fas fa-book-open"></i></button>`,
+            showArchive         = `<button id='show-archive' class='navigation-button'>
+            <i class="fas fa-archive"></i> Look at the past <i class="fas fa-archive"></i></button>`;
     const   headerNavigation    = [showMenu, showArchive];
     const   headerDiv           = "<div id='header'></div>"
     $('body').prepend(headerDiv);

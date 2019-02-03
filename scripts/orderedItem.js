@@ -14,7 +14,8 @@ function createItemDiv(item_id, parentSelector){
 
 function insertInputsInto(div){
     const   itemID = div[0].id;
-    const   deleteButton          = `<button class='delete-button' onclick='removeItemFromDisplay("${itemID}")'>x</button>`, 
+    const   deleteButton          = `<button class='delete-button' onclick='removeItemFromDisplay("${itemID}")'>
+    <i class="fas fa-trash-alt"></i></button>`, 
             nameInput             = '<input type="text" class="name" list="tees">',
             codeInput             = '<input type="text" class="registerCode" readonly>',
             priceInput            = '<input type="number" class="price" readonly>',
