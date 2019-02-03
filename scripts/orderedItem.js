@@ -49,6 +49,7 @@ function updateItemName(){
     const nameValue = $(this).val()
     sendRequest('/ordered-item/update-name', {item_id: itemId, name: nameValue, order_id: orderId}, 
     (data) => {
+        console.log(data);
         if(data){
             $(`#${itemId}.item .price`)           .val(data.price);
             $(`#${itemId}.item .discounted-price`).val(data.discountedPrice);

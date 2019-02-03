@@ -107,7 +107,7 @@ router.post("/edit/discount-togo", (req, res) => {
           else {
             
             
-            // SAME CODE AS ABOVE, CHANGE DIS
+            // SAME CODE AS ABOVE FUNCTION, CHANGE DIS
             
             
             

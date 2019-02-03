@@ -32,6 +32,8 @@ router.post("/show", (req, res) =>
   });
 });
 
+
+//could change to triple finding with promises;
 router.post('/update-name', (req,res) => {
   MenuItem.findOne({name: { $regex: new RegExp(req.body.name,  "i")}}, 
   (err, foundMenuItem) => {
@@ -40,31 +42,29 @@ router.post('/update-name', (req,res) => {
       OrderedItem.findOneAndUpdate(
       { _id: req.body.item_id}, {name: foundMenuItem.name}, {new: true}, 
       (err, updatedItem) => {
-        if(err){console.log(err);} 
+        if(err){ console.log(err);} 
         else {
-          var calculatedPrice = pricesAndSums.calculatePrice(foundMenuItem, updatedItem);
+          updatedItem.price = pricesAndSums.calculatePrice(foundMenuItem, updatedItem);
           Order.findById({_id: req.body.order_id}, 
           (err, foundOrder) => {
             if(err) { console.log(err); } 
             else {
-              var discountedPrice = calculatedPrice * pricesAndSums.calculateDiscount(updatedItem, foundOrder);
-              OrderedItem.findOneAndUpdate(
-              {_id: updatedItem._id}, 
-              {price: calculatedPrice, discountedPrice: discountedPrice},{new: true}, 
-              (err, updatedItem) => {
-                if(err){console.log(err);} 
-                else {  
-                  var response= { 
+              updatedItem.discountedPrice = updatedItem.price * pricesAndSums.calculateDiscount(updatedItem, foundOrder);
+              updatedItem.save( (err) => {
+                if(err) { console.log(err); }
+                else { 
+                  response = {
                     name: updatedItem.name, 
                     price: updatedItem.price, 
-                    registerCode: foundMenuItem.registerCode,
                     discountedPrice: updatedItem.discountedPrice,
-                  };
+                    registerCode: foundMenuItem.registerCode,
+                  }
                   res.send(response);
-                } 
+                  
+                }
               });
             }
-          })
+          });
         }
       });
     } else { res.send(""); } // when item not found
