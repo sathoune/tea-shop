@@ -50,15 +50,17 @@ function updateItemName(){
     const nameValue = $(this).val()
     sendRequest('/ordered-item/update-name', {item_id: itemId, name: nameValue, order_id: orderId}, 
     (data) => {
-        console.log(data);
-        
         $(`#${itemId}.item .price`)           .val(data.price);
         $(`#${itemId}.item .discounted-price`).val(data.discountedPrice);
         $(`#${itemId}.item .registercode`)    .val(data.registerCode);
         if(data.name != nameValue){ $(`#${itemId}.item .name`).val(data.name); }
         updateSumOfPrices(orderId);
         updateSumOfDiscountedPrices(orderId)
-    
+        if(data.err){
+            $(`#${itemId}.item .name`).css('background-color', 'red');
+        } else {
+            $(`#${itemId}.item .name`).css('background-color', 'silver');
+        }
     });
 }
 

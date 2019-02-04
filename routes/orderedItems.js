@@ -83,7 +83,7 @@ router.post('/update-name', (req,res) => {
           });
         }
       });
-    } else { res.send(""); } // when item not found
+    } else { res.send({name: req.body.name, err: 'wrong name'}); } // when item not found
   });
   }
 });

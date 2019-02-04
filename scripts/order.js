@@ -32,7 +32,7 @@ function createOrderTopPanel(orderId){
 
 </button>`,
             addItemButton = `<button class='add-item-button' onclick='createItem("${orderId}")'><i class="fas fa-plus"></i> Dodaj rząd</button>`,
-            collapseButton = `<button class='collapse-order' onclick='collapseItems("${orderId}")'>
+            collapseButton = `<button class='collapse-order cosmic-fusion-up' onclick='collapseItems("${orderId}")'>
             <i class="fas fa-angle-up"></i> Zwiń zamówienie <i class="fas fa-angle-up"></i></button>`
     const TopPanelElements = [
             addItemButton,
@@ -191,7 +191,6 @@ function orderTable(tableValue, orderId){
     else if('m4' == tableValue){
         $(`#${orderId}.order`).css('order', 16);
     }
-    
     else if('k1' == tableValue){
         $(`#${orderId}.order`).css('order', 20);
     }
@@ -213,7 +212,6 @@ function orderTable(tableValue, orderId){
     else if('k6' == tableValue){
         $(`#${orderId}.order`).css('order', 32);
     }
-    
     else if('o1' == tableValue){
         $(`#${orderId}.order`).css('order', 40);
     }
@@ -226,7 +224,6 @@ function orderTable(tableValue, orderId){
     else if(/out./.test(tableValue)){
         $(`#${orderId}.order`).css('order', 8);
     }
-    
     else{
         $(`#${orderId}.order`).css('order', 5);
     }
@@ -241,7 +238,11 @@ function collapseItems(orderId){
 
     if($(`#${orderId}.order .item-container`).hasClass('hidden')){
         $(`#${orderId}.order .collapse-order`).html('<i class="fas fa-angle-down"></i> Pokaż zamówienie <i class="fas fa-angle-down"></i>');
+        $(`#${orderId}.order .collapse-order`).toggleClass('cosmic-fusion-up');
+        $(`#${orderId}.order .collapse-order`).toggleClass('cosmic-fusion-down');
     } else {
         $(`#${orderId}.order .collapse-order`).html('<i class="fas fa-angle-up"></i> Zwiń zamówienie <i class="fas fa-angle-up"></i>');
+        $(`#${orderId}.order .collapse-order`).toggleClass('cosmic-fusion-up');
+        $(`#${orderId}.order .collapse-order`).toggleClass('cosmic-fusion-down');
     }
 }
