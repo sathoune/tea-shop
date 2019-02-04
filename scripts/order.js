@@ -20,6 +20,7 @@ function createOrderDiv(orderId, itemsQuantity=4){
     createOrderLabels(orderId); 
     createOrderBottomPanel(orderId);
     createOrderItemPanel(orderId, itemsQuantity);
+    $(`#${orderId}.order`).css("order", 0);
 }
 
 function createOrderTopPanel(orderId){
@@ -27,10 +28,10 @@ function createOrderTopPanel(orderId){
     const   tableInput = "<input type='text' class='table' placeholder='stolik'>",
             discountInput = "<label class='discount-label'>Discount:</label><input type='number' class='discount' value='0' min='0' max='100'>%",
             discountToGoCheckbox = "<label><input class='discount-to-go' type='checkbox' name='checkbox' value='discountToGo'>na wagę</label>",
-            sendButton = `<button onclick='closeOrder("${orderId}")'>Zamknij zamówienie <i class="fas fa-pencil-alt"></i>
+            sendButton = `<button class='send-button' onclick='closeOrder("${orderId}")'>Zamknij zamówienie <i class="fas fa-pencil-alt"></i>
 
 </button>`,
-            addItemButton = `<button onclick='createItem("${orderId}")'><i class="fas fa-plus"></i> Dodaj rząd</button>`;
+            addItemButton = `<button class='add-item-button' onclick='createItem("${orderId}")'><i class="fas fa-plus"></i> Dodaj rząd</button>`;
     const TopPanelElements = [
             addItemButton,
             tableInput, 
@@ -92,9 +93,10 @@ function createOrderItemPanel(orderId, itemsQuantity){
  
 function updateOrderTable(){
     const orderId = $(this).parent().parent()[0].id;
-    sendRequest('/order/edit/table', {_id: orderId, table: $(this).val()}, 
+    const tableValue = $(this).val();
+    sendRequest('/order/edit/table', {_id: orderId, table: tableValue}, 
     (data) => {
-       // TODO create movement of tables with flexbox and css
+        orderTable(tableValue, orderId);
     });
 }
 
@@ -150,7 +152,7 @@ function restoreOrderValues(orderData){
     $(`#${orderData._id}.order .table`)         .val(orderData.table);
     $(`#${orderData._id}.order .sum`)           .val(orderData.sum);
     $(`#${orderData._id}.order .discounted-sum`).val(orderData.discountedSum);
-    
+    orderTable(orderData.table, orderData._id);
 }
 
 
@@ -168,4 +170,61 @@ function restoreOrderDiv(orderId, itemIds){
 
 function deleteOrder(orderId){
     sendRequest('/order/delete', {_id: orderId}, (res) => { $(`#${orderId}.order`).remove(); });
+}
+
+function orderTable(tableValue, orderId){
+    if(tableValue==''){
+        $(`#${orderId}.order`).css('order', 0);
+    }
+    else if('m1' == tableValue){
+        $(`#${orderId}.order`).css('order', 10);
+    }
+    else if('m2' == tableValue){
+        $(`#${orderId}.order`).css('order', 12);
+    }
+    else if('m3' ==tableValue){
+        $(`#${orderId}.order`).css('order', 14);
+    }
+    else if('m4' == tableValue){
+        $(`#${orderId}.order`).css('order', 16);
+    }
+    
+    else if('k1' == tableValue){
+        $(`#${orderId}.order`).css('order', 20);
+    }
+    else if('k2' == tableValue){
+        $(`#${orderId}.order`).css('order', 22);
+    }
+    else if('k3' == tableValue){
+        $(`#${orderId}.order`).css('order', 24);
+    }
+    else if('t' == tableValue){
+        $(`#${orderId}.order`).css('order', 26);
+    }
+    else if('k4' == tableValue){
+        $(`#${orderId}.order`).css('order', 28);
+    }
+    else if('k5' == tableValue){
+        $(`#${orderId}.order`).css('order', 30);
+    }
+    else if('k6' == tableValue){
+        $(`#${orderId}.order`).css('order', 32);
+    }
+    
+    else if('o1' == tableValue){
+        $(`#${orderId}.order`).css('order', 40);
+    }
+    else if('o2' == tableValue){
+        $(`#${orderId}.order`).css('order', 42);
+    }
+    else if('o3' == tableValue){
+        $(`#${orderId}.order`).css('order', 44);
+    }
+    else if(/out./.test(tableValue)){
+        $(`#${orderId}.order`).css('order', 8);
+    }
+    
+    else{
+        $(`#${orderId}.order`).css('order', 5);
+    }
 }

@@ -1,6 +1,6 @@
 function openMenu(){
     $("#record-view").hide();
-    $("#show-menu").html(`<i class="fas fa-archive"></i> Wróć do zamówień <i class="fas fa-archive"></i>`);
+    $("#show-menu").html(`<i class="fas fa-chevron-left"></i> Wróć do zamówień <i class="fas fa-chevron-left"></i>`);
     $("#show-menu").off("click").on("click", showBackCurrentOrders);
     createMenuTemplate();
     sendRequest("/menu/show/all", {}, 
@@ -19,7 +19,7 @@ function createMenuItemDiv(menuId) {
 }
 
 function setupMenuItem(menuValues){
-    const   deleteButton    = `<button onclick="deleteMenuItem('${menuValues._id}')"><i class="fas fa-trash-alt"></i> Usuń</button>`,
+    const   deleteButton    = `<button class='delete-button' onclick="deleteMenuItem('${menuValues._id}')"><i class="fas fa-trash-alt"></i> Usuń</button>`,
             codeInput       = `<input type='text' class='menu-code' value='${menuValues.registerCode}'>`,
             nameInput       = `<input type='text' class='menu-name' value='${menuValues.name}'>`,
             price0Input     = `<input type='text' class='menu-price0' value='${menuValues.prices.default}'>`,
