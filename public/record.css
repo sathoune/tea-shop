@@ -9,7 +9,6 @@ body {
     background: -webkit-linear-gradient(to top, #2c3e50, #bdc3c7);  /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to top, #2c3e50, #bdc3c7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
-
 }
 
 button, input, select {
@@ -44,6 +43,8 @@ button, input, select {
 
 .labels{
     margin: 0.5% 0% 0.5% 0%;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .order {
@@ -57,7 +58,7 @@ button, input, select {
 }
 
 .price, .discounted-price, .quantity, .sum, .discounted-sum{
-    width: 4em;
+    width: 5em;
 }
 
 .name {

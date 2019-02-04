@@ -26,7 +26,7 @@ function createOrderDiv(orderId, itemsQuantity=4){
 function createOrderTopPanel(orderId){
     const   topPanelDiv = `<div class="top-panel"></div>`;
     const   tableInput = "<input type='text' class='table' placeholder='stolik'>",
-            discountInput = "<label class='discount-label'>Discount:</label><input type='number' class='discount' value='0' min='0' max='100'>%",
+            discountInput = "<label class='discount-label'>Zniżka:</label><input type='number' class='discount' value='0' min='0' max='100'>%",
             discountToGoCheckbox = "<label><input class='discount-to-go' type='checkbox' name='checkbox' value='discountToGo'>na wagę</label>",
             sendButton = `<button class='send-button' onclick='closeOrder("${orderId}")'>Zamknij zamówienie <i class="fas fa-pencil-alt"></i>
 
@@ -48,13 +48,13 @@ function createOrderTopPanel(orderId){
 
 function createOrderLabels(orderId){
     const labelsDiv = `<div class="labels"></div>`;
-    const   labelCode = `<span>Code </span>`,
-            labelName = `<span>Name </span>`,
-            labelType = `<span>Type </span>`,
-            labelQuantity = `<span>Quantity </span>`,
-            labelPrice = `<span>Price </span>`,
-            labelHint = `<span>Hint </span>`,
-            labelDiscountedPrice = `<span>Discounted Price </span>`;
+    const   labelCode = `<label class='registerCode'>Kod</label>`,
+            labelName = `<label class='name'>Nazwa</label>`,
+            labelType = `<labe class='type'l>Typ</label>`,
+            labelQuantity = `<label class='quantity'>Ilość</label>`,
+            labelPrice = `<label class='price'>Cena</label>`,
+            labelHint = `<label class='hint'>Uwagi</label>`,
+            labelDiscountedPrice = `<label class='discounted-price'>Po zniżce</label>`;
     const labels = [
             labelCode,
             labelName,
@@ -73,8 +73,8 @@ function createOrderBottomPanel(orderId){
     const   bottomPanelDiv = `<div class="bottom-panel"></div>`;
     const   deleteButton    = `<button class='delete-button' onclick='deleteOrder("${orderId}")'>
     <i class="fas fa-dumpster"></i> Usuń zamówienie <i class="fas fa-dumpster"></i></button>`,  
-            sumInput = "<label class='sum-label'>sum</label><input type='number' value='0' class='sum' readonly>",
-            discountedSumInput = "<label class='discounted-sum-label'>after discount</label><input type='number' value='0' class='discounted-sum' readonly>"
+            sumInput = "<label class='sum-label'>Suma</label><input type='number' value='0' class='sum' readonly>",
+            discountedSumInput = "<label class='discounted-sum-label'>Suma po zniżce</label><input type='number' value='0' class='discounted-sum' readonly>"
     const bottomPanelElements = [
             deleteButton, 
             sumInput,

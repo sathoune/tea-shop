@@ -45,12 +45,12 @@ function createMenuTemplate(){
 
 function menuLabels(){
     const   createNewButton = '<button class="new-order-button" onclick="newMenuItem()"><i class="fas fa-folder-plus"></i> Dodaj pozycję</button>',
-            codeInput       = `<input type='text' class='menu-code' value='Kod'>`,
-            nameInput       = `<input type='text' class='menu-name' value='Nazwa'>`,
-            price0Input     = `<input type='text' class='menu-price' value='Sztuka'>`,
-            price1Input     = `<input type='text' class='menu-price' value='Gaiwan'>`,
-            price2Input     = `<input type='text' class='menu-price' value='Opakowanie'>`,
-            price3Input     = `<input type='text' class='menu-price' value='Na wagę'>`;
+            codeInput       = `<input type='text' class='menu-code' value='Kod' readonly>`,
+            nameInput       = `<input type='text' class='menu-name' value='Nazwa' readonly>`,
+            price0Input     = `<input type='text' class='menu-price' value='Sztuka' readonly>`,
+            price1Input     = `<input type='text' class='menu-price' value='Gaiwan' readonly>`,
+            price2Input     = `<input type='text' class='menu-price' value='Opakowanie' readonly>`,
+            price3Input     = `<input type='text' class='menu-price' value='Na wagę' readonly>`;
     const    itemElements    = [
                 codeInput, nameInput, price0Input, 
                 price1Input, price2Input, price3Input, 
