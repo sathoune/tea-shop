@@ -1,6 +1,6 @@
 function openMenu(){
-    $("#record-view").hide();
-    $("#show-menu").html("back to orders");
+    hideMainContainers();
+    $("#show-menu").html(`<i class="fas fa-chevron-left"></i> Wróć do zamówień <i class="fas fa-chevron-left"></i>`);
     $("#show-menu").off("click").on("click", showBackCurrentOrders);
     createMenuTemplate();
     sendRequest("/menu/show/all", {}, 
@@ -19,14 +19,14 @@ function createMenuItemDiv(menuId) {
 }
 
 function setupMenuItem(menuValues){
-    const   deleteButton    = `<button onclick="deleteMenuItem('${menuValues._id}')">delete</button>`,
+    const   deleteButton    = `<button class='delete-button' onclick="deleteMenuItem('${menuValues._id}')"><i class="fas fa-trash-alt"></i> Usuń</button>`,
             codeInput       = `<input type='text' class='menu-code' value='${menuValues.registerCode}'>`,
             nameInput       = `<input type='text' class='menu-name' value='${menuValues.name}'>`,
             price0Input     = `<input type='text' class='menu-price0' value='${menuValues.prices.default}'>`,
             price1Input     = `<input type='text' class='menu-price1' value='${menuValues.prices.gaiwan}'>`,
             price2Input     = `<input type='text' class='menu-price2' value='${menuValues.prices.package}'>`,
             price3Input     = `<input type='text' class='menu-price3' value='${menuValues.prices.bulk}'>`,
-            updateButton    = `<button class='update-button' onclick="updateMenuItem('${menuValues._id}')">update</button>`;
+            updateButton    = `<button class='update-button' onclick="updateMenuItem('${menuValues._id}')">Zapisz <i class="fas fa-pencil-alt"></i></button>`;
     const itemElements = [
         deleteButton, codeInput, nameInput, 
         price0Input, price1Input, price2Input, 
@@ -35,7 +35,7 @@ function setupMenuItem(menuValues){
 }
 
 function createMenuTemplate(){
-    const   menuDiv         = "<div id='menu'></div>";
+    const   menuDiv         = "<div id='menu' class='main-container'></div>";
     const   navigationPanel = "<div id='navigation'></div>",
             menuContainer   = "<div id='menu-container'></div>";
     const   menuContainers  = [ navigationPanel, menuContainer ]
@@ -44,13 +44,13 @@ function createMenuTemplate(){
 }
 
 function menuLabels(){
-    const   createNewButton = '<button class="new-order-button" onclick="newMenuItem()">Add Position</button>',
-            codeInput       = `<input type='text' class='menu-code' value='Code'>`,
-            nameInput       = `<input type='text' class='menu-name' value='Name'>`,
-            price0Input     = `<input type='text' class='menu-price' value='Default price'>`,
-            price1Input     = `<input type='text' class='menu-price' value='Gaiwan price'>`,
-            price2Input     = `<input type='text' class='menu-price' value='Package price'>`,
-            price3Input     = `<input type='text' class='menu-price' value='Bulk price'>`;
+    const   createNewButton = '<button class="new-order-button" onclick="newMenuItem()"><i class="fas fa-folder-plus"></i> Dodaj pozycję</button>',
+            codeInput       = `<input type='text' class='menu-code' value='Kod' readonly>`,
+            nameInput       = `<input type='text' class='menu-name' value='Nazwa' readonly>`,
+            price0Input     = `<input type='text' class='menu-price' value='Sztuka' readonly>`,
+            price1Input     = `<input type='text' class='menu-price' value='Gaiwan' readonly>`,
+            price2Input     = `<input type='text' class='menu-price' value='Opakowanie' readonly>`,
+            price3Input     = `<input type='text' class='menu-price' value='Na wagę' readonly>`;
     const    itemElements    = [
                 codeInput, nameInput, price0Input, 
                 price1Input, price2Input, price3Input, 
@@ -91,6 +91,7 @@ function deleteMenuItem(itemID){
 function showBackCurrentOrders(){
     $('#record-view').show();
     $('#menu').remove();
-    $('#show-menu').html("Look at the menu");
+    $('#show-menu').html(`<i class="fas fa-book-open"></i> Menu <i class="fas fa-book-open"></i>`);
     $('#show-menu').off("click").on("click", openMenu);
+    showMainContainers();
 }

@@ -7,7 +7,7 @@ function createOrder(){
 
 function createNavigation(){
     const   topPanel = "<div id='top-panel'></div>",
-            createOrder = "<button id='create-order' onclick='createOrder()'>Nowe zamówienie</button>",
+            createOrder = `<button id='create-order' onclick='createOrder()'><i class="fas fa-folder-plus"></i> Nowe zamówienie <i class="fas fa-folder-plus"></i></button>`,
             orderDiv = "<div id='order-display'></div>";
     $('#record-view').append([topPanel, orderDiv]);
     $('#top-panel').append(createOrder);
@@ -20,18 +20,24 @@ function createOrderDiv(orderId, itemsQuantity=4){
     createOrderLabels(orderId); 
     createOrderBottomPanel(orderId);
     createOrderItemPanel(orderId, itemsQuantity);
+    $(`#${orderId}.order`).css("order", 0);
 }
 
 function createOrderTopPanel(orderId){
     const   topPanelDiv = `<div class="top-panel"></div>`;
     const   tableInput = "<input type='text' class='table' placeholder='stolik'>",
-            discountInput = "<label class='discount-label'>Discount:</label><input type='number' class='discount' value='0' min='0' max='100'>%",
+            discountInput = "<label class='discount-label'>Zniżka:</label><input type='number' class='discount' value='0' min='0' max='100'>%",
             discountToGoCheckbox = "<label><input class='discount-to-go' type='checkbox' name='checkbox' value='discountToGo'>na wagę</label>",
-            sendButton = `<button onclick='closeOrder("${orderId}")'>Send away</button>`,
-            addItemButton = `<button onclick='createItem("${orderId}")'>Add brand new item</button>`;
+            sendButton = `<button class='send-button' onclick='closeOrder("${orderId}")'>Zamknij zamówienie <i class="fas fa-pencil-alt"></i>
+
+</button>`,
+            addItemButton = `<button class='add-item-button' onclick='createItem("${orderId}")'><i class="fas fa-plus"></i> Dodaj rząd</button>`,
+            collapseButton = `<button class='collapse-order cosmic-fusion-up' onclick='collapseItems("${orderId}")'>
+            <i class="fas fa-angle-up"></i> Zwiń zamówienie <i class="fas fa-angle-up"></i></button>`
     const TopPanelElements = [
             addItemButton,
-            tableInput, 
+            tableInput,
+            collapseButton,
             discountInput, 
             discountToGoCheckbox, 
             sendButton,
@@ -42,13 +48,13 @@ function createOrderTopPanel(orderId){
 
 function createOrderLabels(orderId){
     const labelsDiv = `<div class="labels"></div>`;
-    const   labelCode = `<span>Code </span>`,
-            labelName = `<span>Name </span>`,
-            labelType = `<span>Type </span>`,
-            labelQuantity = `<span>Quantity </span>`,
-            labelPrice = `<span>Price </span>`,
-            labelHint = `<span>Hint </span>`,
-            labelDiscountedPrice = `<span>Discounted Price </span>`;
+    const   labelCode = `<label class='registerCode'>Kod</label>`,
+            labelName = `<label class='name'>Nazwa</label>`,
+            labelType = `<labe class='type'l>Typ</label>`,
+            labelQuantity = `<label class='quantity'>Ilość</label>`,
+            labelPrice = `<label class='price'>Cena</label>`,
+            labelHint = `<label class='hint'>Uwagi</label>`,
+            labelDiscountedPrice = `<label class='discounted-price'>Po zniżce</label>`;
     const labels = [
             labelCode,
             labelName,
@@ -62,11 +68,13 @@ function createOrderLabels(orderId){
     $(`#${orderId}.order .labels`).append(labels);
 }
 
+
 function createOrderBottomPanel(orderId){
     const   bottomPanelDiv = `<div class="bottom-panel"></div>`;
-    const   deleteButton    = `<button class='delete-button' onclick='deleteOrder("${orderId}")'>Delete Order</button>`,  
-            sumInput = "<label class='sum-label'>sum</label><input type='number' value='0' class='sum' readonly>",
-            discountedSumInput = "<label class='discounted-sum-label'>after discount</label><input type='number' value='0' class='discounted-sum' readonly>"
+    const   deleteButton    = `<button class='delete-button' onclick='deleteOrder("${orderId}")'>
+    <i class="fas fa-dumpster"></i> Usuń zamówienie <i class="fas fa-dumpster"></i></button>`,  
+            sumInput = "<label class='sum-label'>Suma</label><input type='number' value='0' class='sum' readonly>",
+            discountedSumInput = "<label class='discounted-sum-label'>Suma po zniżce</label><input type='number' value='0' class='discounted-sum' readonly>"
     const bottomPanelElements = [
             deleteButton, 
             sumInput,
@@ -88,29 +96,30 @@ function createOrderItemPanel(orderId, itemsQuantity){
  
 function updateOrderTable(){
     const orderId = $(this).parent().parent()[0].id;
-    sendRequest('/order/edit/table', {_id: orderId, table: $(this).val()}, 
+    const tableValue = $(this).val();
+    sendRequest('/order/edit/table', {_id: orderId, table: tableValue}, 
     (data) => {
-       // TODO create movement of tables with flexbox and css
+        orderTable(tableValue, orderId);
     });
 }
 
 function updateSumOfPrices(orderId){
     sendRequest('/order/edit/sum', { _id: orderId }, 
-    (updatedOrder) => {$(`#${orderId}.order .sum`).val(updatedOrder.sum);});
+    (updatedOrder) => {$(`#${orderId}.order .sum`).val(Number(updatedOrder.sum).toFixed(2));});
 }
 
 function updateSumOfDiscountedPrices(orderId){
     sendRequest('/order/edit/discounted-sum', { _id: orderId }, 
-    (updatedOrder) => {$(`#${orderId}.order .discounted-sum`).val(updatedOrder.discountedSum);});
+    (updatedOrder) => {$(`#${orderId}.order .discounted-sum`).val(Number(updatedOrder.discountedSum).toFixed(2));});
 }
 
 function updateDiscount(){
     const orderId = $(this).parent().parent()[0].id;
     sendRequest('/order/edit/discount', {_id: orderId, discount: $(this).val()}, 
     (data) => {
-        $(`#${orderId}.order  .discounted-sum`).val(data.discountedSum); 
+        $(`#${orderId}.order  .discounted-sum`).val(Number(data.discountedSum).toFixed(2)); 
         data.orderedItems.forEach((item) => 
-        { $(`#${item._id}.item .discounted-price`).val(item.discountedPrice); });    
+        { $(`#${item._id}.item .discounted-price`).val(Number(item.discountedPrice).toFixed(2)); });    
     });
 }
 
@@ -118,9 +127,9 @@ function updateToGoDiscount(){
     const orderID = $(this).parent().parent().parent()[0].id;
     sendRequest('/order/edit/discount-togo', {_id: orderID, discountToGo: $(this).is(":checked")}, 
     (data) => {
-        $(`#${orderID}.order .discounted-sum`).val(data.discountedSum); 
+        $(`#${orderID}.order .discounted-sum`).val(Number(data.discountedSum).toFixed(2)); 
         data.orderedItems.forEach((item) => 
-        { $(`#${item._id}.item .discounted-price`).val(item.discountedPrice); });
+        { $(`#${item._id}.item .discounted-price`).val(Number(item.discountedPrice).toFixed(2)); });
     });
 }
 
@@ -144,9 +153,9 @@ function restoreOrderValues(orderData){
     $(`#${orderData._id}.order .table`)         .val(orderData.table);
     $(`#${orderData._id}.order .discount`)      .val(orderData.discount);
     $(`#${orderData._id}.order .table`)         .val(orderData.table);
-    $(`#${orderData._id}.order .sum`)           .val(orderData.sum);
-    $(`#${orderData._id}.order .discounted-sum`).val(orderData.discountedSum);
-    
+    $(`#${orderData._id}.order .sum`)           .val(Number(orderData.sum).toFixed(2));
+    $(`#${orderData._id}.order .discounted-sum`).val(Number(orderData.discountedSum).toFixed(2));
+    orderTable(orderData.table, orderData._id);
 }
 
 
@@ -164,4 +173,76 @@ function restoreOrderDiv(orderId, itemIds){
 
 function deleteOrder(orderId){
     sendRequest('/order/delete', {_id: orderId}, (res) => { $(`#${orderId}.order`).remove(); });
+}
+
+function orderTable(tableValue, orderId){
+    if(tableValue==''){
+        $(`#${orderId}.order`).css('order', 0);
+    }
+    else if('m1' == tableValue){
+        $(`#${orderId}.order`).css('order', 10);
+    }
+    else if('m2' == tableValue){
+        $(`#${orderId}.order`).css('order', 12);
+    }
+    else if('m3' ==tableValue){
+        $(`#${orderId}.order`).css('order', 14);
+    }
+    else if('m4' == tableValue){
+        $(`#${orderId}.order`).css('order', 16);
+    }
+    else if('k1' == tableValue){
+        $(`#${orderId}.order`).css('order', 20);
+    }
+    else if('k2' == tableValue){
+        $(`#${orderId}.order`).css('order', 22);
+    }
+    else if('k3' == tableValue){
+        $(`#${orderId}.order`).css('order', 24);
+    }
+    else if('t' == tableValue){
+        $(`#${orderId}.order`).css('order', 26);
+    }
+    else if('k4' == tableValue){
+        $(`#${orderId}.order`).css('order', 28);
+    }
+    else if('k5' == tableValue){
+        $(`#${orderId}.order`).css('order', 30);
+    }
+    else if('k6' == tableValue){
+        $(`#${orderId}.order`).css('order', 32);
+    }
+    else if('o1' == tableValue){
+        $(`#${orderId}.order`).css('order', 40);
+    }
+    else if('o2' == tableValue){
+        $(`#${orderId}.order`).css('order', 42);
+    }
+    else if('o3' == tableValue){
+        $(`#${orderId}.order`).css('order', 44);
+    }
+    else if(/out./.test(tableValue)){
+        $(`#${orderId}.order`).css('order', 8);
+    }
+    else{
+        $(`#${orderId}.order`).css('order', 5);
+    }
+}
+
+
+function collapseItems(orderId){
+    
+    
+    $(`#${orderId}.order .item-container`).toggleClass('hidden');
+    $(`#${orderId}.order .labels`).toggleClass('hidden');
+
+    if($(`#${orderId}.order .item-container`).hasClass('hidden')){
+        $(`#${orderId}.order .collapse-order`).html('<i class="fas fa-angle-down"></i> Pokaż zamówienie <i class="fas fa-angle-down"></i>');
+        $(`#${orderId}.order .collapse-order`).toggleClass('cosmic-fusion-up');
+        $(`#${orderId}.order .collapse-order`).toggleClass('cosmic-fusion-down');
+    } else {
+        $(`#${orderId}.order .collapse-order`).html('<i class="fas fa-angle-up"></i> Zwiń zamówienie <i class="fas fa-angle-up"></i>');
+        $(`#${orderId}.order .collapse-order`).toggleClass('cosmic-fusion-up');
+        $(`#${orderId}.order .collapse-order`).toggleClass('cosmic-fusion-down');
+    }
 }

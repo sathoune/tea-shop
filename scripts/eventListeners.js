@@ -1,12 +1,3 @@
-// $ is defined in scope of view
-$(document).ready(function(){
-    createListenersItemInputs();
-    createHeader();
-    createListenersOrderInputs();
-    createNavigation();
-    findOpenOrders();
-    });
-
 
 function createListenersItemInputs(){
     $('#record-view').on('change', 'div .name', updateItemName);
