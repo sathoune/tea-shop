@@ -83,7 +83,22 @@ router.post('/update-name', (req,res) => {
           });
         }
       });
-    } else { res.send({name: req.body.name, err: 'wrong name'}); } // when item not found
+    } else { // when item not found
+      OrderedItem.findOneAndUpdate({_id: req.body.item_id}, {name: "", price: "", discountedPrice: ""},
+      (err) => {
+        if(err) { console.log(err); }
+        else {
+          const response = {
+            name: req.body.name, 
+            price: "", 
+            discountedPrice: "",
+            registerCode: "",
+            err: 'wrong name',
+            };
+          res.send(response); 
+        }
+      });
+    }
   });
   }
 });
