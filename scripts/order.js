@@ -105,21 +105,21 @@ function updateOrderTable(){
 
 function updateSumOfPrices(orderId){
     sendRequest('/order/edit/sum', { _id: orderId }, 
-    (updatedOrder) => {$(`#${orderId}.order .sum`).val(updatedOrder.sum);});
+    (updatedOrder) => {$(`#${orderId}.order .sum`).val(Number(updatedOrder.sum).toFixed(2));});
 }
 
 function updateSumOfDiscountedPrices(orderId){
     sendRequest('/order/edit/discounted-sum', { _id: orderId }, 
-    (updatedOrder) => {$(`#${orderId}.order .discounted-sum`).val(updatedOrder.discountedSum);});
+    (updatedOrder) => {$(`#${orderId}.order .discounted-sum`).val(Number(updatedOrder.discountedSum).toFixed(2));});
 }
 
 function updateDiscount(){
     const orderId = $(this).parent().parent()[0].id;
     sendRequest('/order/edit/discount', {_id: orderId, discount: $(this).val()}, 
     (data) => {
-        $(`#${orderId}.order  .discounted-sum`).val(data.discountedSum); 
+        $(`#${orderId}.order  .discounted-sum`).val(Number(data.discountedSum).toFixed(2)); 
         data.orderedItems.forEach((item) => 
-        { $(`#${item._id}.item .discounted-price`).val(item.discountedPrice); });    
+        { $(`#${item._id}.item .discounted-price`).val(Number(item.discountedPrice).toFixed(2)); });    
     });
 }
 
@@ -127,9 +127,9 @@ function updateToGoDiscount(){
     const orderID = $(this).parent().parent().parent()[0].id;
     sendRequest('/order/edit/discount-togo', {_id: orderID, discountToGo: $(this).is(":checked")}, 
     (data) => {
-        $(`#${orderID}.order .discounted-sum`).val(data.discountedSum); 
+        $(`#${orderID}.order .discounted-sum`).val(Number(data.discountedSum).toFixed(2)); 
         data.orderedItems.forEach((item) => 
-        { $(`#${item._id}.item .discounted-price`).val(item.discountedPrice); });
+        { $(`#${item._id}.item .discounted-price`).val(Number(item.discountedPrice).toFixed(2)); });
     });
 }
 
@@ -153,8 +153,8 @@ function restoreOrderValues(orderData){
     $(`#${orderData._id}.order .table`)         .val(orderData.table);
     $(`#${orderData._id}.order .discount`)      .val(orderData.discount);
     $(`#${orderData._id}.order .table`)         .val(orderData.table);
-    $(`#${orderData._id}.order .sum`)           .val(orderData.sum);
-    $(`#${orderData._id}.order .discounted-sum`).val(orderData.discountedSum);
+    $(`#${orderData._id}.order .sum`)           .val(Number(orderData.sum).toFixed(2));
+    $(`#${orderData._id}.order .discounted-sum`).val(Number(orderData.discountedSum).toFixed(2));
     orderTable(orderData.table, orderData._id);
 }
 

@@ -69,8 +69,8 @@ function updateItemType(){
             orderId = $(this).parent().parent().parent()[0].id;
     sendRequest('/ordered-item/update-type', {item_id: itemId, type: $(this).val(), order_id: orderId}, 
     (updatedItem) => {
-        $(`#${itemId}.item .price`)             .val(updatedItem.price);
-        $(`#${itemId}.item .discounted-price`)  .val(updatedItem.discountedPrice);
+        $(`#${itemId}.item .price`)             .val(Number(updatedItem.price).toFixed(2));
+        $(`#${itemId}.item .discounted-price`)  .val(Number(updatedItem.discountedPrice).toFixed(2));
         updateSumOfPrices(orderId);
         updateSumOfDiscountedPrices(orderId)
     });
@@ -82,8 +82,8 @@ function updateItemQuantity(){
             orderId     = $(this).parent().parent().parent()[0].id;
     sendRequest('/ordered-item/update-quantity', {item_id: itemId, quantity: $(this).val(), order_id: orderId}, 
     (updatedItem) => {
-        $(`#${itemId}.item .price`)             .val(updatedItem.price);
-        $(`#${itemId}.item .discounted-price`)  .val(updatedItem.discountedPrice);
+        $(`#${itemId}.item .price`)             .val(Number(updatedItem.price).toFixed(2));
+        $(`#${itemId}.item .discounted-price`)  .val(Number(updatedItem.discountedPrice).toFixed(2));
         updateSumOfPrices(orderId);
         updateSumOfDiscountedPrices(orderId)
     });
@@ -106,8 +106,8 @@ function setItemValues(itemObject){
     $(`${itemSelector} .name`)              .val(itemObject.name);
     $(`${itemSelector} .type`)              .val(itemObject.type);
     $(`${itemSelector} .quantity`)          .val(itemObject.quantity);
-    $(`${itemSelector} .price`)             .val(itemObject.price);
-    $(`${itemSelector} .discounted-price`)  .val(itemObject.discountedPrice);
+    $(`${itemSelector} .price`)             .val(Number(itemObject.price).toFixed(2));
+    $(`${itemSelector} .discounted-price`)  .val(Number(itemObject.discountedPrice).toFixed(2));
 }
 
 function removeItemFromDisplay(itemId){

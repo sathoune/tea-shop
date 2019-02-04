@@ -78,8 +78,8 @@ function constructOrderDisplay(orderData){
     const   sendBackButton  = `<button class='send-back' onclick='sendOrderBack("${orderData._id}")'><i class="fas fa-long-arrow-alt-left"></i> Otwórz ponownie</button>`,
             dateInput       = `<input type='text' class='order-date' value='${new Date(orderData.created)}' readonly>`,
             table           = `<input type='text' class='order-table' value='${orderData.table}' readonly>`,
-            sum             = `<input type='text' class='order-sum' value='${orderData.sum}' readonly>`,
-            discountedSum   = `<input type='text' class='order-sum' value='${orderData.discountedSum}' readonly>`,
+            sum             = `<input type='text' class='order-sum' value='${Number(orderData.sum).toFixed(2)}' readonly>`,
+            discountedSum   = `<input type='text' class='order-sum' value='${Number(orderData.discountedSum).toFixed(2)}' readonly>`,
             expandButton    = `<button class="expand-button">Rozwiń <i class="fas fa-search-plus"></i></button>`;
     const   inputs          = [ sendBackButton, dateInput, table, sum, discountedSum, expandButton ];
     $('#'+orderData._id).append(summaryDiv);
@@ -110,10 +110,10 @@ function collapseOrder(){
 function constructItemDisplay(orderId, itemObject){
     const   itemDiv             = `<div id='${itemObject._id}' class='item-div'></div>`,
             nameInput           = `<input type="text" class="name" value='${itemObject.name}' readonly>`,
-            priceInput          = `<input class="price" type="number" value='${itemObject.price}' readonly>`,
+            priceInput          = `<input class="price" type="number" value='${Number(itemObject.price).toFixed(2)}' readonly>`,
             quantityInput       = `<input class="quantity" type="number" value='${itemObject.quantity}' readonly>`,
             typeInput           = `<input class="type" type="text" value='${itemObject.type}' readonly>`,
-            discountedPriceInput= `<input class="discounted-price" type="number" value='${itemObject.discountedPrice}' readonly>`;
+            discountedPriceInput= `<input class="discounted-price" type="number" value='${Number(itemObject.discountedPrice).toFixed(2)}' readonly>`;
     const inputs = [nameInput, typeInput, quantityInput, priceInput, discountedPriceInput];
     $(`#${orderId}.archived-order .item-container`).append(itemDiv);
     $(`#${itemObject._id}.item-div`).append(inputs);
@@ -121,8 +121,8 @@ function constructItemDisplay(orderId, itemObject){
 
 function setSums(sum, discountedSum){
     $('#archive-panel .day-sum').remove();
-    const   sumInput            = `<input class="day-sum" type="number" value='${sum}' readonly>`,
-            discountedSumInput  = `<input class="day-sum" type="number" value='${discountedSum}' readonly>`;
+    const   sumInput            = `<input class="day-sum" type="number" value='${Number(sum).toFixed(2)}' readonly>`,
+            discountedSumInput  = `<input class="day-sum" type="number" value='${Number(discountedSum).toFixed(2)}' readonly>`;
     $('#archive-panel').append([sumInput, discountedSumInput]);
 }
 
