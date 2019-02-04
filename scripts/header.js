@@ -1,3 +1,12 @@
+$(document).ready(function(){
+    createListenersItemInputs();
+    createHeader();
+    createListenersOrderInputs();
+    createNavigation();
+    findOpenOrders();
+    });
+
+
 function createHeader(){
     const   showMenu            = `<button id='show-menu' class='navigation-button'>
     <i class="fas fa-book-open"></i> Menu <i class="fas fa-book-open"></i></button>`,

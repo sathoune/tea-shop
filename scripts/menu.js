@@ -1,5 +1,5 @@
 function openMenu(){
-    $("#record-view").hide();
+    hideMainContainers();
     $("#show-menu").html(`<i class="fas fa-chevron-left"></i> Wróć do zamówień <i class="fas fa-chevron-left"></i>`);
     $("#show-menu").off("click").on("click", showBackCurrentOrders);
     createMenuTemplate();
@@ -35,7 +35,7 @@ function setupMenuItem(menuValues){
 }
 
 function createMenuTemplate(){
-    const   menuDiv         = "<div id='menu'></div>";
+    const   menuDiv         = "<div id='menu' class='main-container'></div>";
     const   navigationPanel = "<div id='navigation'></div>",
             menuContainer   = "<div id='menu-container'></div>";
     const   menuContainers  = [ navigationPanel, menuContainer ]
@@ -93,4 +93,5 @@ function showBackCurrentOrders(){
     $('#menu').remove();
     $('#show-menu').html(`<i class="fas fa-book-open"></i> Menu <i class="fas fa-book-open"></i>`);
     $('#show-menu').off("click").on("click", openMenu);
+    showMainContainers();
 }

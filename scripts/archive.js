@@ -1,5 +1,5 @@
 function openArchive(){
-    $("#record-view").hide();
+    hideMainContainers();
     $("#show-archive").html(`<i class="fas fa-chevron-left"></i> Wróć do zamówień <i class="fas fa-chevron-left"></i>`);
     $("#show-archive").off("click").on("click", closeArchive);
     createArchiveContainers();
@@ -22,6 +22,7 @@ function closeArchive(){
     $("#show-archive").html(`<i class="fas fa-archive"></i> Look at the past <i class="fas fa-archive"></i>`);
     $("#show-archive").off("click").on("click", openArchive);
     $('#archive').remove();
+    showMainContainers();
 }
 
 function createArchiveContainers(){
@@ -33,7 +34,7 @@ function createArchiveContainers(){
     };
     const newDate = `${date.year}-${date.month}-${date.day}`;
 
-    const   archive             = "<div id='archive'></div";
+    const   archive             = "<div id='archive' class='main-container'></div";
     const   archiveContainer    = "<div id='archived-orders'></div>",
             archivePanel        = "<div id='archive-panel'></div>";
     const   archiveContainers   = [archivePanel, archiveContainer];
@@ -128,4 +129,18 @@ function setSums(sum, discountedSum){
 
 function sendOrderBack(orderId){
     sendRequest('/archive/reopen', {_id: orderId}, (data) => { $(`#${orderId}.archived-order`).remove(); });
+}
+
+
+function hideMainContainers(){
+    var mainContainers = $('.main-container');
+    for(var i=0; i<mainContainers.length;i++){
+        $(mainContainers[i]).hide();
+    }
+}
+function showMainContainers(){
+    var mainContainers = $('.main-container');
+    for(var i=0; i<mainContainers.length;i++){
+        $(mainContainers[i]).show();
+    }
 }
