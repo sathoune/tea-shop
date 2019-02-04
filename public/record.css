@@ -63,7 +63,7 @@ button, input, select {
 .name {
     width: 20em;
 }
-.type{
+.type, .table{
     width: 7em;
 } 
 
@@ -122,4 +122,11 @@ button {
 #order-display {
     display: flex;
     flex-direction: column;
+}
+
+.hidden {
+    display: none;
+}
+.collapse-order {
+    width: 11em;
 }

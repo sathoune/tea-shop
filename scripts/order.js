@@ -31,10 +31,13 @@ function createOrderTopPanel(orderId){
             sendButton = `<button class='send-button' onclick='closeOrder("${orderId}")'>Zamknij zamówienie <i class="fas fa-pencil-alt"></i>
 
 </button>`,
-            addItemButton = `<button class='add-item-button' onclick='createItem("${orderId}")'><i class="fas fa-plus"></i> Dodaj rząd</button>`;
+            addItemButton = `<button class='add-item-button' onclick='createItem("${orderId}")'><i class="fas fa-plus"></i> Dodaj rząd</button>`,
+            collapseButton = `<button class='collapse-order' onclick='collapseItems("${orderId}")'>
+            <i class="fas fa-angle-up"></i> Zwiń zamówienie <i class="fas fa-angle-up"></i></button>`
     const TopPanelElements = [
             addItemButton,
-            tableInput, 
+            tableInput,
+            collapseButton,
             discountInput, 
             discountToGoCheckbox, 
             sendButton,
@@ -226,5 +229,19 @@ function orderTable(tableValue, orderId){
     
     else{
         $(`#${orderId}.order`).css('order', 5);
+    }
+}
+
+
+function collapseItems(orderId){
+    
+    
+    $(`#${orderId}.order .item-container`).toggleClass('hidden');
+    $(`#${orderId}.order .labels`).toggleClass('hidden');
+
+    if($(`#${orderId}.order .item-container`).hasClass('hidden')){
+        $(`#${orderId}.order .collapse-order`).html('<i class="fas fa-angle-down"></i> Pokaż zamówienie <i class="fas fa-angle-down"></i>');
+    } else {
+        $(`#${orderId}.order .collapse-order`).html('<i class="fas fa-angle-up"></i> Zwiń zamówienie <i class="fas fa-angle-up"></i>');
     }
 }
