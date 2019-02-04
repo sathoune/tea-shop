@@ -35,6 +35,22 @@ router.post("/show", (req, res) =>
 
 //could change to triple finding with promises;
 router.post('/update-name', (req,res) => {
+  if(req.body.name == ''){
+    OrderedItem.findOneAndUpdate({_id: req.body.item_id}, {name: "", price: "", discountedPrice: "",},
+    (err) => {
+      if(err) { console.log(err); }
+      else {
+        const response = {
+        name: "", 
+        price: "", 
+        discountedPrice: "",
+        registerCode: "",
+        };
+      res.send(response);      
+      }
+        
+  });
+  } else {
   MenuItem.findOne({name: { $regex: new RegExp(req.body.name,  "i")}}, 
   (err, foundMenuItem) => {
     if(err){ console.log(err);} 
@@ -69,6 +85,7 @@ router.post('/update-name', (req,res) => {
       });
     } else { res.send(""); } // when item not found
   });
+  }
 });
 
 router.post('/update-type', (req,res) => {

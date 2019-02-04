@@ -51,14 +51,14 @@ function updateItemName(){
     sendRequest('/ordered-item/update-name', {item_id: itemId, name: nameValue, order_id: orderId}, 
     (data) => {
         console.log(data);
-        if(data){
-            $(`#${itemId}.item .price`)           .val(data.price);
-            $(`#${itemId}.item .discounted-price`).val(data.discountedPrice);
-            $(`#${itemId}.item .registercode`)    .val(data.registerCode);
-            if(data.name != nameValue){ $(`#${itemId}.item .name`).val(data.name); }
-            updateSumOfPrices(orderId);
-            updateSumOfDiscountedPrices(orderId)
-        } else { $(`#${itemId}.item .name`).val("");}
+        
+        $(`#${itemId}.item .price`)           .val(data.price);
+        $(`#${itemId}.item .discounted-price`).val(data.discountedPrice);
+        $(`#${itemId}.item .registercode`)    .val(data.registerCode);
+        if(data.name != nameValue){ $(`#${itemId}.item .name`).val(data.name); }
+        updateSumOfPrices(orderId);
+        updateSumOfDiscountedPrices(orderId)
+    
     });
 }
 
