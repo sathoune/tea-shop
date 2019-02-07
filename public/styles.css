@@ -1,0 +1,198 @@
+body {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 1.3em;
+    background: url("/teaplant.jpeg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+button, input, select {
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 1em;
+}
+
+.navigation-button {
+    margin: 1% 1% 1% 1%;
+}
+
+#header {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+
+.top-panel{
+    display: flex;
+}
+
+.discount-label, .sum-label {
+    margin-left: auto;
+}
+
+.bottom-panel {
+    display: flex;
+    order: 4;
+}
+
+
+.labels{
+    margin: 0.5% 0% 0.5% 0%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.order {
+    margin: 1% 0% 1% 0%;
+    display: flex;
+    flex-direction: column;
+}
+
+.registerCode{
+    width: 2em;
+}
+
+.price, .discounted-price, .quantity, .sum, .discounted-sum{
+    width: 5em;
+}
+
+.name {
+    width: 20em;
+}
+.type, .table{
+    width: 7em;
+} 
+
+.hint, .discounted-sum-label {
+    width: 10em;
+}
+
+.discounted-sum-label {
+    text-align: right;
+}
+
+#create-order, .add-item-button {
+    background: #00416A;  
+}
+
+.delete-button {
+    background: #EF3B36;  
+}
+
+.send-button {
+    background: #24ba4e;  
+}
+
+#show-archive {
+    background: #360a1b;  
+}
+
+button {
+    outline: none;
+    padding: 3px 8px 3px 8px;
+    color: white;
+}
+
+#show-menu {
+    background: #360a1b
+}
+
+.sum, .discounted-sum {
+    border-color: #EB5757;
+}
+
+#order-display {
+    display: flex;
+    flex-direction: column;
+}
+
+.hidden {
+    display: none;
+}
+.collapse-order {
+    width: 11em;
+    
+}
+
+.cosmic-fusion-up {
+    background: #ff00cc;  
+}
+
+.cosmic-fusion-down {
+    background: #ff00cc;  
+}
+
+.order-table, .order-sum {
+    width: 5em;
+}
+
+.type {
+    width: 6em;
+}
+
+#archived-orders {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.archived-order {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: space-between;
+}
+
+.expand-button {
+    width: 6em;
+    background: #215f00;  
+}
+
+.send-back {    
+    background: #00416A;  
+    
+}#menu {
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 1em;
+}
+
+.menu-code {
+    width: 2em;
+}
+
+.menu-price0, .menu-price1, .menu-price2, .menu-price3, .menu-price {
+    width: 6em;
+}
+
+#navigation {
+    display: flex;
+    justify-content: flex-end;
+    
+}
+
+.new-order-button, .update-button {
+    width: 5em;
+}
+
+button {
+    outline: none;
+}
+
+.update-button {
+    background: #00416A; 
+}
+
+.new-order-button {
+    background: #215f00; 
+}
+
+input, select{
+    background: silver;
+
+    
+}

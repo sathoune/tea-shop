@@ -39,7 +39,7 @@ app.use("/",                indexRoutes);
 
 // menu seed
 var seedMenu = require("./db_seeds/seedMenuItems");
-// seedMenu();
+//seedMenu();
 
 // server start
 app.listen(process.env.PORT, process.env.IP, function(){
