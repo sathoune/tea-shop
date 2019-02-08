@@ -9,5 +9,13 @@ router.get("/", (req, res) => {
     });
 });
 
+router.get("/:x", (req, res) => {
+    MenuItem.find({}, (err, results) => {
+      if(err){ console.log(err); }  
+      else { res.redirect("/");}
+    });
+});
+
+
 
 module.exports = router;

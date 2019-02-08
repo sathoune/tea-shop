@@ -26,13 +26,14 @@ button, input, select {
     width: 100%;
 }
 
-
 .top-panel{
     display: flex;
 }
 
 .discount-label, .sum-label {
     margin-left: auto;
+    width: 4em;
+    text-align: right;
 }
 
 .bottom-panel {
@@ -42,7 +43,7 @@ button, input, select {
 
 
 .labels{
-    margin: 0.5% 0% 0.5% 0%;
+    margin: 0.5% 0% 0% 0%;
     display: flex;
     justify-content: flex-end;
 }
@@ -64,7 +65,7 @@ button, input, select {
 .name {
     width: 20em;
 }
-.type, .table{
+.table{
     width: 7em;
 } 
 
@@ -133,6 +134,11 @@ button {
 
 .type {
     width: 6em;
+    background-color: silver;
+    box-sizing: border-box;
+    padding: 1px 0px;
+    border-width: 2px;
+    border-style: inset;
 }
 
 #archived-orders {
@@ -144,7 +150,6 @@ button {
 .archived-order {
     display: flex;
     flex-direction: column;
-
     justify-content: space-between;
 }
 
@@ -176,7 +181,7 @@ button {
 }
 
 .new-order-button, .update-button {
-    width: 5em;
+    width: 6em;
 }
 
 button {
@@ -195,4 +200,20 @@ input, select{
     background: silver;
 
     
+}
+
+.percent {
+    width: 1em;
+}
+
+.to-go-button {
+    background-color: silver;
+    padding: 1px 0px;
+    border-width: 2px;
+    border-style: inset;
+
+}
+
+.discount {
+    width: 3em;
 }

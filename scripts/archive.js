@@ -93,7 +93,7 @@ function expandOrder(){
     $(this).off("click").on("click", collapseOrder);
     const orderID = $(this).parent().parent()[0].id;
     const itemContainer = `<div class='item-container'></div>`;
-    const panelContainer = `<div class='panel'>NAZWA | TYP | ILOŚĆ |  CENA  |  PO ZNIŻCE</div>`;
+    const panelContainer = `<div class='panel'><input type='text' class='name' value='Nazwa' readonly><input type='text' class='type' value='Typ' readonly><input type='text' class='quantity' value='Ilość' readonly><input type='text' class='price' value='Cena' readonly><input type='text' class='price' value='Po zniżce' readonly></div>`;
     // Need labels
     $(`#${orderID}.archived-order`).append([panelContainer, itemContainer]);
     sendRequest("/archive/show-ordered-items", {_id: orderID}, (data) => 
