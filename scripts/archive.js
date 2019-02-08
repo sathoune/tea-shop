@@ -77,7 +77,7 @@ function constructOrderDisplay(orderData){
     if(!orderData.table) { orderData.table = '' };
     const   summaryDiv      = `<div class='div-summary'></div>`
     const   sendBackButton  = `<button class='send-back' onclick='sendOrderBack("${orderData._id}")'><i class="fas fa-long-arrow-alt-left"></i> Otwórz ponownie</button>`,
-            dateInput       = `<input type='text' class='order-date' value='${new Date(orderData.created)}' readonly>`,
+            dateInput       = `<input type='text' class='order-date' value='${new Date(orderData.createdAt)}' readonly>`,
             table           = `<input type='text' class='order-table' value='${orderData.table}' readonly>`,
             sum             = `<input type='text' class='order-sum' value='${Number(orderData.sum).toFixed(2)}' readonly>`,
             discountedSum   = `<input type='text' class='order-sum' value='${Number(orderData.discountedSum).toFixed(2)}' readonly>`,

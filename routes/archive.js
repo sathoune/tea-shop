@@ -11,7 +11,7 @@ router.post("/", (req, res) => {
             $gte: new Date(now.getFullYear(), now.getMonth(), now.getDate()),
             $lt: new Date(now.getFullYear(), now.getMonth(), now.getDate()+1),
         };
-        Order.find({created: dateCriteria}, (err, foundOrders) => {
+        Order.find({createdAt: dateCriteria}, (err, foundOrders) => {
             if(err) { console.log(err);} 
             else {res.send(foundOrders);}
         });  

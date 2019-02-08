@@ -8,6 +8,7 @@ var OrderedItemSchema = new mongoose.Schema({
     price:      String,
     discountedPrice: String,
 
-});
+},
+   { timestamps: { createdAt: 'createdAt' } });
 
 module.exports = mongoose.model("OrderedItem", OrderedItemSchema);
