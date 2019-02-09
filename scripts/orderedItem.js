@@ -18,7 +18,7 @@ function insertInputsInto(div){
     <i class="fas fa-trash-alt"></i></button>`, 
             nameInput             = '<input type="text" class="name" list="tees">',
             codeInput             = '<input type="text" class="registerCode" readonly>',
-            priceInput            = '<input type="number" class="price" readonly>',
+            priceInput            = '<input type="number" class="price">',
             quantityInput         = '<input type="number" class="quantity" name="quantity" min="0" value="1">',
             hintInput             = '<input type="text" class="hint">',
             discountedPriceInput  = '<input type="number" class="discounted-price" readonly>',
@@ -87,6 +87,18 @@ function updateItemQuantity(){
         updateSumOfPrices(orderId);
         updateSumOfDiscountedPrices(orderId)
     });
+}
+
+function updateItemPrice(){
+    const   itemId      = $(this).parent()[0].id,
+            orderId     = $(this).parent().parent().parent()[0].id;
+    sendRequest('/ordered-item/update-price',{item_id: itemId, price: $(this).val(), order_id: orderId},
+    (order) => {
+        $(`#${order._id}.order .sum`).val(order.sum);
+    }
+    
+    );
+    
 }
 
 function restoreItem(orderId, itemId){

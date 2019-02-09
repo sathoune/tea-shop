@@ -169,7 +169,18 @@ router.post('/close' , (req, res) => {
 router.post("/old", (req, res) => { 
   Order.find({closed: false}, (err, openOrders) => { 
     if(err) { console.log(err); }
-    else { res.send(openOrders); }
+    else { 
+      let promises = openOrders.reduce((promiseChain, order) => {
+        return promiseChain.then( () => new Promise( (resolve) => {
+          if(order.sum == '0'){
+            Order.findOneAndDelete(order);
+            openOrders.splice(openOrders.indexOf(order), 1);
+          }
+          resolve();
+        }));
+      }, Promise.resolve());
+      promises.then(() => {res.send(openOrders); });
+    }
   });
 });
 

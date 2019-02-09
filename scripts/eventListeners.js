@@ -4,6 +4,7 @@ function createListenersItemInputs(){
     $('#record-view').on('change', 'div .type', updateItemType);
     $('#record-view').on('change', 'div .quantity', updateItemQuantity);
     $('#record-view').on('keyup', 'div .quantity', updateItemQuantity);
+    $('#record-view').on('keyup', 'div .price', updateItemPrice);
 }
 
 function createListenersOrderInputs(){

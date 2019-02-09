@@ -167,6 +167,42 @@ router.post('/update-quantity', (req,res) => {
   });
 });
 
+router.post("/update-price", (req, res) => {
+  let promiseItem = new Promise( (resolve) => {
+    OrderedItem.findOneAndUpdate({_id: req.body.item_id}, {price: req.body.price}, () => {resolve();});
+  });
+  let promiseOrder = new Promise( (resolve) => {
+    Order.findById({_id: req.body.order_id}, (err, foundOrder) => {
+      if(err){ console.log(err); }
+      else {resolve(foundOrder); }
+    });
+  });
+  
+  promiseItem.then( () => {promiseOrder.then( (order) => {
+    OrderedItem.find({_id: {$in: order.orderedItems}}, (err, foundItems) => {
+      if(err){ console.log(err); }
+      else{
+        var newSum = 0;
+        let promises = foundItems.reduce((promiseChain, item) => {
+          return promiseChain.then( () => new Promise( (resolve) => {
+            if(item.price){
+              newSum += Number(item.price);
+            }
+            resolve();
+          }));
+        }, Promise.resolve());
+        promises.then( () => {
+          order.sum = newSum;
+          order.save();
+          res.send(order);
+        });  
+      
+      }
+    });
+  });
+  });
+});
+
 router.post("/delete", (req,res)=>{
   Order.find({orderedItems: req.body._id}, (err, foundOrder) => {
     if(err) { console.log(err); }
