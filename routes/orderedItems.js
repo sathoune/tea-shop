@@ -34,7 +34,7 @@ router.post("/show", (req, res) =>
 
 
 //could change to triple finding with promises;
-router.post('/update-name', (req,res) => {
+router.post('/edit/name', (req,res) => {
   if(req.body.name == ''){
     OrderedItem.findOneAndUpdate({_id: req.body.item_id}, {name: "", price: "", discountedPrice: "",},
     (err) => {
@@ -103,7 +103,7 @@ router.post('/update-name', (req,res) => {
   }
 });
 
-router.post('/update-type', (req,res) => {
+router.post('/edit/type', (req,res) => {
   OrderedItem.findOneAndUpdate(
     { _id: req.body.item_id}, {type: req.body.type}, {new: true}, 
     (err, updatedItem) => {
@@ -135,7 +135,7 @@ router.post('/update-type', (req,res) => {
     });
 });
 
-router.post('/update-quantity', (req,res) => {
+router.post('/edit/quantity', (req,res) => {
   OrderedItem.findOneAndUpdate(
   { _id: req.body.item_id}, {quantity: req.body.quantity}, {new: true}, 
   (err, updatedItem) => {
@@ -167,7 +167,7 @@ router.post('/update-quantity', (req,res) => {
   });
 });
 
-router.post("/update-price", (req, res) => {
+router.post("/edit/price", (req, res) => {
   let promiseItem = new Promise( (resolve) => {
     OrderedItem.findOneAndUpdate({_id: req.body.item_id}, {price: req.body.price}, () => {resolve();});
   });

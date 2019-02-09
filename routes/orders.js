@@ -3,6 +3,7 @@ var router = express.Router({ mergeParams: true });
 var Order = require("../models/order");
 var OrderedItem = require("../models/orderedItem");
 var pricesAndSums = require("../functions/pricesAndSums");
+const dbFunctions = require("../functions/dbFunctions");
 
 router.post("/new", (req, res) => {
     Order.create({}, (err, createdOrder) => {
@@ -185,17 +186,21 @@ router.post("/old", (req, res) => {
 });
 
 router.post("/delete", (req, res) => {
-  Order.findById(req.body._id, (err, foundOrder) => {
-    var promise = new Promise((resolve, reject)=> {
-      Order.findOneAndDelete({_id: req.body._id}, (err) => { if(err) { console.log(err); } });
-      foundOrder.orderedItems.forEach(
-        (orderedItem) => { OrderedItem.findOneAndDelete({_id: orderedItem}, (err) => { 
-          if(err) { console.log(err) } 
-          else { resolve(); };
-        });
-      });
+  let promiseOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body._id);
+  promiseOrder.then( (order) => {
+    let deleteOrder = dbFunctions.promiseToDeleteFromCollectionById(Order, order._id);
+    var deleteItem = [];
+    order.orderedItems.forEach( (item) => {
+      deleteItem += dbFunctions.promiseToDeleteFromCollectionById(OrderedItem, item._id);
     });
-    promise.then((resolve) => { res.send("order deleted from db") } );
+    Promise.all([deleteItem, deleteOrder]).then( () => { res.send('order deleted');});
+  });
+});
+
+router.post("/test", (req, res) => {
+  var promiseOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body.orderId);
+  promiseOrder.then( (order) => {
+    console.log(order.discount);
   });
 });
 

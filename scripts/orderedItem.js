@@ -48,7 +48,7 @@ function updateItemName(){
     const itemId = $(this).parent()[0].id,
           orderId = $(this).parent().parent().parent()[0].id;
     const nameValue = $(this).val()
-    sendRequest('/ordered-item/update-name', {item_id: itemId, name: nameValue, order_id: orderId}, 
+    sendRequest('/ordered-item/edit/name', {item_id: itemId, name: nameValue, order_id: orderId}, 
     (data) => {
         $(`#${itemId}.item .price`)           .val(data.price);
         $(`#${itemId}.item .discounted-price`).val(data.discountedPrice);
@@ -67,7 +67,7 @@ function updateItemName(){
 function updateItemType(){
     const   itemId  = $(this).parent()[0].id,
             orderId = $(this).parent().parent().parent()[0].id;
-    sendRequest('/ordered-item/update-type', {item_id: itemId, type: $(this).val(), order_id: orderId}, 
+    sendRequest('/ordered-item/edit/type', {item_id: itemId, type: $(this).val(), order_id: orderId}, 
     (updatedItem) => {
         $(`#${itemId}.item .price`)             .val(Number(updatedItem.price).toFixed(2));
         $(`#${itemId}.item .discounted-price`)  .val(Number(updatedItem.discountedPrice).toFixed(2));
@@ -80,7 +80,7 @@ function updateItemType(){
 function updateItemQuantity(){
     const   itemId      = $(this).parent()[0].id,
             orderId     = $(this).parent().parent().parent()[0].id;
-    sendRequest('/ordered-item/update-quantity', {item_id: itemId, quantity: $(this).val(), order_id: orderId}, 
+    sendRequest('/ordered-item/edit/quantity', {item_id: itemId, quantity: $(this).val(), order_id: orderId}, 
     (updatedItem) => {
         $(`#${itemId}.item .price`)             .val(Number(updatedItem.price).toFixed(2));
         $(`#${itemId}.item .discounted-price`)  .val(Number(updatedItem.discountedPrice).toFixed(2));
@@ -92,7 +92,7 @@ function updateItemQuantity(){
 function updateItemPrice(){
     const   itemId      = $(this).parent()[0].id,
             orderId     = $(this).parent().parent().parent()[0].id;
-    sendRequest('/ordered-item/update-price',{item_id: itemId, price: $(this).val(), order_id: orderId},
+    sendRequest('/ordered-item/edit/price',{item_id: itemId, price: $(this).val(), order_id: orderId},
     (order) => {
         $(`#${order._id}.order .sum`).val(order.sum);
     }
