@@ -141,20 +141,23 @@ router.post("/edit/discount-togo", (req, res) => {
 router.post('/close' , (req, res) => {
   let promiseToUpdateOrder = dbFunctions.promiseToUpdateFromCollectionById(Order, req.body._id, {closed: true});
   promiseToUpdateOrder.then( (updatedOrder) => {
-    var orderedItems = updatedOrder.orderedItems;
-    var promisedItems = orderedItems.reduce( (promisedItems, item) => {
+    const orderedItems = updatedOrder.orderedItems;
+    let promisedItems = orderedItems.reduce( (promisedItems, item) => {
       return promisedItems.concat(dbFunctions.promiseToGetFromCollectionById(OrderedItem, item));
     }, []);
     Promise.all(promisedItems).then( (orderedItems) => {
       var notEmptyItems = orderedItems.reduce( (notEmptyItems, orderedItem) => {
-        if(orderedItem.name){ 
-          notEmptyItems.push(orderedItem._id);
-        }
+        if(orderedItem.name){ notEmptyItems.push(orderedItem._id); }
         else { dbFunctions.promiseToDeleteFromCollectionById(OrderedItem, orderedItem._id).then();}
         return notEmptyItems;        
       }, []);
-      updatedOrder.orderedItems = notEmptyItems;
-      updatedOrder.save(() => { res.send(updatedOrder._id); });
+      if(notEmptyItems[0]){
+        updatedOrder.orderedItems = notEmptyItems;
+        updatedOrder.save(() => { res.send(updatedOrder._id); }); 
+      } else {
+        let deletePromise = dbFunctions.promiseToDeleteFromCollectionById(Order, updatedOrder._id);
+        deletePromise.then(() => { res.send(updatedOrder._id); });
+      }
     });
   });
 });
