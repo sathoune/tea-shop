@@ -146,18 +146,17 @@ router.post('/close' , (req, res) => {
       return promisedItems.concat(dbFunctions.promiseToGetFromCollectionById(OrderedItem, item));
     }, []);
     Promise.all(promisedItems).then( (orderedItems) => {
-      var notEmptyItems = orderedItems.reduce( (notEmptyItems, orderedItem) => {
-        if(orderedItem.name){ notEmptyItems.push(orderedItem._id); }
-        else { dbFunctions.promiseToDeleteFromCollectionById(OrderedItem, orderedItem._id).then();}
-        return notEmptyItems;        
-      }, []);
-      if(notEmptyItems[0]){
-        updatedOrder.orderedItems = notEmptyItems;
-        updatedOrder.save(() => { res.send(updatedOrder._id); }); 
-      } else {
-        let deletePromise = dbFunctions.promiseToDeleteFromCollectionById(Order, updatedOrder._id);
-        deletePromise.then(() => { res.send(updatedOrder._id); });
-      }
+        var notEmptyItems = orderedItems.reduce( (notEmptyItems, orderedItem) => {
+            if(orderedItem.name){ notEmptyItems.push(orderedItem._id); }
+            else { dbFunctions.promiseToDeleteFromCollectionById(OrderedItem, orderedItem._id).then();}
+            return notEmptyItems;        
+        }, []);
+        if(notEmptyItems[0]){
+            updatedOrder.orderedItems = notEmptyItems;
+            updatedOrder.save(() => { res.send(updatedOrder._id); }); 
+        } else {
+            Order.findOneAndDelete({_id: updatedOrder._id}, () => { res.send(updatedOrder._id); });
+        }
     });
   });
 });
@@ -166,37 +165,37 @@ router.post("/old", (req, res) => {
   Order.find({closed: false}, (err, openOrders) => { 
     if(err) { console.log(err); }
     else { 
-      let promises = openOrders.reduce((promiseChain, order) => {
+        let promises = openOrders.reduce((promiseChain, order) => {
         return promiseChain.then( () => new Promise( (resolve) => {
-          if(order.sum == '0'){
-            Order.findOneAndDelete(order);
-            openOrders.splice(openOrders.indexOf(order), 1);
-          }
-          resolve();
+            if(order.sum == '0'){
+                Order.findOneAndDelete(order);
+                openOrders.splice(openOrders.indexOf(order), 1);
+            }
+            resolve();
         }));
-      }, Promise.resolve());
-      promises.then(() => {res.send(openOrders); });
+        }, Promise.resolve());
+        promises.then(() => {res.send(openOrders); });
     }
   });
 });
 
 router.post("/delete", (req, res) => {
-  let promiseOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body._id);
-  promiseOrder.then( (order) => {
-    let deleteOrder = dbFunctions.promiseToDeleteFromCollectionById(Order, order._id);
-    var deleteItem = [];
-    order.orderedItems.forEach( (item) => {
-      deleteItem += dbFunctions.promiseToDeleteFromCollectionById(OrderedItem, item._id);
+    let promiseOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body._id);
+    promiseOrder.then( (order) => {
+        let deleteOrder = dbFunctions.promiseToDeleteFromCollectionById(Order, order._id);
+        var deleteItem = [];
+        order.orderedItems.forEach( (item) => {
+            deleteItem += dbFunctions.promiseToDeleteFromCollectionById(OrderedItem, item._id);
     });
     Promise.all([deleteItem, deleteOrder]).then( () => { res.send('order deleted');});
-  });
+    });
 });
 
 router.post("/test", (req, res) => {
-  var promiseOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body.orderId);
-  promiseOrder.then( (order) => {
-    console.log(order.discount);
-  });
+    var promiseOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body.orderId);
+    promiseOrder.then( (order) => {
+        console.log(order.discount);
+    });
 });
 
 module.exports = router;
