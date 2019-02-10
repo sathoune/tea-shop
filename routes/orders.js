@@ -139,31 +139,23 @@ router.post("/edit/discount-togo", (req, res) => {
 });
 
 router.post('/close' , (req, res) => {
-  Order.findByIdAndUpdate({_id: req.body._id }, {closed: true}, {new: true}, 
-  (err, updatedOrder) =>{
-    if(err) { console.log(err); }
-    else {
-      const promise = new Promise( (resolve, reject) => {
-        OrderedItem.find({_id: {$in: updatedOrder.orderedItems}}, (err, foundItems) => {
-          foundItems.forEach( (item) => {
-            if(item.name == ""){
-              var index = updatedOrder.orderedItems.indexOf(item._id);
-              if(index > -1){ updatedOrder.orderedItems.splice(index, 1); }
-              OrderedItem.deleteOne({_id: item._id}, (err) => {
-                if(err) {console.log(err)}
-                else {
-                  resolve('order closed');
-                }
-              });
-            }
-          });
-        });
-      });
-      promise.then( (resolve) => {
-        updatedOrder.save();
-        res.send(updatedOrder._id);
-      });
-    }
+  let promiseToUpdateOrder = dbFunctions.promiseToUpdateFromCollectionById(Order, req.body._id, {closed: true});
+  promiseToUpdateOrder.then( (updatedOrder) => {
+    var orderedItems = updatedOrder.orderedItems;
+    var promisedItems = orderedItems.reduce( (promisedItems, item) => {
+      return promisedItems.concat(dbFunctions.promiseToGetFromCollectionById(OrderedItem, item));
+    }, []);
+    Promise.all(promisedItems).then( (orderedItems) => {
+      var notEmptyItems = orderedItems.reduce( (notEmptyItems, orderedItem) => {
+        if(orderedItem.name){ 
+          notEmptyItems.push(orderedItem._id);
+        }
+        else { dbFunctions.promiseToDeleteFromCollectionById(OrderedItem, orderedItem._id).then();}
+        return notEmptyItems;        
+      }, []);
+      updatedOrder.orderedItems = notEmptyItems;
+      updatedOrder.save(() => { res.send(updatedOrder._id); });
+    });
   });
 });
 
