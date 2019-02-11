@@ -28,8 +28,19 @@ function promiseToUpdateFromCollectionById(collection, id, properties){
     return promise;
 }
 
+function promiseToGetFromCollectionByObject(collection, object){
+    let promise = new Promise( (resolve, reject) => {
+        collection.findOne(object, (err, found) => {
+            if(err){ reject(); console.log(err); }
+            else { resolve(found); }
+        }) 
+    });
+    return promise;
+}
+
 module.exports = {
     promiseToGetFromCollectionById:     promiseToGetFromCollectionById,
     promiseToDeleteFromCollectionById:  promiseToDeleteFromCollectionById,
     promiseToUpdateFromCollectionById:  promiseToUpdateFromCollectionById,
+    promiseToGetFromCollectionByObject:     promiseToGetFromCollectionByObject,
 }
