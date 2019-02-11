@@ -93,8 +93,11 @@ function updateItemPrice(){
     const   itemId      = $(this).parent()[0].id,
             orderId     = $(this).parent().parent().parent()[0].id;
     sendRequest('/ordered-item/edit/price',{item_id: itemId, price: $(this).val(), order_id: orderId},
-    (order) => {
-        $(`#${order._id}.order .sum`).val(order.sum);
+    (data) => {
+        console.log(data);
+        $(`#${data.order._id}.order .sum`).val(data.order.sum);
+        $(`#${data.order._id}.order .discounted-sum`).val(data.order.discountedSum);
+        $(`#${data.item._id}.item .discounted-price`).val(data.item.discountedPrice);
     }
     
     );

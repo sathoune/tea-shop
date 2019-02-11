@@ -25,7 +25,7 @@ router.post("/show", (req, res) => {
     promisedItem.then(item => { res.send(item); });
 });
 
-router.post('/edit/name', (req,res) => {
+router.post('/edit/name', (req, res) => {
     var promisedItem = dbFunctions.promiseToGetFromCollectionById(OrderedItem, req.body.item_id);
     if(req.body.name == ''){
         promisedItem.then( (item) => {
@@ -123,40 +123,23 @@ router.post('/edit/quantity', (req, res) => {
     });
 });
 
-
 // dis not work
 router.post("/edit/price", (req, res) => {
-    let promiseItem = new Promise( (resolve) => {
-        OrderedItem.findOneAndUpdate({_id: req.body.item_id}, {price: req.body.price}, () => {resolve();});
-    });
-    let promiseOrder = new Promise( (resolve) => {
-    Order.findById({_id: req.body.order_id}, (err, foundOrder) => {
-        if(err){ console.log(err); }
-        else {resolve(foundOrder); }
+    let promisedItem = dbFunctions.promiseToUpdateFromCollectionById(OrderedItem, req.body.item_id, {price: req.body.price});
+    let promisedOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body.order_id);
+    Promise.all([promisedOrder, promisedItem]).then(promisedValues => {
+        let order = promisedValues[0];
+        let item = promisedValues[1];
+        item.discountedPrice = item.price * pricesAndSums.calculateDiscount(item, order);
+        item.save();
+        var promisedItems = order.orderedItems.reduce((promises, item) => {
+            return promises.concat(dbFunctions.promiseToGetFromCollectionById(OrderedItem, item));
+        }, []);
+        Promise.all(promisedItems).then((items) => {
+            order.sum = pricesAndSums.calculateSum(items); 
+            order.discountedSum = pricesAndSums.calculateSum(items, "discountedPrice"); 
+            order.save( () => { res.send({order: order, item: item }); });
         });
-    });
-  
-    promiseItem.then( () => {promiseOrder.then( (order) => {
-        OrderedItem.find({_id: {$in: order.orderedItems}}, (err, foundItems) => {
-            if(err){ console.log(err); }
-            else {
-                var newSum = 0;
-                let promises = foundItems.reduce((promiseChain, item) => {
-                    return promiseChain.then( () => new Promise( (resolve) => {
-                        if(item.price){
-                            newSum += Number(item.price);
-                        }
-                        resolve();
-                        }));
-                    }, Promise.resolve());
-                    promises.then( () => {
-                    order.sum = newSum;
-                    order.save();
-                    res.send(order);
-                    });  
-            }
-        });
-    });
     });
 });
 

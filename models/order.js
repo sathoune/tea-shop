@@ -9,12 +9,12 @@ var OrderSchema = new mongoose.Schema({
     table:          { type: String, default: "" },
     orderedItems: [
         {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "OrderedItem"
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "OrderedItem"
         }
    ],
     
 },
-   { timestamps: { createdAt: 'createdAt' } });
+                    {timestamps: { createdAt: 'createdAt' } });
 
 module.exports = mongoose.model("Order", OrderSchema);

@@ -1,10 +1,7 @@
-
 function createOrder(){
     sendRequest('/order/new', {}, 
     (emptyOrder) => {createOrderDiv(emptyOrder._id);});
 }
-
-
 
 function createNavigation(){
     const   topPanel = "<div id='top-panel'></div>",
@@ -68,7 +65,6 @@ function createOrderLabels(orderId){
     $(`#${orderId}.order`).append(labelsDiv);
     $(`#${orderId}.order .labels`).append(labels);
 }
-
 
 function createOrderBottomPanel(orderId){
     const   bottomPanelDiv = `<div class="bottom-panel"></div>`;

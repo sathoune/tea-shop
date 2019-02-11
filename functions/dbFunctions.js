@@ -3,7 +3,7 @@ function promiseToGetFromCollectionById(collection, id){
         collection.findById({_id: id}, (err, found) => {
             if(err){ reject('3131'); console.log(err); }
             else { resolve(found); }
-        }) 
+        }); 
     });
     return promise;
 }
@@ -13,7 +13,7 @@ function promiseToDeleteFromCollectionById(collection, id){
         collection.findOneAndDelete({_id: id}, (err) => {
             if(err){ reject(); console.log(err); }
             else { resolve('object deleted'); }
-       }) 
+       }); 
     });
     return promise;
 }
@@ -33,7 +33,7 @@ function promiseToGetFromCollectionByObject(collection, object){
         collection.findOne(object, (err, found) => {
             if(err){ reject(); console.log(err); }
             else { resolve(found); }
-        }) 
+        });
     });
     return promise;
 }
@@ -43,4 +43,4 @@ module.exports = {
     promiseToDeleteFromCollectionById:  promiseToDeleteFromCollectionById,
     promiseToUpdateFromCollectionById:  promiseToUpdateFromCollectionById,
     promiseToGetFromCollectionByObject:     promiseToGetFromCollectionByObject,
-}
+};
