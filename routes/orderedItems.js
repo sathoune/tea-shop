@@ -25,76 +25,65 @@ router.post("/show", (req, res) => {
     promisedItem.then(item => { res.send(item); });
 });
 
-
-//could change to triple finding with promises;
 router.post('/edit/name', (req,res) => {
+    var promisedItem = dbFunctions.promiseToGetFromCollectionById(OrderedItem, req.body.item_id);
     if(req.body.name == ''){
-    
-        OrderedItem.findOneAndUpdate({_id: req.body.item_id}, {name: "", price: "", discountedPrice: "",},
-        (err) => {
-          if(err) { console.log(err); }
-          else {
-            const response = {
-            name: "", 
-            price: "", 
-            discountedPrice: "",
-            registerCode: "",
-            };
-          res.send(response);      
-          }
-        
-    });
-      } else {
-      MenuItem.findOne({name: { $regex: new RegExp(req.body.name,  "i")}}, 
-      (err, foundMenuItem) => {
-        if(err){ console.log(err);} 
-        else if(foundMenuItem){
-          OrderedItem.findOneAndUpdate(
-          { _id: req.body.item_id}, {name: foundMenuItem.name}, {new: true}, 
-          (err, updatedItem) => {
-            if(err){ console.log(err);} 
-            else {
-              updatedItem.price = pricesAndSums.calculatePrice(foundMenuItem, updatedItem);
-              Order.findById({_id: req.body.order_id}, 
-              (err, foundOrder) => {
-                if(err) { console.log(err); } 
-                else {
-                  updatedItem.discountedPrice = updatedItem.price * pricesAndSums.calculateDiscount(updatedItem, foundOrder);
-                  updatedItem.save( (err) => {
-                    if(err) { console.log(err); }
-                    else { 
-                      var response = {
-                        name: updatedItem.name, 
-                        price: updatedItem.price, 
-                        discountedPrice: updatedItem.discountedPrice,
-                        registerCode: foundMenuItem.registerCode,
-                      }
-                      res.send(response);
-                      
-                    }
-                  });
-                }
-              });
-            }
-          });
-        } else { // when item not found
-          OrderedItem.findOneAndUpdate({_id: req.body.item_id}, {name: "", price: "", discountedPrice: ""},
-          (err) => {
-            if(err) { console.log(err); }
-            else {
-              const response = {
-                name: req.body.name, 
-                price: "", 
-                discountedPrice: "",
-                registerCode: "",
-                err: 'wrong name',
+        promisedItem.then( (item) => {
+            item.name = "";
+            item.price = "";
+            item.discountedPrice = "";
+            item.save( () => {
+                const response = {
+                    name: "", 
+                    price: "", 
+                    discountedPrice: "",
+                    registerCode: "",
                 };
-              res.send(response); 
+            res.send(response);                
+            });
+        });
+    } else {
+        let promisedMenuItem = new Promise( (resolve, reject) => {
+            MenuItem.findOne({name: { $regex: new RegExp(req.body.name,  "i")}}, (err, foundMenuItem) => {
+                if(err){ reject(err); }
+                else{ resolve(foundMenuItem); }
+            }); 
+        });
+        let promisedOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body.order_id);
+        Promise.all([promisedItem, promisedOrder, promisedMenuItem]).then( (values) => {
+            let item = values[0],
+                order = values[1],
+                menuItem = values[2];
+            if(menuItem){
+               item.name = menuItem.name;
+                item.price = pricesAndSums.calculatePrice(menuItem, item);
+                item.discountedPrice = item.price * pricesAndSums.calculateDiscount(item, order);
+                item.save( () => {
+                    var response = {
+                            name: item.name, 
+                            price: item.price, 
+                            discountedPrice: item.discountedPrice,
+                            registerCode: menuItem.registerCode,
+                        };
+                    res.send(response);
+                }); 
+            } else {
+                item.name = "";
+                item.price = "";
+                item.discountedPrice = "";
+                item.save( () => {
+                    const response = {
+                        name: "", 
+                        price: "", 
+                        discountedPrice: "",
+                        registerCode: "",
+                        err: "wrong name",
+                    };
+                res.send(response);                
+                });
             }
-          });
-        }
-      });
-      }
+        });
+    }
 });
 
 router.post('/edit/type', (req, res) => {
@@ -166,8 +155,8 @@ router.post("/edit/price", (req, res) => {
                     res.send(order);
                     });  
             }
-            });
         });
+    });
     });
 });
 
