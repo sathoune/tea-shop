@@ -49,39 +49,24 @@ router.post("/edit/discounted-sum", (req, res) => {
 });
 
 router.post("/edit/discount", (req, res) => {
-  Order.findByIdAndUpdate(
-    {_id: req.body._id},{discount: req.body.discount}, {new: true},
-    (err, updatedOrder) => {
-      if(err) { console.log(err);} 
-      else {
-        OrderedItem.find({_id: {$in: updatedOrder.orderedItems}}, 
-        (err, foundItems) => {
-        if(err) { console.log(err); }
-        else {
-          updatedOrder.discountedSum = 0;
-          let promises = foundItems.reduce((promiseChain, item) => {
-            return promiseChain.then( () => new Promise( (resolve) => {
-              if(item.discountedPrice) { 
-                var newDiscountedPrice = item.price * pricesAndSums.calculateDiscount(item, updatedOrder);
-                updatedOrder.discountedSum = Number(updatedOrder.discountedSum) + newDiscountedPrice; 
-                item.discountedPrice = newDiscountedPrice;
-              } 
-              item.save( (err) => {
-                if(err) { console.log(err); }
-                else { resolve(); }
-              });
-            }));
-          }, Promise.resolve());
-          promises.then(() => {
-            updatedOrder.save( (err) => {
-              if (err) { console.log(err); }
-              else {res.send({discountedSum: updatedOrder.discountedSum, orderedItems: foundItems}); }
-            });  
-          });
-        }
-      });
-    }
-  }); 
+    let promisedOrder = dbFunctions.promiseToUpdateFromCollectionById(Order, req.body._id, {discount: req.body.discount});
+    promisedOrder.then((order) => { 
+        var promisedItems = order.orderedItems.reduce((promises, item) => {
+            return promises.concat(dbFunctions.promiseToGetFromCollectionById(OrderedItem, item));
+        }, []);
+        Promise.all(promisedItems).then( (items) => { 
+            var newDiscountedSum = items.reduce( (discountedSum, item) => {
+                if(item.price){
+                    item.discountedPrice = Number(item.price) * pricesAndSums.calculateDiscount(item, order);
+                    discountedSum += Number(item.discountedPrice);
+                    item.save();   
+                }
+                return discountedSum;
+            }, 0); 
+            order.discountedSum = newDiscountedSum;
+            order.save( () => { res.send({ discountedSum: order.discountedSum, orderedItems: items }); });
+        });
+    });
 });
 
 router.post("/edit/discount-togo", (req, res) => {

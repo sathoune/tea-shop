@@ -10,6 +10,7 @@ var MenuItemSchema = new mongoose.Schema({
         bulk: {type: String, default: ""},
     },
 
-});
+},
+   { timestamps: { createdAt: 'createdAt' } });
 
 module.exports = mongoose.model("MenuItem", MenuItemSchema);
