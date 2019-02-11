@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router({ mergeParams: true });
 var Order = require("../models/order");
 var OrderedItem = require("../models/orderedItem");
+const dbFunctions = require("../functions/dbFunctions");
 
 
 router.post("/", (req, res) => {
@@ -18,26 +19,19 @@ router.post("/", (req, res) => {
     } else { res.send(''); }
 });
 
-router.post("/show-ordered-items", (req,res) => {
-    Order.findById(req.body, (err, foundOrder)=>{
-       if(err){ console.log(err); } 
-       else {
-         OrderedItem.find({_id: { $in: foundOrder.orderedItems}}, 
-         (err, foundItems) => {
-           if(err) { console.log(err);} 
-           else { res.send(foundItems); }
-        });  
-       }
+router.post("/show-ordered-items", (req, res) => {
+    let promisedOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body._id);
+    promisedOrder.then( (order) => {
+       let promisedItems = order.orderedItems.reduce( (promisedItems, item) => {
+           return promisedItems.concat(dbFunctions.promiseToGetFromCollectionById(OrderedItem, item));
+       }, []); 
+       Promise.all(promisedItems).then((items) => {res.send(items);});
     });
 });
 
 router.post("/reopen", (req, res) => {
-    Order.findOneAndUpdate({_id: req.body._id}, {closed: false}, 
-    (err) => {
-       if(err) { console.log(err); }
-       else { res.send('order reopened'); }
-    });
-    
+    let promisedOrder = dbFunctions.promiseToUpdateFromCollectionById(Order, req.body._id, {closed: false});
+    promisedOrder.then( () => { res.send("order opened"); });
 });
 
 module.exports = router;

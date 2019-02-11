@@ -4,220 +4,173 @@ var Order = require("../models/order");
 var OrderedItem = require("../models/orderedItem");
 var MenuItem = require("../models/menu");
 var pricesAndSums = require("../functions/pricesAndSums");
-
-
-
+const dbFunctions = require("../functions/dbFunctions");
 
 router.post("/new", (req, res) => {
-  Order.findById(req.body.orderID, (err, foundOrder) => {
-    if(err){console.log(err);} 
-    else {
-      OrderedItem.create({}, (err, createdItem) => {
-        if(err){console.log(err);} 
+    let promisedOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body.orderID);
+    promisedOrder.then((order) => {
+        OrderedItem.create({}, (err, createdItem) => {
+        if(err){ console.log(err); } 
         else {
-            foundOrder.orderedItems.push(createdItem);
-            foundOrder.save();
+            order.orderedItems.push(createdItem);
+            order.save();
             res.send(createdItem);
         }
       });
-    }
-  });
+    });
 });
 
-router.post("/show", (req, res) =>
-{
-  OrderedItem.findById({_id: req.body._id}, (err, foundItem) => {
-    if(err) { console.log(err); }
-    else { res.send(foundItem); } 
-  });
+router.post("/show", (req, res) => {
+    let promisedItem = dbFunctions.promiseToGetFromCollectionById(OrderedItem, req.body._id);
+    promisedItem.then(item => { res.send(item); });
 });
 
-
-//could change to triple finding with promises;
-router.post('/update-name', (req,res) => {
-  if(req.body.name == ''){
-    OrderedItem.findOneAndUpdate({_id: req.body.item_id}, {name: "", price: "", discountedPrice: "",},
-    (err) => {
-      if(err) { console.log(err); }
-      else {
-        const response = {
-        name: "", 
-        price: "", 
-        discountedPrice: "",
-        registerCode: "",
-        };
-      res.send(response);      
-      }
-        
-  });
-  } else {
-  MenuItem.findOne({name: { $regex: new RegExp(req.body.name,  "i")}}, 
-  (err, foundMenuItem) => {
-    if(err){ console.log(err);} 
-    else if(foundMenuItem){
-      OrderedItem.findOneAndUpdate(
-      { _id: req.body.item_id}, {name: foundMenuItem.name}, {new: true}, 
-      (err, updatedItem) => {
-        if(err){ console.log(err);} 
-        else {
-          updatedItem.price = pricesAndSums.calculatePrice(foundMenuItem, updatedItem);
-          Order.findById({_id: req.body.order_id}, 
-          (err, foundOrder) => {
-            if(err) { console.log(err); } 
-            else {
-              updatedItem.discountedPrice = updatedItem.price * pricesAndSums.calculateDiscount(updatedItem, foundOrder);
-              updatedItem.save( (err) => {
-                if(err) { console.log(err); }
-                else { 
-                  response = {
-                    name: updatedItem.name, 
-                    price: updatedItem.price, 
-                    discountedPrice: updatedItem.discountedPrice,
-                    registerCode: foundMenuItem.registerCode,
-                  }
-                  res.send(response);
-                  
-                }
-              });
-            }
-          });
-        }
-      });
-    } else { // when item not found
-      OrderedItem.findOneAndUpdate({_id: req.body.item_id}, {name: "", price: "", discountedPrice: ""},
-      (err) => {
-        if(err) { console.log(err); }
-        else {
-          const response = {
-            name: req.body.name, 
-            price: "", 
-            discountedPrice: "",
-            registerCode: "",
-            err: 'wrong name',
-            };
-          res.send(response); 
-        }
-      });
-    }
-  });
-  }
-});
-
-router.post('/update-type', (req,res) => {
-  OrderedItem.findOneAndUpdate(
-    { _id: req.body.item_id}, {type: req.body.type}, {new: true}, 
-    (err, updatedItem) => {
-      if(err){console.log(err); }
-      else {
-        MenuItem.findOne({name: updatedItem.name}, (err, menuItem) => {
-          if(err) { console.log(err); }
-          else if(menuItem){
-            var newPrice = pricesAndSums.calculatePrice(menuItem, updatedItem);
-            Order.findById({_id: req.body.order_id}, (err, foundOrder) => {
-              if(err) { console.log(err);} 
-              else {
-              var discountedPrice = newPrice * pricesAndSums.calculateDiscount(updatedItem, foundOrder);
-              OrderedItem.findOneAndUpdate(
-                { _id: updatedItem._id}, 
-                {price: newPrice, discountedPrice: discountedPrice,},{new: true},
-                (err, updatedItem) => {
-                  if(err) { console.log(err); }
-                  else {
-                    var response = {price: updatedItem.price, discountedPrice: updatedItem.discountedPrice};
-                    res.send(response);
-                  }
-                });
-              }
+router.post('/edit/name', (req, res) => {
+    var promisedItem = dbFunctions.promiseToGetFromCollectionById(OrderedItem, req.body.item_id);
+    if(req.body.name == ''){
+        promisedItem.then( (item) => {
+            item.name = "";
+            item.price = "";
+            item.discountedPrice = "";
+            item.save( () => {
+                const response = {
+                    name: "", 
+                    price: "", 
+                    discountedPrice: "",
+                    registerCode: "",
+                };
+            res.send(response);                
             });
-          } else {res.send({price: "0"}); } // When item not found
         });
-      }
-    });
-});
-
-router.post('/update-quantity', (req,res) => {
-  OrderedItem.findOneAndUpdate(
-  { _id: req.body.item_id}, {quantity: req.body.quantity}, {new: true}, 
-  (err, updatedItem) => {
-    if(err){ console.log(err); } 
-    else {
-      MenuItem.findOne({name: updatedItem.name}, (err, menuItem) => {
-        if(err) { console.log(err); } 
-        else if(menuItem){
-          var newPrice = pricesAndSums.calculatePrice(menuItem, updatedItem);
-          Order.findById({_id: req.body.order_id}, (err, foundOrder) => {
-            if(err) { console.log(err);} 
-            else {
-              var discountedPrice = newPrice * pricesAndSums.calculateDiscount(updatedItem, foundOrder);
-              OrderedItem.findOneAndUpdate(
-                { _id: updatedItem._id}, 
-                {price: newPrice,discountedPrice: discountedPrice,},{new: true},
-                (err, updatedItem) => {
-                  if(err) { console.log(err);
-                  } else {
-                    var respone = {price: updatedItem.price, discountedPrice: updatedItem.discountedPrice };
-                    res.send(respone);
-                  }
+    } else {
+        let promisedMenuItem = new Promise( (resolve, reject) => {
+            MenuItem.findOne({name: { $regex: new RegExp(req.body.name,  "i")}}, (err, foundMenuItem) => {
+                if(err){ reject(err); }
+                else{ resolve(foundMenuItem); }
+            }); 
+        });
+        let promisedOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body.order_id);
+        Promise.all([promisedItem, promisedOrder, promisedMenuItem]).then( (values) => {
+            let item = values[0],
+                order = values[1],
+                menuItem = values[2];
+            if(menuItem){
+               item.name = menuItem.name;
+                item.price = pricesAndSums.calculatePrice(menuItem, item);
+                item.discountedPrice = item.price * pricesAndSums.calculateDiscount(item, order);
+                item.save( () => {
+                    var response = {
+                            name: item.name, 
+                            price: item.price, 
+                            discountedPrice: item.discountedPrice,
+                            registerCode: menuItem.registerCode,
+                        };
+                    res.send(response);
+                }); 
+            } else {
+                item.name = "";
+                item.price = "";
+                item.discountedPrice = "";
+                item.save( () => {
+                    const response = {
+                        name: "", 
+                        price: "", 
+                        discountedPrice: "",
+                        registerCode: "",
+                        err: "wrong name",
+                    };
+                res.send(response);                
                 });
             }
-          });
-        } else {res.send({price: "0"}); }             // When item not found
-      });
-    }
-  });
-});
-
-router.post("/update-price", (req, res) => {
-  let promiseItem = new Promise( (resolve) => {
-    OrderedItem.findOneAndUpdate({_id: req.body.item_id}, {price: req.body.price}, () => {resolve();});
-  });
-  let promiseOrder = new Promise( (resolve) => {
-    Order.findById({_id: req.body.order_id}, (err, foundOrder) => {
-      if(err){ console.log(err); }
-      else {resolve(foundOrder); }
-    });
-  });
-  
-  promiseItem.then( () => {promiseOrder.then( (order) => {
-    OrderedItem.find({_id: {$in: order.orderedItems}}, (err, foundItems) => {
-      if(err){ console.log(err); }
-      else{
-        var newSum = 0;
-        let promises = foundItems.reduce((promiseChain, item) => {
-          return promiseChain.then( () => new Promise( (resolve) => {
-            if(item.price){
-              newSum += Number(item.price);
-            }
-            resolve();
-          }));
-        }, Promise.resolve());
-        promises.then( () => {
-          order.sum = newSum;
-          order.save();
-          res.send(order);
-        });  
-      
-      }
-    });
-  });
-  });
-});
-
-router.post("/delete", (req,res)=>{
-  Order.find({orderedItems: req.body._id}, (err, foundOrder) => {
-    if(err) { console.log(err); }
-    else {
-      var indexOfDeletedItem = foundOrder[0].orderedItems.indexOf(req.body._id);
-      foundOrder[0].orderedItems.splice(indexOfDeletedItem, 1);
-      foundOrder[0].save();
-      
-      OrderedItem.findOneAndDelete({_id: req.body._id}, (err)=>{
-        if(err) { console.log(err); }
-        else { res.send('item deleted'); }
         });
     }
-  });
-  
+});
+
+router.post('/edit/type', (req, res) => {
+    let promisedItem = dbFunctions.promiseToUpdateFromCollectionById(OrderedItem, req.body.item_id, {type: req.body.type});
+    promisedItem.then((item) => {
+        let promisedOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body.order_id);
+        let promisedMenuItem = dbFunctions.promiseToGetFromCollectionByObject(MenuItem, {name: item.name});
+        Promise.all([promisedOrder, promisedMenuItem]).then((data) => {
+            const order = data[0];
+            const menuItem = data[1];
+            item.price = pricesAndSums.calculatePrice(menuItem, item);
+            item.discountedPrice = item.price * pricesAndSums.calculateDiscount(item, order);
+            item.save(() => {
+               const response = {price: item.price, discountedPrice: item.discountedPrice};
+               res.send(response); 
+            });
+        });
+    });
+});
+// very much the same as type
+router.post('/edit/quantity', (req, res) => {
+    let promisedItem = dbFunctions.promiseToUpdateFromCollectionById(OrderedItem, req.body.item_id, {quantity: req.body.quantity});
+    promisedItem.then((item) => {
+        let promisedOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body.order_id);
+        let promisedMenuItem = dbFunctions.promiseToGetFromCollectionByObject(MenuItem, {name: item.name});
+        Promise.all([promisedOrder, promisedMenuItem]).then((data) => {
+            const order = data[0];
+            const menuItem = data[1];
+            item.price = pricesAndSums.calculatePrice(menuItem, item);
+            item.discountedPrice = item.price * pricesAndSums.calculateDiscount(item, order);
+            item.save(() => {
+               const response = {price: item.price, discountedPrice: item.discountedPrice};
+               res.send(response); 
+            });
+        });
+
+    });
+});
+
+router.post("/edit/price", (req, res) => {
+    let promisedItem = dbFunctions.promiseToUpdateFromCollectionById(OrderedItem, req.body.itemId, {price: req.body.price});
+    let promisedOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body.orderId);
+    Promise.all([promisedOrder, promisedItem]).then(promisedValues => {
+        let order = promisedValues[0];
+        let item = promisedValues[1];
+        item.discountedPrice = item.price * pricesAndSums.calculateDiscount(item, order);
+        item.save();
+        var promisedItems = order.orderedItems.reduce((promises, item) => {
+            return promises.concat(dbFunctions.promiseToGetFromCollectionById(OrderedItem, item));
+        }, []);
+        Promise.all(promisedItems).then((items) => {
+            order.sum = pricesAndSums.calculateSum(items); 
+            order.discountedSum = pricesAndSums.calculateSum(items, "discountedPrice"); 
+            order.save( () => { res.send({order: order, item: item }); });
+        });
+    });
+});
+
+router.post("/edit/discounted-price", (req, res) => {
+    let promisedItem = dbFunctions.promiseToUpdateFromCollectionById(OrderedItem, req.body.itemId, {discountedPrice: req.body.discountedPrice});
+    let promisedOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body.orderId);
+    Promise.all([promisedOrder, promisedItem]).then(promisedValues => {
+        let order = promisedValues[0];
+        let item = promisedValues[1];
+        var promisedItems = order.orderedItems.reduce((promises, item) => {
+            return promises.concat(dbFunctions.promiseToGetFromCollectionById(OrderedItem, item));
+        }, []);
+        Promise.all(promisedItems).then((items) => {
+            order.discountedSum = pricesAndSums.calculateSum(items, "discountedPrice"); 
+            order.save( () => { res.send({order: order, item: item }); });
+        });
+    });
+});
+
+router.post("/delete", (req, res) => {
+    Order.find({orderedItems: req.body._id}, (err, foundOrder) => {
+        if(err) { console.log(err); }
+        else {
+            var indexOfDeletedItem = foundOrder[0].orderedItems.indexOf(req.body._id);
+            foundOrder[0].orderedItems.splice(indexOfDeletedItem, 1);
+            foundOrder[0].save();
+            OrderedItem.findOneAndDelete({_id: req.body._id}, (err) => {
+                if(err) { console.log(err); }
+                else { res.send('item deleted'); }
+            });
+        }
+    });
 });
 
 module.exports = router;
