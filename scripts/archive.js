@@ -41,36 +41,45 @@ function createArchiveContainers(){
     const   dateInput           = `<input type="date" id="day-for-display" name="trip-start"
        value='${newDate}' min="2019-01-01" max="2025-12-31">`;
     $('body').append(archive);
-
+    const archivePanelLabelsDiv = `<div id='labels'><input type='text' class='date-label' value='Data' readonly><input type='text' class='date-label' value='Suma' readonly><input type='text' class='date-label' value='Po zniżce' readonly></div>`;
+    const archivedOrderLabels = `<div id='archived-orders-labels' readonly><input type='text' class='date-label' value='Otwarto:' readonly><input type='text' class='date-label' value='Suma' readonly><input type='text' class='date-label' value='Po zniżce' readonly></div>`
     $('#archive').append(archiveContainers);
     $('#archive-panel').append(dateInput);
-    $('#day-for-display').on('change' , () => { 
-        $('#archived-orders').empty();
+    $('#archive-panel').prepend(archivePanelLabelsDiv);
+    $('#archived-orders').append(archivedOrderLabels);
+
+    $('#day-for-display').on('change' , generateDay);
+}
+
+function generateDay(){
+    $('#archived-orders').empty();
         let dayForDisplay = $('#day-for-display').val()
         sendRequest('/archive', {date: dayForDisplay}, 
         (data) => {
             if(data){
-                var sum = 0;
-                var discountedSum = 0;
+                let sum = 0;
+                let discountedSum = 0;
                 data.forEach((item) => {
                    if(item.sum){ sum+= Number(item.sum); } 
                    if(item.discountedSum){ discountedSum += Number(item.discountedSum);}
                 });
                 data.forEach(constructArchiveDiv); 
                 setSums(sum, discountedSum);
+                
+
             } else {
                 setSums(0,0);
                 console.log('this day is not a day');
                 //make message
             }
         });
-    }); 
 }
 
 function constructArchiveDiv(orderData){
-  const orderDiv = `<div id='${orderData._id}' class='archived-order'></div>`;
-  $('#archived-orders').append(orderDiv);
-  constructOrderDisplay(orderData);
+    const orderDiv = `<div id='${orderData._id}' class='archived-order'></div>`;
+    $('#archived-orders').append(orderDiv);
+    
+    constructOrderDisplay(orderData);
 }
 
 function constructOrderDisplay(orderData){
