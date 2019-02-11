@@ -21,7 +21,7 @@ function insertInputsInto(div){
             priceInput            = '<input type="number" class="price">',
             quantityInput         = '<input type="number" class="quantity" name="quantity" min="0" value="1">',
             hintInput             = '<input type="text" class="hint">',
-            discountedPriceInput  = '<input type="number" class="discounted-price" readonly>',
+            discountedPriceInput  = '<input type="number" class="discounted-price">',
             typeInput             = `<select class="type">
                                         <option value="sztuka">sztuka</option>
                                         <option value="czajnik">czajnik</option>
@@ -92,16 +92,22 @@ function updateItemQuantity(){
 function updateItemPrice(){
     const   itemId      = $(this).parent()[0].id,
             orderId     = $(this).parent().parent().parent()[0].id;
-    sendRequest('/ordered-item/edit/price',{item_id: itemId, price: $(this).val(), order_id: orderId},
+    sendRequest('/ordered-item/edit/price',{itemId: itemId, price: $(this).val(), orderId: orderId},
     (data) => {
-        console.log(data);
         $(`#${data.order._id}.order .sum`).val(data.order.sum);
         $(`#${data.order._id}.order .discounted-sum`).val(data.order.discountedSum);
         $(`#${data.item._id}.item .discounted-price`).val(data.item.discountedPrice);
-    }
-    
-    );
-    
+    });
+}
+
+function updateItemDiscountedPrice(){
+    const   itemId      = $(this).parent()[0].id,
+            orderId     = $(this).parent().parent().parent()[0].id;
+    sendRequest('/ordered-item/edit/discounted-price',{itemId: itemId, discountedPrice: $(this).val(), orderId: orderId},
+    (data) => {
+        $(`#${data.order._id}.order .discounted-sum`).val(data.order.discountedSum);
+        $(`#${data.item._id}.item .discounted-price`).val(data.item.discountedPrice);
+    });
 }
 
 function restoreItem(orderId, itemId){

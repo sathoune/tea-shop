@@ -123,10 +123,9 @@ router.post('/edit/quantity', (req, res) => {
     });
 });
 
-// dis not work
 router.post("/edit/price", (req, res) => {
-    let promisedItem = dbFunctions.promiseToUpdateFromCollectionById(OrderedItem, req.body.item_id, {price: req.body.price});
-    let promisedOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body.order_id);
+    let promisedItem = dbFunctions.promiseToUpdateFromCollectionById(OrderedItem, req.body.itemId, {price: req.body.price});
+    let promisedOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body.orderId);
     Promise.all([promisedOrder, promisedItem]).then(promisedValues => {
         let order = promisedValues[0];
         let item = promisedValues[1];
@@ -137,6 +136,22 @@ router.post("/edit/price", (req, res) => {
         }, []);
         Promise.all(promisedItems).then((items) => {
             order.sum = pricesAndSums.calculateSum(items); 
+            order.discountedSum = pricesAndSums.calculateSum(items, "discountedPrice"); 
+            order.save( () => { res.send({order: order, item: item }); });
+        });
+    });
+});
+
+router.post("/edit/discounted-price", (req, res) => {
+    let promisedItem = dbFunctions.promiseToUpdateFromCollectionById(OrderedItem, req.body.itemId, {discountedPrice: req.body.discountedPrice});
+    let promisedOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body.orderId);
+    Promise.all([promisedOrder, promisedItem]).then(promisedValues => {
+        let order = promisedValues[0];
+        let item = promisedValues[1];
+        var promisedItems = order.orderedItems.reduce((promises, item) => {
+            return promises.concat(dbFunctions.promiseToGetFromCollectionById(OrderedItem, item));
+        }, []);
+        Promise.all(promisedItems).then((items) => {
             order.discountedSum = pricesAndSums.calculateSum(items, "discountedPrice"); 
             order.save( () => { res.send({order: order, item: item }); });
         });
