@@ -14,7 +14,7 @@ router.post("/new", (req, res) => {
 
 router.post("/edit/table", (req, res) => {
     let promisedOrder = dbFunctions.promiseToUpdateFromCollectionById(Order, req.body._id, {table: req.body.table});
-    promisedOrder.then(()=>{res.send("Done");});
+    promisedOrder.then( () => {res.send("Done");});
 });
 
 router.post("/edit/sum", (req, res) => {
@@ -25,7 +25,7 @@ router.post("/edit/sum", (req, res) => {
         }, []);
         Promise.all(promisedItems).then( items => { 
             order.sum = pricesAndSums.calculateSum(items);
-            order.save( ( )=> { res.send({ sum: order.sum }) });
+            order.save( () => { res.send({ sum: order.sum }); });
         });
     });
 });
@@ -103,7 +103,7 @@ router.post('/close' , (req, res) => {
         }, []);
         if(notEmptyItems[0]){
             updatedOrder.orderedItems = notEmptyItems;
-            updatedOrder.save(() => { res.send(updatedOrder._id); }); 
+            updatedOrder.save( () => { res.send(updatedOrder._id); }); 
         } else {
             Order.findOneAndDelete({_id: updatedOrder._id}, () => { res.send(updatedOrder._id); });
         }
@@ -138,13 +138,6 @@ router.post("/delete", (req, res) => {
             deleteItem += dbFunctions.promiseToDeleteFromCollectionById(OrderedItem, item._id);
     });
     Promise.all([deleteItem, deleteOrder]).then( () => { res.send('order deleted');});
-    });
-});
-
-router.post("/test", (req, res) => {
-    var promiseOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body.orderId);
-    promiseOrder.then( (order) => {
-        console.log(order.discount);
     });
 });
 
