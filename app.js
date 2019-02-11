@@ -3,7 +3,11 @@ var express     = require("express"),
 
 var bodyParser = require("body-parser");
 
-
+var passport = require("passport"),
+    flash = require("connect-flash"),
+    LocalStrategy = require("passport-local"),
+    User = require("./models/user");
+    
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.set("view engine", "ejs");
@@ -22,6 +26,30 @@ mongoose.connect(dbURL, {useNewUrlParser: true}, function(err){
         console.log("connected to mongo");
     }
 });
+
+app.use(flash());
+app.use(require("express-session")({
+    secret: "This is some secret password-storing",
+    resave: false,
+    saveUninitialized: false
+}));
+
+// passport config
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+app.use((req, res, next) => {
+    res.locals.currentUser = req.user;
+    res.locals.error = req.flash('error');
+    res.locals.success = req.flash('success');
+    next();
+});
+
+
 
 // routes
 var indexRoutes         = require("./routes/index"),
