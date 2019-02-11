@@ -42,11 +42,14 @@ function createArchiveContainers(){
        value='${newDate}' min="2019-01-01" max="2025-12-31">`;
     $('body').append(archive);
     const archivePanelLabelsDiv = `<div id='labels'><input type='text' class='date-label' value='Data' readonly><input type='text' class='date-label' value='Suma' readonly><input type='text' class='date-label' value='Po zniżce' readonly></div>`;
-    const archivedOrderLabels = `<div id='archived-orders-labels' readonly><input type='text' class='date-label' value='Otwarto:' readonly><input type='text' class='date-label' value='Suma' readonly><input type='text' class='date-label' value='Po zniżce' readonly></div>`
+    const archivedOrderLabels = `<div id='archived-orders-labels' readonly><input type='text' class='date-label' value='Otwarto:' readonly><input type='text' class='date-label' value='Suma' readonly><input type='text' class='date-label' value='Po zniżce' readonly></div>`;
+    const expandAllButton = `<button id='expand-all-button' class="expand-button">Rozwiń wszystkie<i class="fas fa-search-plus"></i></button>`;
+
     $('#archive').append(archiveContainers);
-    $('#archive-panel').append(dateInput);
+    $('#archive-panel').append([dateInput, expandAllButton]);
     $('#archive-panel').prepend(archivePanelLabelsDiv);
     $('#archived-orders').append(archivedOrderLabels);
+    $(`#expand-all-button`).on("click", expandAll);
 
     $('#day-for-display').on('change' , generateDay);
 }
@@ -140,6 +143,14 @@ function sendOrderBack(orderId){
     sendRequest('/archive/reopen', {_id: orderId}, (data) => { $(`#${orderId}.archived-order`).remove(); });
 }
 
+function expandAll(){
+    // change text
+    var expandButtons = $('.archived-order .expand-button');
+    for(var i=0; i<expandButtons.length; i++){
+        $(expandButtons[i]).trigger("click");
+    }
+    
+}
 
 function hideMainContainers(){
     var mainContainers = $('.main-container');
