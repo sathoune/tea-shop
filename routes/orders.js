@@ -34,24 +34,18 @@ router.post("/edit/sum", (req, res) => {
     });
 });
 
+//similar to sum
 router.post("/edit/discounted-sum", (req, res) => {
-  Order.findById({_id: req.body._id}, (err, foundOrder) => {
-    if(err) { console.log(err); }
-    else {
-      OrderedItem.find({_id: {$in: foundOrder.orderedItems}}, 
-      (err, foundItems) => {
-        if(err) { console.log(err); }
-        else {
-          var sum = pricesAndSums.calculateSum(foundItems, "discountedPrice");
-          foundOrder.discountedSum = sum;
-          foundOrder.save( (err) => {
-            if(err) { console.log(err); }
-            else {res.send({discountedSum: foundOrder.discountedSum}); }
-          });
-        }
-      });
-    }
-  });
+    let promisedOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body._id);
+    promisedOrder.then( (order) => {
+        var promisedItems = order.orderedItems.reduce((promises, item) => {
+            return promises.concat(dbFunctions.promiseToGetFromCollectionById(OrderedItem, item));
+        }, []);
+        Promise.all(promisedItems).then( items => { 
+            order.discountedSum = pricesAndSums.calculateSum(items, "discountedPrice");
+            order.save( () => { res.send({ discountedSum: order.discountedSum }) });
+        });
+    });
 });
 
 router.post("/edit/discount", (req, res) => {
