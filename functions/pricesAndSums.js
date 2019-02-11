@@ -1,8 +1,7 @@
 
 function calculateSum(orderedItems, property="price"){
     var sum = 0; 
-         
-    orderedItems.forEach(function(item){
+    orderedItems.forEach( (item) => {
         if(item[property]){
             sum+=Number(item[property]);
         }
@@ -12,7 +11,7 @@ function calculateSum(orderedItems, property="price"){
 
 function calculateDiscountedSum(orderedItems){
     var discountedSum = 0;
-    orderedItems.forEach(function(item){
+    orderedItems.forEach( (item) => {
         if(item.discountedPrice){
             discountedSum+=Number(item.discountedPrice);
         }

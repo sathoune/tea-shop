@@ -15,30 +15,23 @@ router.post("/new", (req, res) => {
 
 
 router.post("/edit/table", (req,res) => {
- Order.findByIdAndUpdate({_id: req.body._id}, {table: req.body.table}, 
- (err) => {
-  if(err){console.log(err); } 
-  else { res.send("done");}
- });
+    Order.findByIdAndUpdate({_id: req.body._id}, {table: req.body.table}, (err) => {
+        if(err){ console.log(err); } 
+        else { res.send("done"); }
+    });
 });
 
 router.post("/edit/sum", (req, res) => {
-  Order.findOne({_id: req.body._id}, (err, foundOrder) => {
-    if(err) { console.log(err); }
-    else {
-      OrderedItem.find({_id: {$in: foundOrder.orderedItems}}, (err, foundItems) =>{
-        if(err) { console.log(err); }
-        else {
-          var sum = pricesAndSums.calculateSum(foundItems);
-          foundOrder.sum = sum;
-          foundOrder.save( (err) => {
-            if(err) { console.log(err); }
-            else {res.send({sum: foundOrder.sum}); }
-          });
-        }
-      });
-    }
-  });
+    let promisedOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body._id);
+    promisedOrder.then( (order) => {
+        var promisedItems = order.orderedItems.reduce((promises, item) => {
+            return promises.concat(dbFunctions.promiseToGetFromCollectionById(OrderedItem, item));
+        }, []);
+        Promise.all(promisedItems).then( items => { 
+            order.sum = pricesAndSums.calculateSum(items);
+            order.save( ( )=> { res.send({ sum: order.sum }) });
+        });
+    });
 });
 
 router.post("/edit/discounted-sum", (req, res) => {
@@ -174,7 +167,7 @@ router.post("/old", (req, res) => {
             resolve();
         }));
         }, Promise.resolve());
-        promises.then(() => {res.send(openOrders); });
+        promises.then(() => { res.send(openOrders); });
     }
   });
 });

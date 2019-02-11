@@ -1,7 +1,7 @@
 function promiseToGetFromCollectionById(collection, id){
     let promise = new Promise( (resolve, reject) => {
         collection.findById({_id: id}, (err, found) => {
-            if(err){ reject(); console.log(err); }
+            if(err){ reject('3131'); console.log(err); }
             else { resolve(found); }
         }) 
     });
