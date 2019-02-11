@@ -12,13 +12,9 @@ router.post("/new", (req, res) => {
     });
 });
 
-
-
-router.post("/edit/table", (req,res) => {
-    Order.findByIdAndUpdate({_id: req.body._id}, {table: req.body.table}, (err) => {
-        if(err){ console.log(err); } 
-        else { res.send("done"); }
-    });
+router.post("/edit/table", (req, res) => {
+    let promisedOrder = dbFunctions.promiseToUpdateFromCollectionById(Order, req.body._id, {table: req.body.table});
+    promisedOrder.then(()=>{res.send("Done");});
 });
 
 router.post("/edit/sum", (req, res) => {

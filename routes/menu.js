@@ -2,15 +2,14 @@ var express = require("express");
 var router = express.Router({ mergeParams: true });
 var MenuItem = require("../models/menu");
 
-
-router.post("/show/all", (req,res) => {
+router.post("/show/all", (req, res) => {
     MenuItem.find({}, (err, menu) => {
         if(err) { console.log(err);} 
         else { res.send(menu); }
     });
 });
 
-router.post("/edit", (req,res) => {
+router.post("/edit", (req, res) => {
     MenuItem.findOneAndUpdate({_id: req.body._id}, req.body.newData, (err) => {
        if(err) { console.log(err);} 
        else { res.send("well played"); }
