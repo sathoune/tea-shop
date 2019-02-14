@@ -13,7 +13,8 @@ app.use(express.static(__dirname + "/public"));
 
 // connect to db
 const   mongoose    = require("mongoose"),
-        dbURL       = "mongodb://localhost:27017/tea-shop";
+        dbURL       = process.env.DATABASEURL || "mongodb://localhost:27017/tea-shop";
+
 mongoose.connect(dbURL, {useNewUrlParser: true}, function(err){
     if(err){
         console.log("Something went wrong");
