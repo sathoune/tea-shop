@@ -30,9 +30,16 @@ button, input, select {
     display: flex;
 }
 
-.discount-label, .sum-label {
+.discount-label{
     margin-left: auto;
     width: 4em;
+    text-align: right;
+}
+
+
+.sum-label {
+    margin-left: auto;
+    width: 3em;
     text-align: right;
 }
 
@@ -43,7 +50,6 @@ button, input, select {
 
 
 .labels{
-    margin: 0.5% 0% 0% 0%;
     display: flex;
     justify-content: flex-end;
 }
@@ -58,8 +64,12 @@ button, input, select {
     width: 2em;
 }
 
-.price, .discounted-price, .quantity, .sum, .discounted-sum{
-    width: 5em;
+.sum, .discounted-sum, .price, .discounted-price {
+    width: 4em;
+}
+
+.quantity {
+    width: 3em;
 }
 
 .name {
@@ -82,7 +92,8 @@ button, input, select {
 }
 
 .delete-button {
-    background: #EF3B36;  
+    background: #EF3B36;
+    padding: 1px 8px;
 }
 
 .send-button {
@@ -133,7 +144,7 @@ button {
 }
 
 .type {
-    width: 6em;
+    width: 5em;
     background-color: silver;
     box-sizing: border-box;
     padding: 1px 0px;
@@ -155,11 +166,13 @@ button {
 
 .expand-button {
     width: 6em;
+    padding: 1px 8px;
     background: #215f00;  
 }
 
 .send-back {    
-    background: #00416A;  
+    background: #00416A; 
+    padding: 1px 8px;
     
 }#menu {
     font-family: 'Ubuntu', sans-serif;
@@ -180,20 +193,19 @@ button {
     
 }
 
-.new-order-button, .update-button {
-    width: 6em;
-}
-
 button {
     outline: none;
 }
 
 .update-button {
-    background: #00416A; 
+    background: #00416A;
+    padding: 1px 8px;
+    width: 6em;
 }
 
 .new-order-button {
-    background: #215f00; 
+    background: #215f00;
+    width: 6em;
 }
 
 input, select{
