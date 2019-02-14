@@ -1,12 +1,9 @@
-var express     = require("express"),
-    app         = express();
-
-var bodyParser = require("body-parser");
-
-var passport = require("passport"),
-    flash = require("connect-flash"),
-    LocalStrategy = require("passport-local"),
-    User = require("./models/user");
+const   express         = require("express"),
+        bodyParser      = require("body-parser"),
+        passport        = require("passport"),
+        LocalStrategy   = require("passport-local"),
+        User            = require("./models/user"),
+        app             = express();
     
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -14,10 +11,9 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + '/scripts'));
 app.use(express.static(__dirname + "/public"));
 
-
 // connect to db
-var mongoose    = require("mongoose"),
-    dbURL       = "mongodb://localhost:27017/tea-shop";
+const   mongoose    = require("mongoose"),
+        dbURL       = "mongodb://localhost:27017/tea-shop";
 mongoose.connect(dbURL, {useNewUrlParser: true}, function(err){
     if(err){
         console.log("Something went wrong");
@@ -27,7 +23,6 @@ mongoose.connect(dbURL, {useNewUrlParser: true}, function(err){
     }
 });
 
-app.use(flash());
 app.use(require("express-session")({
     secret: "This is some secret password-storing",
     resave: false,
@@ -42,21 +37,13 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-app.use((req, res, next) => {
-    res.locals.currentUser = req.user;
-    res.locals.error = req.flash('error');
-    res.locals.success = req.flash('success');
-    next();
-});
-
-
 
 // routes
-var indexRoutes         = require("./routes/index"),
-    orderRoutes         = require("./routes/orders"),
-    orderedItemRoutes   = require("./routes/orderedItems"),
-    menuRoutes          = require("./routes/menu"),
-    archiveRoutes       = require("./routes/archive");
+const   indexRoutes         = require("./routes/index"),
+        orderRoutes         = require("./routes/orders"),
+        orderedItemRoutes   = require("./routes/orderedItems"),
+        menuRoutes          = require("./routes/menu"),
+        archiveRoutes       = require("./routes/archive");
 
 app.use("/order",           orderRoutes);
 app.use("/ordered-item",    orderedItemRoutes);
@@ -70,6 +57,4 @@ var seedMenu = require("./db_seeds/seedMenuItems");
 //seedMenu();
 
 // server start
-app.listen(process.env.PORT, process.env.IP, function(){
-    console.log("The tea-shop server is on"); 
-});
+app.listen(process.env.PORT, process.env.IP, () => { console.log("The tea-shop server is on"); });

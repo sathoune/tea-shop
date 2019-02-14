@@ -1,9 +1,8 @@
-var express = require("express");
-var router = express.Router({ mergeParams: true });
-var Order = require("../models/order");
-var OrderedItem = require("../models/orderedItem");
-const dbFunctions = require("../functions/dbFunctions");
-
+const   express         = require("express"),
+        Order           = require("../models/order"),
+        OrderedItem     = require("../models/orderedItem"),
+        dbFunctions     = require("../functions/dbFunctions"),
+        router          = express.Router({ mergeParams: true });
 
 router.post("/", (req, res) => {
     if(req.body.date){

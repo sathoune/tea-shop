@@ -1,9 +1,9 @@
-var express = require("express");
-var router = express.Router({ mergeParams: true });
-var Order = require("../models/order");
-var OrderedItem = require("../models/orderedItem");
-var pricesAndSums = require("../functions/pricesAndSums");
-const dbFunctions = require("../functions/dbFunctions");
+const   express         = require("express"),
+        Order           = require("../models/order"),
+        OrderedItem     = require("../models/orderedItem"),
+        pricesAndSums   = require("../functions/pricesAndSums"),
+        dbFunctions     = require("../functions/dbFunctions"),
+        router          = express.Router({ mergeParams: true });
 
 router.post("/new", (req, res) => {
     Order.create({}, (err, createdOrder) => {
@@ -14,7 +14,7 @@ router.post("/new", (req, res) => {
 
 router.post("/edit/table", (req, res) => {
     let promisedOrder = dbFunctions.promiseToUpdateFromCollectionById(Order, req.body._id, {table: req.body.table});
-    promisedOrder.then( () => {res.send("Done");});
+    promisedOrder.then( () => { res.send("Done");});
 });
 
 router.post("/edit/sum", (req, res) => {
