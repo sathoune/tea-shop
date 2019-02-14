@@ -229,3 +229,21 @@ input, select{
 .discount {
     width: 3em;
 }
+
+#archive-panel {
+    display: flex;
+    flex-direction: column;
+}
+
+.day-sum {
+    width: 5em;
+}
+
+#expand-all-button {
+    width: 10em;
+    margin-left: auto;
+}
+
+.thingies {
+    display: flex;
+}

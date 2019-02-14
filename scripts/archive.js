@@ -44,11 +44,12 @@ function createArchiveContainers(){
     const archivePanelLabelsDiv = `<div id='labels'><input type='text' class='date-label' value='Data' readonly><input type='text' class='date-label' value='Suma' readonly><input type='text' class='date-label' value='Po zniżce' readonly></div>`;
     const archivedOrderLabels = `<div id='archived-orders-labels' readonly><input type='text' class='date-label' value='Otwarto:' readonly><input type='text' class='date-label' value='Suma' readonly><input type='text' class='date-label' value='Po zniżce' readonly></div>`;
     const expandAllButton = `<button id='expand-all-button' class="expand-button">Rozwiń wszystkie<i class="fas fa-search-plus"></i></button>`;
-
+    const   sumInput            = `<input class="day-sum" id='day-sum' type="number" value='0' readonly>`,
+            discountedSumInput  = `<input class="day-sum" id='discounted-day-sum' type="number" value='0' readonly>`;
+    const dayDiv = `<div class='thingies'>`+dateInput+sumInput+discountedSumInput+expandAllButton+`</div>`;
+    
     $('#archive').append(archiveContainers);
-    $('#archive-panel').append([dateInput, expandAllButton]);
-    $('#archive-panel').prepend(archivePanelLabelsDiv);
-    $('#archived-orders').append(archivedOrderLabels);
+    $('#archive-panel').append([archivePanelLabelsDiv, dayDiv, archivedOrderLabels]);
     $(`#expand-all-button`).on("click", expandAll);
 
     $('#day-for-display').on('change' , generateDay);
@@ -133,10 +134,9 @@ function constructItemDisplay(orderId, itemObject){
 }
 
 function setSums(sum, discountedSum){
-    $('#archive-panel .day-sum').remove();
-    const   sumInput            = `<input class="day-sum" type="number" value='${Number(sum).toFixed(2)}' readonly>`,
-            discountedSumInput  = `<input class="day-sum" type="number" value='${Number(discountedSum).toFixed(2)}' readonly>`;
-    $('#archive-panel').append([sumInput, discountedSumInput]);
+
+    $('#archive-panel #day-sum').val(Number(sum).toFixed(2));
+    $('#archive-panel #discounted-day-sum').val(Number(discountedSum).toFixed(2));
 }
 
 function sendOrderBack(orderId){
