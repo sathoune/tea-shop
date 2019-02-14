@@ -1,11 +1,11 @@
-var express = require("express");
-var router = express.Router({ mergeParams: true });
-var Order = require("../models/order");
-var OrderedItem = require("../models/orderedItem");
-var MenuItem = require("../models/menu");
-var pricesAndSums = require("../functions/pricesAndSums");
-const dbFunctions = require("../functions/dbFunctions");
-
+const   express         = require("express"),
+        Order           = require("../models/order"),
+        OrderedItem     = require("../models/orderedItem"),
+        MenuItem        = require("../models/menu"),
+        pricesAndSums   = require("../functions/pricesAndSums"),
+        dbFunctions     = require("../functions/dbFunctions"),
+        router          = express.Router({ mergeParams: true });
+        
 router.post("/new", (req, res) => {
     let promisedOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body.orderID);
     promisedOrder.then((order) => {

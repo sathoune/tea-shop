@@ -1,6 +1,6 @@
-var express = require("express");
-var router = express.Router({ mergeParams: true });
-var MenuItem = require("../models/menu");
+const   express     = require("express"),
+        MenuItem    = require("../models/menu"),
+        router      = express.Router({ mergeParams: true });
 
 router.post("/show/all", (req, res) => {
     MenuItem.find({}, (err, menu) => {
@@ -15,7 +15,6 @@ router.post("/edit", (req, res) => {
        else { res.send("well played"); }
     });
 });
-
 
 router.post("/new", (req, res) => {
    MenuItem.create({}, (err, newItem) => {
