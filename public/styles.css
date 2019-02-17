@@ -60,7 +60,7 @@ button, input, select {
     flex-direction: column;
 }
 
-.registerCode{
+.register-code{
     width: 2em;
 }
 
@@ -235,13 +235,14 @@ input, select{
     flex-direction: column;
 }
 
-.day-sum {
+.day-sum, .date-label {
     width: 5em;
 }
 
 #expand-all-button {
     width: 10em;
     margin-left: auto;
+    background-color: #ff9900;
 }
 
 .thingies {

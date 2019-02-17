@@ -17,7 +17,7 @@ function insertInputsInto(div){
     const   deleteButton          = `<button class='delete-button' onclick='removeItemFromDisplay("${itemID}")'>
     <i class="fas fa-trash-alt"></i></button>`, 
             nameInput             = '<input type="text" class="name" list="tees">',
-            codeInput             = '<input type="text" class="registerCode" readonly>',
+            codeInput             = '<input type="text" class="register-code" readonly>',
             priceInput            = '<input type="number" class="price">',
             quantityInput         = '<input type="number" class="quantity" name="quantity" min="0" value="1">',
             hintInput             = '<input type="text" class="hint">',
@@ -52,7 +52,7 @@ function updateItemName(){
     (data) => {
         $(`#${itemId}.item .price`)           .val(data.price);
         $(`#${itemId}.item .discounted-price`).val(data.discountedPrice);
-        $(`#${itemId}.item .registercode`)    .val(data.registerCode);
+        $(`#${itemId}.item .register-code`)    .val(data.registerCode);
         if(data.name != nameValue){ $(`#${itemId}.item .name`).val(data.name); }
         updateSumOfPrices(orderId);
         updateSumOfDiscountedPrices(orderId)
