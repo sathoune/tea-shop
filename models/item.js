@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
 
-var OrderedItemSchema = new mongoose.Schema({
+var ItemSchema = new mongoose.Schema({
     name:               {type: String, default: ""},
     quantity:           {type: String, default: "1"},
     type:               {type: String, default: "sztuka"},
@@ -10,4 +10,4 @@ var OrderedItemSchema = new mongoose.Schema({
 },
                         {timestamps: { createdAt: 'createdAt' } });
 
-module.exports = mongoose.model("OrderedItem", OrderedItemSchema);
+module.exports = mongoose.model("Item", ItemSchema);

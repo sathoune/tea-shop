@@ -1,6 +1,6 @@
 const   express         = require("express"),
         Order           = require("../models/order"),
-        OrderedItem     = require("../models/orderedItem"),
+        OrderedItem     = require("../models/item"),
         pricesAndSums   = require("../functions/pricesAndSums"),
         dbFunctions     = require("../functions/dbFunctions"),
         router          = express.Router({ mergeParams: true });

@@ -1,6 +1,6 @@
 const   express         = require("express"),
         Order           = require("../models/order"),
-        OrderedItem     = require("../models/orderedItem"),
+        OrderedItem     = require("../models/item"),
         MenuItem        = require("../models/menu"),
         pricesAndSums   = require("../functions/pricesAndSums"),
         dbFunctions     = require("../functions/dbFunctions"),
