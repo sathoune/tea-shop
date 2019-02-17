@@ -46,7 +46,7 @@ const   indexRoutes         = require("./routes/index"),
         archiveRoutes       = require("./routes/archive");
 
 app.use("/order",           orderRoutes);
-app.use("/ordered-item",    orderedItemRoutes);
+app.use("/item",    orderedItemRoutes);
 app.use("/menu",    menuRoutes);
 app.use("/archive",    archiveRoutes);
 app.use("/",                indexRoutes);

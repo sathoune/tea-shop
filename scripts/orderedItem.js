@@ -2,7 +2,7 @@
 
 function createItem(orderId){
     const parentSelector = "#"+orderId+".order .item-container";
-    sendRequest('/ordered-item/new', {orderID: orderId}, 
+    sendRequest('/item/new', {orderID: orderId}, 
     (emptyItem) => { createItemDiv(emptyItem._id, parentSelector);});
 }
 
@@ -48,7 +48,7 @@ function updateItemName(){
     const itemId = $(this).parent()[0].id,
           orderId = $(this).parent().parent().parent()[0].id;
     const nameValue = $(this).val()
-    sendRequest('/ordered-item/edit/name', {item_id: itemId, name: nameValue, order_id: orderId}, 
+    sendRequest('/item/edit/name', {item_id: itemId, name: nameValue, order_id: orderId}, 
     (data) => {
         $(`#${itemId}.item .price`)           .val(data.price);
         $(`#${itemId}.item .discounted-price`).val(data.discountedPrice);
@@ -67,7 +67,7 @@ function updateItemName(){
 function updateItemType(){
     const   itemId  = $(this).parent()[0].id,
             orderId = $(this).parent().parent().parent()[0].id;
-    sendRequest('/ordered-item/edit/type', {item_id: itemId, type: $(this).val(), order_id: orderId}, 
+    sendRequest('/item/edit/type', {item_id: itemId, type: $(this).val(), order_id: orderId}, 
     (updatedItem) => {
         $(`#${itemId}.item .price`)             .val(Number(updatedItem.price).toFixed(2));
         $(`#${itemId}.item .discounted-price`)  .val(Number(updatedItem.discountedPrice).toFixed(2));
@@ -80,7 +80,7 @@ function updateItemType(){
 function updateItemQuantity(){
     const   itemId      = $(this).parent()[0].id,
             orderId     = $(this).parent().parent().parent()[0].id;
-    sendRequest('/ordered-item/edit/quantity', {item_id: itemId, quantity: $(this).val(), order_id: orderId}, 
+    sendRequest('/item/edit/quantity', {item_id: itemId, quantity: $(this).val(), order_id: orderId}, 
     (updatedItem) => {
         $(`#${itemId}.item .price`)             .val(Number(updatedItem.price).toFixed(2));
         $(`#${itemId}.item .discounted-price`)  .val(Number(updatedItem.discountedPrice).toFixed(2));
@@ -92,7 +92,7 @@ function updateItemQuantity(){
 function updateItemPrice(){
     const   itemId      = $(this).parent()[0].id,
             orderId     = $(this).parent().parent().parent()[0].id;
-    sendRequest('/ordered-item/edit/price',{itemId: itemId, price: $(this).val(), orderId: orderId},
+    sendRequest('/item/edit/price',{itemId: itemId, price: $(this).val(), orderId: orderId},
     (data) => {
         $(`#${data.order._id}.order .sum`).val(data.order.sum);
         $(`#${data.order._id}.order .discounted-sum`).val(data.order.discountedSum);
@@ -103,7 +103,7 @@ function updateItemPrice(){
 function updateItemDiscountedPrice(){
     const   itemId      = $(this).parent()[0].id,
             orderId     = $(this).parent().parent().parent()[0].id;
-    sendRequest('/ordered-item/edit/discounted-price',{itemId: itemId, discountedPrice: $(this).val(), orderId: orderId},
+    sendRequest('/item/edit/discounted-price',{itemId: itemId, discountedPrice: $(this).val(), orderId: orderId},
     (data) => {
         $(`#${data.order._id}.order .discounted-sum`).val(data.order.discountedSum);
         $(`#${data.item._id}.item .discounted-price`).val(data.item.discountedPrice);
@@ -112,7 +112,7 @@ function updateItemDiscountedPrice(){
 
 function restoreItem(orderId, itemId){
     const orderSelector = "#"+orderId+".order .item-container";
-    sendRequest('/ordered-item/show', {_id: itemId}, 
+    sendRequest('/item/show', {_id: itemId}, 
     (foundItem) => {
     var promise = new Promise((resolve,reject) => {
         createItemDiv(itemId, orderSelector); 
@@ -132,5 +132,5 @@ function setItemValues(itemObject){
 }
 
 function removeItemFromDisplay(itemId){
-    sendRequest('/ordered-item/delete', {_id: itemId}, (msg) => { $(`#${itemId}.item`).remove(); });
+    sendRequest('/item/delete', {_id: itemId}, (msg) => { $(`#${itemId}.item`).remove(); });
 }
