@@ -247,3 +247,9 @@ input, select{
 .thingies {
     display: flex;
 }
+
+#version {
+    margin: 0 auto auto 0;
+    font-size: 0.5em;
+    color: gray;
+}
