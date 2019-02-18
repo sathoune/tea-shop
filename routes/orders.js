@@ -3,6 +3,7 @@ const   express         = require("express"),
         Item            = require("../models/item"),
         pricesAndSums   = require("../functions/pricesAndSums"),
         dbFunctions     = require("../functions/dbFunctions"),
+        uiDisplay       = require("../functions/uiDisplay"),
         router          = express.Router({ mergeParams: true });
 
 router.post("/new", (req, res) => {
@@ -14,7 +15,10 @@ router.post("/new", (req, res) => {
 
 router.post("/edit/table", (req, res) => {
     let promisedOrder = dbFunctions.promiseToUpdateFromCollectionById(Order, req.body._id, {table: req.body.table});
-    promisedOrder.then( () => { res.send("Done");});
+    promisedOrder.then( () => { 
+        res.send(uiDisplay.positionTable(req.body.table));
+        
+    });
 });
 
 router.post("/edit/sum", (req, res) => {

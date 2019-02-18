@@ -34,8 +34,8 @@ function calculateDiscount(orderedItem, order){
 }
 
 module.exports = {
-    calculateSum: calculateSum,
-    calculatePrice: calculatePrice,
-    calculateDiscount: calculateDiscount,
-    calculateDiscountedPricesForOrder: calculateDiscountedPricesForOrder,
+    calculateSum,
+    calculatePrice,
+    calculateDiscount,
+    calculateDiscountedPricesForOrder,
 };

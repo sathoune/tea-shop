@@ -3,8 +3,9 @@ function updateOrderTable(){
     const orderId = $(this).parent().parent()[0].id;
     const tableValue = $(this).val();
     sendRequest('/order/edit/table', {_id: orderId, table: tableValue}, 
-    (data) => {
-        orderTable(tableValue, orderId);
+    (tableParameters) => {
+        $(`#${orderId}.order`).css('order', tableParameters.order);
+        $(`#${orderId}.order .table`).css('background-color', tableParameters.color);
     });
 }
 

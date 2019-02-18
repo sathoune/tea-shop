@@ -51,7 +51,6 @@ function createArchiveContainers(){
     $('#archive').append(archiveContainers);
     $('#archive-panel').append([dayDiv, archivedOrderLabels]);
     $(`#expand-all-button`).on("click", expandAll);
-
     $('#day-for-display').on('change' , generateDay);
 }
 
@@ -69,8 +68,6 @@ function generateDay(){
                 });
                 data.forEach(constructArchiveDiv); 
                 setSums(sum, discountedSum);
-                
-
             } else {
                 setSums(0,0);
                 console.log('this day is not a day');
@@ -82,14 +79,12 @@ function generateDay(){
 function constructArchiveDiv(orderData){
     const orderDiv = `<div id='${orderData._id}' class='archived-order'></div>`;
     $('#archived-orders').append(orderDiv);
-    
     constructOrderDisplay(orderData);
 }
 
 function constructOrderDisplay(orderData){
     if(!orderData.table) { orderData.table = '' };
     const date = new Date(orderData.createdAt).getHours()+":"+new Date(orderData.createdAt).getMinutes()+":"+new Date(orderData.createdAt).getSeconds();
-    console.log(date);
     const   summaryDiv      = `<div class='div-summary'></div>`
     const   sendBackButton  = `<button class='send-back' onclick='sendOrderBack("${orderData._id}")'><i class="fas fa-long-arrow-alt-left"></i> Otwórz ponownie</button>`,
             dateInput       = `<input type='text' class='order-date' value='${date}' readonly>`,
@@ -136,7 +131,6 @@ function constructItemDisplay(orderId, itemObject){
 }
 
 function setSums(sum, discountedSum){
-
     $('#archive-panel #day-sum').val(Number(sum).toFixed(2));
     $('#archive-panel #discounted-day-sum').val(Number(discountedSum).toFixed(2));
 }
@@ -151,18 +145,13 @@ function expandAll(){
     for(var i=0; i<expandButtons.length; i++){
         $(expandButtons[i]).trigger("click");
     }
-    
 }
 
 function hideMainContainers(){
     var mainContainers = $('.main-container');
-    for(var i=0; i<mainContainers.length;i++){
-        $(mainContainers[i]).hide();
-    }
+    for(var i=0; i<mainContainers.length;i++){ $(mainContainers[i]).hide(); }
 }
 function showMainContainers(){
     var mainContainers = $('.main-container');
-    for(var i=0; i<mainContainers.length;i++){
-        $(mainContainers[i]).show();
-    }
+    for(var i=0; i<mainContainers.length;i++){ $(mainContainers[i]).show(); }
 }
