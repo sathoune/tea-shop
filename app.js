@@ -41,12 +41,12 @@ passport.deserializeUser(User.deserializeUser());
 // routes
 const   indexRoutes         = require("./routes/index"),
         orderRoutes         = require("./routes/orders"),
-        orderedItemRoutes   = require("./routes/orderedItems"),
+        itemRoutes          = require("./routes/items"),
         menuRoutes          = require("./routes/menu"),
         archiveRoutes       = require("./routes/archive");
 
 app.use("/order",           orderRoutes);
-app.use("/ordered-item",    orderedItemRoutes);
+app.use("/item",    itemRoutes);
 app.use("/menu",    menuRoutes);
 app.use("/archive",    archiveRoutes);
 app.use("/",                indexRoutes);

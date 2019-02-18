@@ -1,6 +1,6 @@
 const   express         = require("express"),
         Order           = require("../models/order"),
-        OrderedItem     = require("../models/orderedItem"),
+        Item            = require("../models/item"),
         pricesAndSums   = require("../functions/pricesAndSums"),
         dbFunctions     = require("../functions/dbFunctions"),
         router          = express.Router({ mergeParams: true });
@@ -20,8 +20,8 @@ router.post("/edit/table", (req, res) => {
 router.post("/edit/sum", (req, res) => {
     let promisedOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body._id);
     promisedOrder.then( (order) => {
-        var promisedItems = order.orderedItems.reduce((promises, item) => {
-            return promises.concat(dbFunctions.promiseToGetFromCollectionById(OrderedItem, item));
+        var promisedItems = order.items.reduce((promises, item) => {
+            return promises.concat(dbFunctions.promiseToGetFromCollectionById(Item, item));
         }, []);
         Promise.all(promisedItems).then( items => { 
             order.sum = pricesAndSums.calculateSum(items);
@@ -34,8 +34,8 @@ router.post("/edit/sum", (req, res) => {
 router.post("/edit/discounted-sum", (req, res) => {
     let promisedOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body._id);
     promisedOrder.then( (order) => {
-        var promisedItems = order.orderedItems.reduce((promises, item) => {
-            return promises.concat(dbFunctions.promiseToGetFromCollectionById(OrderedItem, item));
+        var promisedItems = order.items.reduce((promises, item) => {
+            return promises.concat(dbFunctions.promiseToGetFromCollectionById(Item, item));
         }, []);
         Promise.all(promisedItems).then( items => { 
             order.discountedSum = pricesAndSums.calculateSum(items, "discountedPrice");
@@ -47,8 +47,8 @@ router.post("/edit/discounted-sum", (req, res) => {
 router.post("/edit/discount", (req, res) => {
     let promisedOrder = dbFunctions.promiseToUpdateFromCollectionById(Order, req.body._id, {discount: req.body.discount});
     promisedOrder.then((order) => { 
-        var promisedItems = order.orderedItems.reduce((promises, item) => {
-            return promises.concat(dbFunctions.promiseToGetFromCollectionById(OrderedItem, item));
+        var promisedItems = order.items.reduce((promises, item) => {
+            return promises.concat(dbFunctions.promiseToGetFromCollectionById(Item, item));
         }, []);
         Promise.all(promisedItems).then( (items) => { 
             var newDiscountedSum = items.reduce( (discountedSum, item) => {
@@ -60,7 +60,7 @@ router.post("/edit/discount", (req, res) => {
                 return discountedSum;
             }, 0); 
             order.discountedSum = newDiscountedSum;
-            order.save( () => { res.send({ discountedSum: order.discountedSum, orderedItems: items }); });
+            order.save( () => { res.send({ discountedSum: order.discountedSum, items: items }); });
         });
     });
 });
@@ -70,8 +70,8 @@ router.post("/edit/discount", (req, res) => {
 router.post("/edit/discount-togo", (req, res) => {
     let promisedOrder = dbFunctions.promiseToUpdateFromCollectionById(Order, req.body._id, {discountToGo: req.body.discountToGo});
     promisedOrder.then((order) => { 
-        var promisedItems = order.orderedItems.reduce((promises, item) => {
-            return promises.concat(dbFunctions.promiseToGetFromCollectionById(OrderedItem, item));
+        var promisedItems = order.items.reduce((promises, item) => {
+            return promises.concat(dbFunctions.promiseToGetFromCollectionById(Item, item));
         }, []);
         Promise.all(promisedItems).then( (items) => { 
             var newDiscountedSum = items.reduce( (discountedSum, item) => {
@@ -83,7 +83,7 @@ router.post("/edit/discount-togo", (req, res) => {
                 return discountedSum;
             }, 0); 
             order.discountedSum = newDiscountedSum;
-            order.save( () => { res.send({ discountedSum: order.discountedSum, orderedItems: items }); });
+            order.save( () => { res.send({ discountedSum: order.discountedSum, items: items }); });
         });
     });
 });
@@ -91,18 +91,18 @@ router.post("/edit/discount-togo", (req, res) => {
 router.post('/close' , (req, res) => {
   let promiseToUpdateOrder = dbFunctions.promiseToUpdateFromCollectionById(Order, req.body._id, {closed: true});
   promiseToUpdateOrder.then( (updatedOrder) => {
-    const orderedItems = updatedOrder.orderedItems;
-    let promisedItems = orderedItems.reduce( (promisedItems, item) => {
-      return promisedItems.concat(dbFunctions.promiseToGetFromCollectionById(OrderedItem, item));
+    const items = updatedOrder.items;
+    let promisedItems = items.reduce( (promisedItems, item) => {
+      return promisedItems.concat(dbFunctions.promiseToGetFromCollectionById(Item, item));
     }, []);
-    Promise.all(promisedItems).then( (orderedItems) => {
-        var notEmptyItems = orderedItems.reduce( (notEmptyItems, orderedItem) => {
+    Promise.all(promisedItems).then( (items) => {
+        var notEmptyItems = items.reduce( (notEmptyItems, orderedItem) => {
             if(orderedItem.name){ notEmptyItems.push(orderedItem._id); }
-            else { dbFunctions.promiseToDeleteFromCollectionById(OrderedItem, orderedItem._id).then();}
+            else { dbFunctions.promiseToDeleteFromCollectionById(Item, orderedItem._id).then();}
             return notEmptyItems;        
         }, []);
         if(notEmptyItems[0]){
-            updatedOrder.orderedItems = notEmptyItems;
+            updatedOrder.items = notEmptyItems;
             updatedOrder.save( () => { res.send(updatedOrder._id); }); 
         } else {
             Order.findOneAndDelete({_id: updatedOrder._id}, () => { res.send(updatedOrder._id); });
@@ -134,8 +134,8 @@ router.post("/delete", (req, res) => {
     promiseOrder.then( (order) => {
         let deleteOrder = dbFunctions.promiseToDeleteFromCollectionById(Order, order._id);
         var deleteItem = [];
-        order.orderedItems.forEach( (item) => {
-            deleteItem += dbFunctions.promiseToDeleteFromCollectionById(OrderedItem, item._id);
+        order.items.forEach( (item) => {
+            deleteItem += dbFunctions.promiseToDeleteFromCollectionById(Item, item._id);
     });
     Promise.all([deleteItem, deleteOrder]).then( () => { res.send('order deleted');});
     });

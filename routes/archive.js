@@ -1,6 +1,6 @@
 const   express         = require("express"),
         Order           = require("../models/order"),
-        OrderedItem     = require("../models/orderedItem"),
+        Item            = require("../models/item"),
         dbFunctions     = require("../functions/dbFunctions"),
         router          = express.Router({ mergeParams: true });
 
@@ -21,8 +21,8 @@ router.post("/", (req, res) => {
 router.post("/show-ordered-items", (req, res) => {
     let promisedOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body._id);
     promisedOrder.then( (order) => {
-       let promisedItems = order.orderedItems.reduce( (promisedItems, item) => {
-           return promisedItems.concat(dbFunctions.promiseToGetFromCollectionById(OrderedItem, item));
+       let promisedItems = order.items.reduce( (promisedItems, item) => {
+           return promisedItems.concat(dbFunctions.promiseToGetFromCollectionById(Item, item));
        }, []); 
        Promise.all(promisedItems).then((items) => {res.send(items);});
     });

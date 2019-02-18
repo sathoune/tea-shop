@@ -23,7 +23,7 @@ function updateDiscount(){
     sendRequest('/order/edit/discount', {_id: orderId, discount: $(this).val()}, 
     (data) => {
         $(`#${orderId}.order  .discounted-sum`).val(Number(data.discountedSum).toFixed(2)); 
-        data.orderedItems.forEach((item) => 
+        data.items.forEach((item) => 
         { $(`#${item._id}.item .discounted-price`).val(Number(item.discountedPrice).toFixed(2)); });    
     });
 }
@@ -33,7 +33,7 @@ function updateToGoDiscount(){
     sendRequest('/order/edit/discount-togo', {_id: orderID, discountToGo: $(this).is(":checked")}, 
     (data) => {
         $(`#${orderID}.order .discounted-sum`).val(Number(data.discountedSum).toFixed(2)); 
-        data.orderedItems.forEach((item) => 
+        data.items.forEach((item) => 
         { $(`#${item._id}.item .discounted-price`).val(Number(item.discountedPrice).toFixed(2)); });
     });
 }

@@ -1,12 +1,10 @@
-
 function findOpenOrders(){
     sendRequest('/order/old', {}, (openOrders) => { openOrders.forEach(restoreOrder); });
 }
 
-
 function restoreOrder(orderData){
     const promise = new Promise((resolve, reject) => {
-        restoreOrderDiv(orderData._id, orderData.orderedItems);  
+        restoreOrderDiv(orderData._id, orderData.items);  
         resolve();        
     });
     promise.then( (resolve) => { restoreOrderValues(orderData); });
@@ -20,7 +18,6 @@ function restoreOrderValues(orderData){
     $(`#${orderData._id}.order .discounted-sum`).val(Number(orderData.discountedSum).toFixed(2));
     orderTable(orderData.table, orderData._id);
 }
-
 
 function restoreOrderDiv(orderId, itemIds){
     const div = `<div id=${orderId} class='order' style="display: flex; flex-direction: column;"></div>`;     

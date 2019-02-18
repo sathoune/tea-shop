@@ -46,7 +46,7 @@ function createOrderTopPanel(orderId){
 
 function createOrderLabels(orderId){
     const labelsDiv = `<div class="labels"></div>`;
-    const   labelCode = `<input type='text' class='registerCode' value='Kod' readonly>`,
+    const   labelCode = `<input type='text' class='register-code' value='Kod' readonly>`,
             labelName = `<input type='text'  class='name' value='Nazwa' readonly>`,
             labelType = `<input type='text'  class='type' value='Typ' readonly>`,
             labelQuantity = `<input type='text'  class='quantity' value='Ilość' readonly>`,
