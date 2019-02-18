@@ -7,59 +7,65 @@ function openMenu(){
     (data) => {
         menuLabels();
         data.forEach( (item) => {
-            const div = createMenuItemDiv(item._id);
-            $('#menu-container').append(div);
-            setupMenuItem(item, div);
+            setupMenuItem(item);
         });
     });
 }
 
-function createMenuItemDiv(menuId) {
-    return  `<div id=${menuId} class='menu-item'></div>`;
-}
-
-function setupMenuItem(menuValues){
-    const   deleteButton    = `<button class='delete-button' onclick="deleteMenuItem('${menuValues._id}')"><i class="fas fa-trash-alt"></i> Usuń</button>`,
-            codeInput       = `<input type='text' class='menu-code' value='${menuValues.registerCode}'>`,
-            nameInput       = `<input type='text' class='menu-name' value='${menuValues.name}'>`,
-            price0Input     = `<input type='text' class='menu-price0' value='${menuValues.prices.default}'>`,
-            price1Input     = `<input type='text' class='menu-price1' value='${menuValues.prices.gaiwan}'>`,
-            price2Input     = `<input type='text' class='menu-price2' value='${menuValues.prices.package}'>`,
-            price3Input     = `<input type='text' class='menu-price3' value='${menuValues.prices.bulk}'>`,
-            updateButton    = `<button class='update-button' onclick="updateMenuItem('${menuValues._id}')">Zapisz <i class="fas fa-pencil-alt"></i></button>`;
-    const itemElements = [
-        deleteButton, codeInput, nameInput, 
-        price0Input, price1Input, price2Input, 
-        price3Input, updateButton];
-    $(`#${menuValues._id}.menu-item`).append(itemElements);
-}
-
 function createMenuTemplate(){
-    const   menuDiv         = "<div id='menu' class='main-container'></div>";
-    const   navigationPanel = "<div id='navigation'></div>",
-            menuContainer   = "<div id='menu-container'></div>";
-    const   menuContainers  = [ navigationPanel, menuContainer ]
-    $('body').append(menuDiv);
-    $('#menu').append(menuContainers);
+    const ids = {
+        menuContainer : "menu",
+        navigationPanel : "menu-navigation",
+        menuItemsContainer : "menu-container",
+    };
+    const   menu            = `<div id='${ids.menuContainer}' class='main-container'></div>`,
+            navigationPanel = `<div id='${ids.navigationPanel}'></div>`,
+            menuContainer   = `<div id='${ids.menuItemsContainer}'></div>`;
+    $('body').append(menu);
+    $('#menu').append([ navigationPanel, menuContainer ]);
 }
 
 function menuLabels(){
+    const classes = {
+        codeInput:  'menu-code',
+        nameInput:  'menu-name',
+        priceInput: 'menu-price',
+    };
     const   createNewButton = '<button class="new-order-button" onclick="newMenuItem()"><i class="fas fa-folder-plus"></i> Dodaj pozycję</button>',
-            codeInput       = `<input type='text' class='menu-code' value='Kod' readonly>`,
-            nameInput       = `<input type='text' class='menu-name' value='Nazwa' readonly>`,
-            price0Input     = `<input type='text' class='menu-price' value='Sztuka' readonly>`,
-            price1Input     = `<input type='text' class='menu-price' value='Gaiwan' readonly>`,
-            price2Input     = `<input type='text' class='menu-price' value='Opakowanie' readonly>`,
-            price3Input     = `<input type='text' class='menu-price' value='Na wagę' readonly>`;
-    const    itemElements    = [
-                codeInput, nameInput, price0Input, 
-                price1Input, price2Input, price3Input, 
-                createNewButton
-                ];
-    $('#navigation').append(itemElements);
+            codeInput       = `<input type='text' class='${classes.codeInput}' value='Kod' readonly>`,
+            nameInput       = `<input type='text' class='${classes.nameInput}' value='Nazwa' readonly>`,
+            price0Input     = `<input type='text' class='${classes.priceInput}' value='Sztuka' readonly>`,
+            price1Input     = `<input type='text' class='${classes.priceInput}' value='Gaiwan' readonly>`,
+            price2Input     = `<input type='text' class='${classes.priceInput}' value='Opakowanie' readonly>`,
+            price3Input     = `<input type='text' class='${classes.priceInput}' value='Na wagę' readonly>`;
+    $('#menu-navigation').append([codeInput, nameInput, price0Input, price1Input, price2Input, price3Input, 
+                                createNewButton]);
 }
 
-
+function setupMenuItem(menuValues){
+    const classes = {
+        codeInput:      'menu-code',
+        nameInput:      'menu-name',
+        priceInput:     'menu-price',
+        deleteButton:   'delete-button',
+        updateButton:   'update-button',
+        itemDiv:        'menu-item',
+    };
+    const   itemDiv         = `<div id='${menuValues._id}' class='${classes.itemDiv}'></div>`;
+    const   deleteButton    = `<button class='${classes.deleteButton}' onclick="deleteMenuItem('${menuValues._id}')"><i class="fas fa-trash-alt"></i> Usuń</button>`,
+            codeInput       = `<input type='text' class='${classes.codeInput}'  value='${menuValues.registerCode}'>`,
+            nameInput       = `<input type='text' class='${classes.nameInput}'  value='${menuValues.name}'>`,
+            price0Input     = `<input type='text' class='${classes.priceInput} menu-price0' value='${menuValues.prices.default}'>`,
+            price1Input     = `<input type='text' class='${classes.priceInput} menu-price1' value='${menuValues.prices.gaiwan}'>`,
+            price2Input     = `<input type='text' class='${classes.priceInput} menu-price2' value='${menuValues.prices.package}'>`,
+            price3Input     = `<input type='text' class='${classes.priceInput} menu-price3' value='${menuValues.prices.bulk}'>`,
+            updateButton    = `<button class='${classes.updateButton}' onclick="updateMenuItem('${menuValues._id}')">Zapisz <i class="fas fa-pencil-alt"></i></button>`;
+    $('#menu-container').append(itemDiv);
+    $(`#${menuValues._id}.menu-item`).append([
+                deleteButton, 
+                codeInput, nameInput, price0Input, price1Input, price2Input, price3Input, 
+                updateButton]);
+}
 
 function updateMenuItem(itemID){
     const newData = {
@@ -77,11 +83,7 @@ function updateMenuItem(itemID){
 
 function newMenuItem(){
     sendRequest("/menu/new", {}, 
-    (data) => {
-        const div = createMenuItemDiv(data._id);
-        $('#menu-container').prepend(div);
-        setupMenuItem(data)
-    });
+    (data) => { setupMenuItem(data) });
 }
 
 function deleteMenuItem(itemID){

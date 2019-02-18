@@ -39,8 +39,8 @@ function promiseToGetFromCollectionByObject(collection, object){
 }
 
 module.exports = {
-    promiseToGetFromCollectionById:     promiseToGetFromCollectionById,
-    promiseToDeleteFromCollectionById:  promiseToDeleteFromCollectionById,
-    promiseToUpdateFromCollectionById:  promiseToUpdateFromCollectionById,
-    promiseToGetFromCollectionByObject:     promiseToGetFromCollectionByObject,
+    promiseToGetFromCollectionById,
+    promiseToDeleteFromCollectionById,
+    promiseToUpdateFromCollectionById,
+    promiseToGetFromCollectionByObject,
 };

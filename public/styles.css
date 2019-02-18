@@ -183,11 +183,11 @@ button {
     width: 2em;
 }
 
-.menu-price0, .menu-price1, .menu-price2, .menu-price3, .menu-price {
+.menu-price {
     width: 6em;
 }
 
-#navigation {
+#menu-navigation {
     display: flex;
     justify-content: flex-end;
     
