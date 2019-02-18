@@ -1,12 +1,12 @@
-function calculateSum(orderedItems, property="price"){
+function calculateSum(items, property="price"){
     var sum = 0; 
-    orderedItems.forEach( (item) => { if(item[property]){ sum+=Number(item[property]); } });
+    items.forEach( (item) => { if(item[property]){ sum+=Number(item[property]); } });
     return sum.toString();
 }
 
-function calculateDiscountedPricesForOrder(orderedItems, order, OrderedItem){
+function calculateDiscountedPricesForOrder(items, order, OrderedItem){
     var discountedSum = 0;
-    orderedItems.forEach(function(item){
+    items.forEach(function(item){
         var newPrice = item.price * calculateDiscount(item, order);
         discountedSum += newPrice;
         OrderedItem.findOneAndUpdate({_id: item._id}, {discountedPrice: newPrice});

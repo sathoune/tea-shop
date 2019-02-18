@@ -6,7 +6,7 @@ function findOpenOrders(){
 
 function restoreOrder(orderData){
     const promise = new Promise((resolve, reject) => {
-        restoreOrderDiv(orderData._id, orderData.orderedItems);  
+        restoreOrderDiv(orderData._id, orderData.items);  
         resolve();        
     });
     promise.then( (resolve) => { restoreOrderValues(orderData); });

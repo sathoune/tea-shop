@@ -7,7 +7,7 @@ var OrderSchema = new mongoose.Schema({
     sum:            { type: String, default: "0"},
     discountedSum:  { type: String, default: "0"},
     table:          { type: String, default: "" },
-    orderedItems: [
+    items: [
         {
                     type: mongoose.Schema.Types.ObjectId,
                     ref: "OrderedItem"
