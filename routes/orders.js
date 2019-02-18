@@ -121,11 +121,11 @@ router.post("/old", (req, res) => {
     else { 
         let promises = openOrders.reduce((promiseChain, order) => {
         return promiseChain.then( () => new Promise( (resolve) => {
-            if(order.sum == '0'){
-                Order.findOneAndDelete(order);
+            if(order.sum == "0"){
+                Order.findOneAndDelete({_id: order._id}, (err) => { if(err){ console.log(err); }});
                 openOrders.splice(openOrders.indexOf(order), 1);
-            }
-            resolve();
+                resolve();
+            } else { resolve(); }
         }));
         }, Promise.resolve());
         promises.then(() => { res.send(openOrders); });

@@ -35,16 +35,10 @@ function createArchiveContainers(){
     const   archiveContainer            = `<div id='${ids.archiveContainer}' class='main-container'></div`,
             archivedOrdersContainer     = `<div id='${ids.archivedOrdersContainer}'></div>`,
             archivePanel                = `<div id='${ids.archivePanel}'></div>`;
-    const now = new Date();
-    const date ={
-        year: now.getFullYear(),
-        month: (1 + now.getMonth()).toString().padStart(2, '0'),
-        day: now.getDate().toString().padStart(2, '0'),
-    };
-    const newDate = `${date.year}-${date.month}-${date.day}`;
+   
     $('body').append(archiveContainer);
     const expandAllButton = `<button id='expand-all-button' class="expand-button">Rozwiń wszystkie <i class="fas fa-search-plus"></i></button>`;
-    const   dateInput           = `<input                   id="day-for-display"    type="date" name="trip-start"   value='${newDate}' min="2019-01-01" max="2025-12-31">`,
+    const   dateInput           = `<input                   id="day-for-display"    type="date" name="trip-start"   value='${getDate()}' min="2019-01-01" max="2025-12-31">`,
             sumInput            = `<input class="day-sum"   id='day-sum'            type="number"                   value='0'           readonly>`,
             discountedSumInput  = `<input class="day-sum"   id='discounted-day-sum' type="number"                   value='0'           readonly>`,
             dateLabel           = `<input class='date-label'                        type='text'                     value='Otwarto'     readonly>`,
