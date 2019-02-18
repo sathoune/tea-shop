@@ -41,15 +41,15 @@ function createArchiveContainers(){
     const   dateInput           = `<input type="date" id="day-for-display" name="trip-start"
        value='${newDate}' min="2019-01-01" max="2025-12-31">`;
     $('body').append(archive);
-    const archivePanelLabelsDiv = `<div id='labels'><input type='text' class='date-label' value='Data' readonly><input type='text' class='date-label' value='Suma' readonly><input type='text' class='date-label' value='Po zniżce' readonly></div>`;
-    const archivedOrderLabels = `<div id='archived-orders-labels' readonly><input type='text' class='date-label' value='Otwarto:' readonly><input type='text' class='date-label' value='Suma' readonly><input type='text' class='date-label' value='Po zniżce' readonly></div>`;
-    const expandAllButton = `<button id='expand-all-button' class="expand-button">Rozwiń wszystkie<i class="fas fa-search-plus"></i></button>`;
+    const expandAllButton = `<button id='expand-all-button' class="expand-button">Rozwiń wszystkie <i class="fas fa-search-plus"></i></button>`;
     const   sumInput            = `<input class="day-sum" id='day-sum' type="number" value='0' readonly>`,
             discountedSumInput  = `<input class="day-sum" id='discounted-day-sum' type="number" value='0' readonly>`;
-    const dayDiv = `<div class='thingies'>`+dateInput+sumInput+discountedSumInput+expandAllButton+`</div>`;
+    const archivedOrderLabels = `<div id='archived-orders-labels' readonly><input type='text' class='date-label' value='Otwarto' readonly><input type='text' class='date-label' value='Stolik' readonly><input type='text' class='date-label' value='Suma' readonly><input type='text' class='date-label' value='Po zniżce' readonly>`+expandAllButton+`</div>`;
+
+    const dayDiv = `<div class='thingies'><input type='text' class='date-label' value='Data' readonly>`+dateInput+`<input type='text' class='date-label' value='Suma dnia' readonly>`+sumInput+`<input type='text' class='date-label' value='Po zniżce' readonly>`+discountedSumInput+`</div>`;
     
     $('#archive').append(archiveContainers);
-    $('#archive-panel').append([archivePanelLabelsDiv, dayDiv, archivedOrderLabels]);
+    $('#archive-panel').append([dayDiv, archivedOrderLabels]);
     $(`#expand-all-button`).on("click", expandAll);
 
     $('#day-for-display').on('change' , generateDay);
@@ -88,9 +88,11 @@ function constructArchiveDiv(orderData){
 
 function constructOrderDisplay(orderData){
     if(!orderData.table) { orderData.table = '' };
+    const date = new Date(orderData.createdAt).getHours()+":"+new Date(orderData.createdAt).getMinutes()+":"+new Date(orderData.createdAt).getSeconds();
+    console.log(date);
     const   summaryDiv      = `<div class='div-summary'></div>`
     const   sendBackButton  = `<button class='send-back' onclick='sendOrderBack("${orderData._id}")'><i class="fas fa-long-arrow-alt-left"></i> Otwórz ponownie</button>`,
-            dateInput       = `<input type='text' class='order-date' value='${new Date(orderData.createdAt)}' readonly>`,
+            dateInput       = `<input type='text' class='order-date' value='${date}' readonly>`,
             table           = `<input type='text' class='order-table' value='${orderData.table}' readonly>`,
             sum             = `<input type='text' class='order-sum' value='${Number(orderData.sum).toFixed(2)}' readonly>`,
             discountedSum   = `<input type='text' class='order-sum' value='${Number(orderData.discountedSum).toFixed(2)}' readonly>`,

@@ -240,17 +240,27 @@ input, select{
 }
 
 #expand-all-button {
-    width: 10em;
     margin-left: auto;
     background-color: #ff9900;
 }
 
 .thingies {
     display: flex;
+    margin-left: auto;
 }
 
 #version {
     margin: 0 auto auto 0;
     font-size: 0.5em;
     color: gray;
+}
+
+.order-date {
+    width: 4em;
+}
+
+#archived-orders-labels {
+    display: flex;
+    margin-left: auto;
+    
 }
