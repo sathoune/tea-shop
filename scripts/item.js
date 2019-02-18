@@ -127,6 +127,7 @@ function setItemValues(itemObject){
     $(`${itemSelector} .name`)              .val(itemObject.name);
     $(`${itemSelector} .type`)              .val(itemObject.type);
     $(`${itemSelector} .quantity`)          .val(itemObject.quantity);
+    $(`${itemSelector} .register-code`)     .val(itemObject.registerCode);
     $(`${itemSelector} .price`)             .val(Number(itemObject.price).toFixed(2));
     $(`${itemSelector} .discounted-price`)  .val(Number(itemObject.discountedPrice).toFixed(2));
 }

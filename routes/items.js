@@ -58,14 +58,9 @@ router.post('/edit/name', (req, res) => {
                item.name = menuItem.name;
                 item.price = pricesAndSums.calculatePrice(menuItem, item);
                 item.discountedPrice = item.price * pricesAndSums.calculateDiscount(item, order);
+                item.registerCode = menuItem.registerCode;
                 item.save( () => {
-                    var response = {
-                            name: item.name, 
-                            price: item.price, 
-                            discountedPrice: item.discountedPrice,
-                            registerCode: menuItem.registerCode,
-                        };
-                    res.send(response);
+                    res.send(item);
                 }); 
             } else {
                 item.name = "";

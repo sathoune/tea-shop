@@ -6,7 +6,7 @@ var ItemSchema = new mongoose.Schema({
     type:               {type: String, default: "sztuka"},
     price:              {type: String, default: ""},
     discountedPrice:    {type: String, default: ""},
-
+    registerCode:       {type: String, default: ""},
 },
                         {timestamps: { createdAt: 'createdAt' } });
 
