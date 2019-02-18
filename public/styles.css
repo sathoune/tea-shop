@@ -264,3 +264,8 @@ input, select{
     margin-left: auto;
     
 }
+
+#menu-container {
+    display: flex;
+    flex-direction: column;
+}
