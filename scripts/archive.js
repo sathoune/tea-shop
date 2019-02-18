@@ -19,7 +19,7 @@ function openArchive(){
 
 function closeArchive(){
     $('#record-view').show();
-    $("#show-archive").html(`<i class="fas fa-archive"></i> Look at the past <i class="fas fa-archive"></i>`);
+    $("#show-archive").html(`<i class="fas fa-archive"></i> Archiwum <i class="fas fa-archive"></i>`);
     $("#show-archive").off("click").on("click", openArchive);
     $('#archive').remove();
     showMainContainers();
