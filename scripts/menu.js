@@ -87,7 +87,7 @@ function deleteMenuItem(itemID){ sendRequest("/menu/delete", {_id: itemID}, (dat
 function showBackCurrentOrders(){
     $('#record-view').show();
     $('#menu').remove();
-    $('#show-menu').html(`<i class="fas fa-book-open"></i> Menu <i class="fas fa-book-open"></i>`);
+    $('#show-menu').html(`<i class="fas fa-book-open"></i> Magazyn <i class="fas fa-book-open"></i>`);
     $('#show-menu').off("click").on("click", openMenu);
     showMainContainers();
 }
