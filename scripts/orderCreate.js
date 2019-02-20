@@ -89,3 +89,7 @@ function createOrderItemPanel(orderId, itemsQuantity){
     }
 }
  
+ 
+const orderHTML = {
+    
+};
