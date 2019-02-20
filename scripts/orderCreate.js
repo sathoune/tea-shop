@@ -12,7 +12,7 @@ function createNavigation(){
 }
 
 function createOrderDiv(orderId, itemsQuantity=4){
-    const div = `<div id=${orderId} class='order'></div>`;     
+    const div = `<div id=${orderId} class='order' name='${orderId}'></div>`;     
     $("#order-display").prepend(div);
     createOrderTopPanel(orderId);
     createOrderLabels(orderId); 

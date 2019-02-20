@@ -6,6 +6,7 @@ function updateOrderTable(){
     (tableParameters) => {
         $(`#${orderId}.order`).css('order', tableParameters.order);
         $(`#${orderId}.order .table`).css('background-color', tableParameters.color);
+        window.location.href = `#${orderId}`;
     });
 }
 
