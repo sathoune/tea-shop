@@ -29,18 +29,8 @@ router.post('/edit/name', (req, res) => {
     var promisedItem = dbFunctions.promiseToGetFromCollectionById(Item, req.body.item_id);
     if(req.body.name == ''){
         promisedItem.then( (item) => {
-            item.name = "";
-            item.price = "";
-            item.discountedPrice = "";
-            item.save( () => {
-                const response = {
-                    name: "", 
-                    price: "", 
-                    discountedPrice: "",
-                    registerCode: "",
-                };
-            res.send(response);                
-            });
+            item = setMenuValuesIntoItem(item);
+            item.save(() => { res.send({item}); });
         });
     } else {
         let promisedMenuItem = new Promise( (resolve, reject) => {
@@ -48,13 +38,8 @@ router.post('/edit/name', (req, res) => {
                 if(err){ reject(err); }
                 else{
                     if(foundMenuItem.length > 1){
-                        foundMenuItem.forEach(item => {
-                            if(item.name == req.body.name){ resolve(item); }
-                        });
-                    } else {
-                        resolve(foundMenuItem[0]);
-                    }
-                    
+                        foundMenuItem.forEach(item => { if(item.name == req.body.name){ resolve(item); }}); } 
+                    else { resolve(foundMenuItem[0]); }
                 }
             }); 
         });
@@ -64,27 +49,11 @@ router.post('/edit/name', (req, res) => {
                 order = values[1],
                 menuItem = values[2];
             if(menuItem){
-               item.name = menuItem.name;
-                item.price = pricesAndSums.calculatePrice(menuItem, item);
-                item.discountedPrice = item.price * pricesAndSums.calculateDiscount(item, order);
-                item.registerCode = menuItem.registerCode;
-                item.save( () => {
-                    res.send(item);
-                }); 
+                item = setMenuValuesIntoItem(item, menuItem, order);
+                item.save(() => { res.send({item}); }); 
             } else {
-                item.name = "";
-                item.price = "";
-                item.discountedPrice = "";
-                item.save( () => {
-                    const response = {
-                        name: "", 
-                        price: "", 
-                        discountedPrice: "",
-                        registerCode: "",
-                        err: "wrong name",
-                    };
-                res.send(response);                
-                });
+                item = setMenuValuesIntoItem(item);
+                item.save(() => { res.send({item, err:"wrong name" }); });
             }
         });
     }
@@ -177,4 +146,21 @@ router.post("/delete", (req, res) => {
     });
 });
 
+function setMenuValuesIntoItem(item, menuItem, order){
+    if(menuItem && order){
+        item.name = menuItem.name;
+        item.registerCode = menuItem.registerCode;
+        item.price = pricesAndSums.calculatePrice(menuItem, item);
+        item.discountedPrice = item.price * pricesAndSums.calculateDiscount(item, order);
+        return item;
+    } else {
+        item.name = "";
+        item.registerCode = "";
+        item.price = "";
+        item.discountedPrice = "";
+        return item;
+    }
+    
+    
+}
 module.exports = router;
