@@ -49,10 +49,12 @@ router.post('/edit/name', (req, res) => {
                 else{
                     if(foundMenuItem.length > 1){
                         foundMenuItem.forEach(item => {
-                            if(item == req.body.name){ resolve(item); }
+                            if(item.name == req.body.name){ resolve(item); }
                         });
+                    } else {
+                        resolve(foundMenuItem[0]);
                     }
-                    resolve(foundMenuItem[0]); 
+                    
                 }
             }); 
         });
