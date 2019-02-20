@@ -31,7 +31,6 @@ button, input, select {
 }
 
 .discount-label{
-    margin-left: auto;
     width: 4em;
     text-align: right;
 }
@@ -75,14 +74,15 @@ button, input, select {
 }
 
 .name {
-    width: 20em;
+    width: 15em;
 }
 .table{
     width: 7em;
+    margin-left: auto;
 } 
 
 .hint, .discounted-sum-label {
-    width: 10em;
+    width: 7em;
 }
 
 .discounted-sum-label {
@@ -91,10 +91,11 @@ button, input, select {
 
 .add-item-button {
     background: #00416A;  
+    display: none;
 }
 
 #create-order{ 
-    background: #00416A;
+    background: #a89716;
     height: 3em;
     width: 12%;
 }
@@ -102,6 +103,7 @@ button, input, select {
 .delete-button {
     background: #d6634f;
     padding: 1px 8px;
+    margin-right: auto;
 }
 
 .send-button {
@@ -285,4 +287,16 @@ input, select{
     z-index: 999;
     width: 100%;
     height: 23px;
+}
+
+.item-container {
+    margin-left: auto;
+}
+
+.item {
+    display: flex;
+}
+
+.top-panel .button{
+    height: 2em;
 }

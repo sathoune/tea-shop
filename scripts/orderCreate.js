@@ -5,7 +5,7 @@ function createOrder(){
 
 function createNavigation(){
     const   topPanel = "<div id='top-panel'></div>",
-            createOrder = `<button id='create-order' onclick='createOrder()'><i class="fas fa-folder-plus"></i> Nowe zamówienie <i class="fas fa-folder-plus"></i></button>`,
+            createOrder = `<button id='create-order' onclick='createOrder()'><i class="fas fa-folder-plus"></i> Nowe <i class="fas fa-folder-plus"></i> zamówienie</button>`,
             orderDiv = "<div id='order-display'></div>";
     $('#record-view').append([topPanel, orderDiv]);
     $('#top-panel').append(createOrder);
