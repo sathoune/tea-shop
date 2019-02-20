@@ -1,22 +1,31 @@
 function findOpenOrders(){
-    sendRequest('/order/old', {}, (openOrders) => { openOrders.forEach(restoreOrder); });
+    sendRequest('/order/old', {}, (data) => { 
+        console.log(data.tableProperties);
+        data.orders.forEach((order, i) =>{
+            console.log(data.tableProperties[i]);
+            restoreOrder(order, data.tableProperties[i])
+        }); 
+        
+    });
 }
 
-function restoreOrder(orderData){
+function restoreOrder(orderData, tableParameters){
     const promise = new Promise((resolve, reject) => {
         restoreOrderDiv(orderData._id, orderData.items);  
         resolve();        
     });
-    promise.then( (resolve) => { restoreOrderValues(orderData); });
+    promise.then( (resolve) => { restoreOrderValues(orderData, tableParameters); });
 }
 
-function restoreOrderValues(orderData){
+function restoreOrderValues(orderData, tableParameters){
+    console.log(tableParameters);
     $(`#${orderData._id}.order .table`)         .val(orderData.table);
     $(`#${orderData._id}.order .discount`)      .val(orderData.discount);
     $(`#${orderData._id}.order .table`)         .val(orderData.table);
     $(`#${orderData._id}.order .sum`)           .val(Number(orderData.sum).toFixed(2));
     $(`#${orderData._id}.order .discounted-sum`).val(Number(orderData.discountedSum).toFixed(2));
-    orderTable(orderData.table, orderData._id);
+    $(`#${orderData._id}.order`).css('order', tableParameters.order);
+    $(`#${orderData._id}.order .table`).css('background-color', tableParameters.color);
 }
 
 function restoreOrderDiv(orderId, itemIds){

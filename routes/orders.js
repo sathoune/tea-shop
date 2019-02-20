@@ -119,16 +119,20 @@ router.post("/old", (req, res) => {
   Order.find({closed: false}, (err, openOrders) => { 
     if(err) { console.log(err); }
     else { 
+        var tableProperties = [];
         let promises = openOrders.reduce((promiseChain, order) => {
-        return promiseChain.then( () => new Promise( (resolve) => {
-            if(order.sum == "0"){
-                Order.findOneAndDelete({_id: order._id}, (err) => { if(err){ console.log(err); }});
-                openOrders.splice(openOrders.indexOf(order), 1);
-                resolve();
-            } else { resolve(); }
+            return promiseChain.then( () => new Promise( (resolve) => {
+                if(order.sum == "0"){
+                    Order.findOneAndDelete({_id: order._id}, (err) => { if(err){ console.log(err); }});
+                    openOrders.splice(openOrders.indexOf(order), 1);
+                    resolve();
+                } else { 
+                    tableProperties.push(uiDisplay.positionTable(order.table));
+                    resolve(); 
+                }
         }));
         }, Promise.resolve());
-        promises.then(() => { res.send(openOrders); });
+        promises.then(() => { res.send({orders: openOrders, tableProperties}); });
     }
   });
 });
