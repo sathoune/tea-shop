@@ -19,6 +19,7 @@ function createOrderDiv(orderId, itemsQuantity=4){
     createOrderBottomPanel(orderId);
     createOrderItemPanel(orderId, itemsQuantity);
     $(`#${orderId}.order`).css("order", 0);
+    window.location.href = `#${orderId}`;
 }
 
 function createOrderTopPanel(orderId){
