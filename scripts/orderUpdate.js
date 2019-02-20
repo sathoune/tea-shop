@@ -39,3 +39,11 @@ function updateToGoDiscount(){
     });
 }
 
+function checkIfAllNameInputsAreUsed(orderId){
+    var items = $(`#${orderId}.order .item .name`);
+    for(var i=0; i< items.length; i++){
+        if($(items[i]).val() == ""){ return false; }
+    }
+    return true;
+}
+

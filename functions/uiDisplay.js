@@ -2,7 +2,7 @@ function positionTable(tableValue){
     const tableColors = {
         morocco:    "#4ebbff",
         oriental:   "#eb842a",
-        colonial:   "#ba232b",
+        colonial:   "#ff5145",
         outside:    "#2ab015",
         scene:      "#e00007",
         other:      "#fcd912",

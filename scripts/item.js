@@ -54,8 +54,9 @@ function updateItemName(){
         $(`#${itemId}.item .discounted-price`).val(data.discountedPrice);
         $(`#${itemId}.item .register-code`)    .val(data.registerCode);
         if(data.name != nameValue){ $(`#${itemId}.item .name`).val(data.name); }
+        if(checkIfAllNameInputsAreUsed(orderId)){ createItem(orderId); };
         updateSumOfPrices(orderId);
-        updateSumOfDiscountedPrices(orderId)
+        updateSumOfDiscountedPrices(orderId);
         if(data.err){
             $(`#${itemId}.item .name`).css('background-color', 'red');
         } else {
