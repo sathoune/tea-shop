@@ -14,15 +14,14 @@ function createItemContainer(orderId, itemId){
 // editing scripts
 
 function updateItemName(){
-    const itemId    = $(this).parent()[0].id,
-          orderId   = $(this).parent().parent().parent()[0].id;
-    const nameValue = $(this).val()
+    const   orderId   = $(this).parent().parent().parent()[0].id, 
+            itemId    = $(this).parent()[0].id,
+            nameValue = $(this).val();
     
-    sendRequest('/item/edit/name', {order_id: orderId, item_id: itemId, name: nameValue}, 
+    sendRequest('/item/edit/name', {orderId: orderId, itemId: itemId, name: nameValue}, 
     (data) => {
         setItemValues(data.item);
-        if(data.err){ 
-            $(`#${itemId}.item .name`).css('background-color', 'red'); } 
+        if(data.err){ $(`#${itemId}.item .name`).css('background-color', 'red'); } 
         else { 
             if(checkIfAllNameInputsAreUsed(orderId)){ createItem(orderId); };
             $(`#${itemId}.item .name`).css('background-color', 'silver'); 

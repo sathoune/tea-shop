@@ -26,24 +26,15 @@ router.post("/show", (req, res) => {
 });
 
 router.post('/edit/name', (req, res) => {
-    var promisedItem = dbFunctions.promiseToGetFromCollectionById(Item, req.body.item_id);
+    let promisedItem = dbFunctions.promiseToGetFromCollectionById(Item, req.body.itemId);
     if(req.body.name == ''){
         promisedItem.then( (item) => {
             item = setMenuValuesIntoItem(item);
             item.save(() => { res.send({item}); });
         });
     } else {
-        let promisedMenuItem = new Promise( (resolve, reject) => {
-            MenuItem.find({name: { $regex: new RegExp(req.body.name,  "i")}}, (err, foundMenuItem) => {
-                if(err){ reject(err); }
-                else{
-                    if(foundMenuItem.length > 1){
-                        foundMenuItem.forEach(item => { if(item.name == req.body.name){ resolve(item); }}); } 
-                    else { resolve(foundMenuItem[0]); }
-                }
-            }); 
-        });
-        let promisedOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body.order_id);
+        let promisedMenuItem = dbFunctions.promiseToFindMenuItem(MenuItem, req.body.name);
+        let promisedOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body.orderId);
         Promise.all([promisedItem, promisedOrder, promisedMenuItem]).then( (values) => {
             let item = values[0],
                 order = values[1],
