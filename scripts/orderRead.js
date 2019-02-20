@@ -1,12 +1,5 @@
 function findOpenOrders(){
-    sendRequest('/order/old', {}, (data) => { 
-        console.log(data.tableProperties);
-        data.orders.forEach((order, i) =>{
-            console.log(data.tableProperties[i]);
-            restoreOrder(order, data.tableProperties[i])
-        }); 
-        
-    });
+    sendRequest('/order/old', {}, (data) => { data.orders.forEach((order, i) =>{ restoreOrder(order, data.tableProperties[i]) }); });
 }
 
 function restoreOrder(orderData, tableParameters){
@@ -18,7 +11,6 @@ function restoreOrder(orderData, tableParameters){
 }
 
 function restoreOrderValues(orderData, tableParameters){
-    console.log(tableParameters);
     $(`#${orderData._id}.order .table`)         .val(orderData.table);
     $(`#${orderData._id}.order .discount`)      .val(orderData.discount);
     $(`#${orderData._id}.order .table`)         .val(orderData.table);

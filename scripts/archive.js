@@ -138,7 +138,10 @@ function setSums(sum, discountedSum){
 }
 
 function sendOrderBack(orderId){
-    sendRequest('/archive/reopen', {_id: orderId}, (data) => { $(`#${orderId}.archived-order`).remove(); });
+    sendRequest('/archive/reopen', {_id: orderId}, (data) => { 
+        $(`#${orderId}.archived-order`).remove(); 
+        restoreOrder(data.order, data.tableProperties);
+    });
 }
 
 function expandAll(){

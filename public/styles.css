@@ -62,6 +62,8 @@ button, input, select {
 
 .register-code{
     width: 2em;
+    text-align: center;
+    background-color: #f2e3ae;
 }
 
 .sum, .discounted-sum, .price, .discounted-price {
@@ -92,7 +94,7 @@ button, input, select {
 }
 
 .delete-button {
-    background: #EF3B36;
+    background: #d6634f;
     padding: 1px 8px;
 }
 
