@@ -14,17 +14,17 @@ router.post("/login", passport.authenticate("local", {
 });
 
 //No more users
-router.get("/register", (req, res) => { res.render("register"); });
+// router.get("/register", (req, res) => { res.render("register"); });
 
-router.post("/register", (req, res) => {
-    var newUser = new User({ username: req.body.username });
-    User.register(newUser, req.body.password, (err, user) => {
-        if(err){ return res.render("register", { "error": err.message }); }
-        passport.authenticate("local")(req, res, () => {
-            res.redirect("/");
-        });
-    });
-});
+// router.post("/register", (req, res) => {
+//     var newUser = new User({ username: req.body.username });
+//     User.register(newUser, req.body.password, (err, user) => {
+//         if(err){ return res.render("register", { "error": err.message }); }
+//         passport.authenticate("local")(req, res, () => {
+//             res.redirect("/");
+//         });
+//     });
+//});
 
 router.get("/", middleware.isLoggedIn, (req, res) => {
     MenuItem.find({}, (err, results) => {

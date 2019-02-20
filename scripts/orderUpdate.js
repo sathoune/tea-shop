@@ -6,6 +6,7 @@ function updateOrderTable(){
     (tableParameters) => {
         $(`#${orderId}.order`).css('order', tableParameters.order);
         $(`#${orderId}.order .table`).css('background-color', tableParameters.color);
+        window.location.href = `#${orderId}`;
     });
 }
 
@@ -37,5 +38,13 @@ function updateToGoDiscount(){
         data.items.forEach((item) => 
         { $(`#${item._id}.item .discounted-price`).val(Number(item.discountedPrice).toFixed(2)); });
     });
+}
+
+function checkIfAllNameInputsAreUsed(orderId){
+    var items = $(`#${orderId}.order .item .name`);
+    for(var i=0; i< items.length; i++){
+        if($(items[i]).val() == ""){ return false; }
+    }
+    return true;
 }
 

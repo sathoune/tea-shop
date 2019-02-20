@@ -1,5 +1,3 @@
- 
-    
 function sendRequest(url, newData, callback){
     $.ajax(
     {

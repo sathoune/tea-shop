@@ -12,7 +12,7 @@ function createNavigation(){
 }
 
 function createOrderDiv(orderId, itemsQuantity=4){
-    const div = `<div id=${orderId} class='order'></div>`;     
+    const div = `<div id=${orderId} class='order' name='${orderId}'></div>`;     
     $("#order-display").prepend(div);
     createOrderTopPanel(orderId);
     createOrderLabels(orderId); 
@@ -24,7 +24,7 @@ function createOrderDiv(orderId, itemsQuantity=4){
 function createOrderTopPanel(orderId){
     const   topPanelDiv = `<div class="top-panel"></div>`;
     const   tableInput = "<input type='text' class='table' placeholder='stolik'>",
-            discountInput = "<input type='text' class='discount-label' value='Zniżka:'readonly><input type='number' class='discount' value='0' min='0' max='100'><input class='percent' type='text' value='%' readonly>",
+            discountInput = "<input type='text' class='discount-label' value='Zniżka:'readonly><input type='number' class='discount' value='0' min='0' max='100' step='5'><input class='percent' type='text' value='%' readonly>",
             discountToGoCheckbox = "<label class='to-go-button'><input class='discount-to-go' type='checkbox' name='checkbox' value='discountToGo'>na wagę</label>",
             sendButton = `<button class='send-button' onclick='closeOrder("${orderId}")'>Zamknij zamówienie <i class="fas fa-pencil-alt"></i>
 
@@ -89,3 +89,7 @@ function createOrderItemPanel(orderId, itemsQuantity){
     }
 }
  
+ 
+const orderHTML = {
+    
+};

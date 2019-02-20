@@ -44,9 +44,16 @@ router.post('/edit/name', (req, res) => {
         });
     } else {
         let promisedMenuItem = new Promise( (resolve, reject) => {
-            MenuItem.findOne({name: { $regex: new RegExp(req.body.name,  "i")}}, (err, foundMenuItem) => {
+            MenuItem.find({name: { $regex: new RegExp(req.body.name,  "i")}}, (err, foundMenuItem) => {
                 if(err){ reject(err); }
-                else{ resolve(foundMenuItem); }
+                else{
+                    if(foundMenuItem.length > 1){
+                        foundMenuItem.forEach(item => {
+                            if(item == req.body.name){ resolve(item); }
+                        });
+                    }
+                    resolve(foundMenuItem[0]); 
+                }
             }); 
         });
         let promisedOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body.order_id);

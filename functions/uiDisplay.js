@@ -2,7 +2,7 @@ function positionTable(tableValue){
     const tableColors = {
         morocco:    "#4ebbff",
         oriental:   "#eb842a",
-        colonial:   "#ba232b",
+        colonial:   "#ff5145",
         outside:    "#2ab015",
         scene:      "#e00007",
         other:      "#fcd912",
@@ -13,6 +13,10 @@ function positionTable(tableValue){
     }
     if(tableValue==''){
         parameters.order = 0;
+    }
+    else if('m' == tableValue){
+        parameters.order = 8;
+        parameters.color = tableColors.morocco;
     }
     else if('m1' == tableValue){
         parameters.order = 10;
@@ -30,6 +34,10 @@ function positionTable(tableValue){
         parameters.order = 16;
         parameters.color = tableColors.morocco;
     }
+    else if('k' == tableValue){
+        parameters.order = 18;
+        parameters.color = tableColors.colonial;
+    }
     else if('k1' == tableValue){
         parameters.order = 20;
         parameters.color = tableColors.colonial;
@@ -42,7 +50,7 @@ function positionTable(tableValue){
         parameters.order = 24;
         parameters.color = tableColors.colonial;
     }
-    else if('t' == tableValue){
+    else if('t' == tableValue || 'taj' == tableValue || 'tadz' == tableValue){
         parameters.order = 26;
         parameters.color = tableColors.scene;
     }
@@ -57,6 +65,10 @@ function positionTable(tableValue){
     else if('k6' == tableValue){
         parameters.order = 32;
         parameters.color = tableColors.colonial;
+    } 
+    else if('o' == tableValue){
+        parameters.order = 38;
+        parameters.color = tableColors.oriental;
     }
     else if('o1' == tableValue){
         parameters.order = 40;

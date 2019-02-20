@@ -26,30 +26,32 @@ function closeArchive(){
 }
 
 function createArchiveContainers(){
-    const now = new Date();
-    const date ={
-        year: now.getFullYear(),
-        month: (1 + now.getMonth()).toString().padStart(2, '0'),
-        day: now.getDate().toString().padStart(2, '0'),
+    
+    const ids = {
+        archiveContainer:          'archive',
+        archivePanel:              'archive-panel',
+        archivedOrdersContainer:   'archived-orders',
     };
-    const newDate = `${date.year}-${date.month}-${date.day}`;
-
-    const   archive             = "<div id='archive' class='main-container'></div";
-    const   archiveContainer    = "<div id='archived-orders'></div>",
-            archivePanel        = "<div id='archive-panel'></div>";
-    const   archiveContainers   = [archivePanel, archiveContainer];
-    const   dateInput           = `<input type="date" id="day-for-display" name="trip-start"
-       value='${newDate}' min="2019-01-01" max="2025-12-31">`;
-    $('body').append(archive);
+    const   archiveContainer            = `<div id='${ids.archiveContainer}' class='main-container'></div`,
+            archivedOrdersContainer     = `<div id='${ids.archivedOrdersContainer}'></div>`,
+            archivePanel                = `<div id='${ids.archivePanel}'></div>`;
+   
+    $('body').append(archiveContainer);
     const expandAllButton = `<button id='expand-all-button' class="expand-button">Rozwiń wszystkie <i class="fas fa-search-plus"></i></button>`;
-    const   sumInput            = `<input class="day-sum" id='day-sum' type="number" value='0' readonly>`,
-            discountedSumInput  = `<input class="day-sum" id='discounted-day-sum' type="number" value='0' readonly>`;
-    const archivedOrderLabels = `<div id='archived-orders-labels' readonly><input type='text' class='date-label' value='Otwarto' readonly><input type='text' class='date-label' value='Stolik' readonly><input type='text' class='date-label' value='Suma' readonly><input type='text' class='date-label' value='Po zniżce' readonly>`+expandAllButton+`</div>`;
+    const   dateInput           = `<input                   id="day-for-display"    type="date" name="trip-start"   value='${getDate()}' min="2019-01-01" max="2025-12-31">`,
+            sumInput            = `<input class="day-sum"   id='day-sum'            type="number"                   value='0'           readonly>`,
+            discountedSumInput  = `<input class="day-sum"   id='discounted-day-sum' type="number"                   value='0'           readonly>`,
+            dateLabel           = `<input class='date-label'                        type='text'                     value='Otwarto'     readonly>`,
+            tableLabel          = `<input class='date-label'                        type='text'                     value='Stolik'      readonly>`,
+            sumLabel            = `<input class='date-label'                        type='text'                     value='Suma'        readonly>`,
+            discountedSumLabel  = `<input class='date-label'                        type='text'                     value='Po zniżce'   readonly>`;
+    const archivedOrderLabels = `<div id='archived-orders-labels' readonly></div>`;
 
     const dayDiv = `<div class='thingies'><input type='text' class='date-label' value='Data' readonly>`+dateInput+`<input type='text' class='date-label' value='Suma dnia' readonly>`+sumInput+`<input type='text' class='date-label' value='Po zniżce' readonly>`+discountedSumInput+`</div>`;
     
-    $('#archive').append(archiveContainers);
+    $('#archive').append([archivePanel, archivedOrdersContainer]);
     $('#archive-panel').append([dayDiv, archivedOrderLabels]);
+    $(`#archived-orders-labels`).append([dateLabel, tableLabel, sumLabel, discountedSumLabel, expandAllButton]);
     $(`#expand-all-button`).on("click", expandAll);
     $('#day-for-display').on('change' , generateDay);
 }
@@ -136,7 +138,10 @@ function setSums(sum, discountedSum){
 }
 
 function sendOrderBack(orderId){
-    sendRequest('/archive/reopen', {_id: orderId}, (data) => { $(`#${orderId}.archived-order`).remove(); });
+    sendRequest('/archive/reopen', {_id: orderId}, (data) => { 
+        $(`#${orderId}.archived-order`).remove(); 
+        restoreOrder(data.order, data.tableProperties);
+    });
 }
 
 function expandAll(){
@@ -154,4 +159,15 @@ function hideMainContainers(){
 function showMainContainers(){
     var mainContainers = $('.main-container');
     for(var i=0; i<mainContainers.length;i++){ $(mainContainers[i]).show(); }
+}
+
+
+function getDate(){
+    const now = new Date();
+    const date ={
+        year: now.getFullYear(),
+        month: (1 + now.getMonth()).toString().padStart(2, '0'),
+        day: now.getDate().toString().padStart(2, '0'),
+    };
+    return `${date.year}-${date.month}-${date.day}`;
 }

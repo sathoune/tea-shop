@@ -2,6 +2,7 @@ const   express         = require("express"),
         Order           = require("../models/order"),
         Item            = require("../models/item"),
         dbFunctions     = require("../functions/dbFunctions"),
+        uiDisplay       = require("../functions/uiDisplay"),
         router          = express.Router({ mergeParams: true });
 
 router.post("/", (req, res) => {
@@ -30,7 +31,7 @@ router.post("/show-ordered-items", (req, res) => {
 
 router.post("/reopen", (req, res) => {
     let promisedOrder = dbFunctions.promiseToUpdateFromCollectionById(Order, req.body._id, {closed: false});
-    promisedOrder.then( () => { res.send("order opened"); });
+    promisedOrder.then( (order) => { res.send({order: order, tableProperties: uiDisplay.positionTable(order.table)}); });
 });
 
 module.exports = router;
