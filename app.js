@@ -54,7 +54,6 @@ app.use("/",                indexRoutes);
 
 // menu seed
 var seedMenu = require("./db_seeds/seedMenuItems");
-//seedMenu();
 
 // server start
 app.listen(process.env.PORT || 3000, process.env.IP, () => { console.log("The tea-shop server is on"); });

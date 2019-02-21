@@ -26,92 +26,49 @@ router.post("/show", (req, res) => {
 });
 
 router.post('/edit/name', (req, res) => {
-    var promisedItem = dbFunctions.promiseToGetFromCollectionById(Item, req.body.item_id);
+    let promisedItem = dbFunctions.promiseToGetFromCollectionById(Item, req.body.itemId);
     if(req.body.name == ''){
         promisedItem.then( (item) => {
-            item.name = "";
-            item.price = "";
-            item.discountedPrice = "";
-            item.save( () => {
-                const response = {
-                    name: "", 
-                    price: "", 
-                    discountedPrice: "",
-                    registerCode: "",
-                };
-            res.send(response);                
-            });
+            item = setMenuValuesIntoItem(item);
+            item.save(() => { res.send({item}); });
         });
     } else {
-        let promisedMenuItem = new Promise( (resolve, reject) => {
-            MenuItem.find({name: { $regex: new RegExp(req.body.name,  "i")}}, (err, foundMenuItem) => {
-                if(err){ reject(err); }
-                else{
-                    if(foundMenuItem.length > 1){
-                        foundMenuItem.forEach(item => {
-                            if(item.name == req.body.name){ resolve(item); }
-                        });
-                    } else {
-                        resolve(foundMenuItem[0]);
-                    }
-                    
-                }
-            }); 
-        });
-        let promisedOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body.order_id);
+        let promisedMenuItem = dbFunctions.promiseToFindMenuItem(MenuItem, req.body.name);
+        let promisedOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body.orderId);
         Promise.all([promisedItem, promisedOrder, promisedMenuItem]).then( (values) => {
-            let item = values[0],
-                order = values[1],
-                menuItem = values[2];
+            let     item = values[0];
+            const   order = values[1],
+                    menuItem = values[2];
             if(menuItem){
-               item.name = menuItem.name;
-                item.price = pricesAndSums.calculatePrice(menuItem, item);
-                item.discountedPrice = item.price * pricesAndSums.calculateDiscount(item, order);
-                item.registerCode = menuItem.registerCode;
-                item.save( () => {
-                    res.send(item);
-                }); 
+                item = setMenuValuesIntoItem(item, menuItem, order);
+                item.save(() => { res.send({item}); }); 
             } else {
-                item.name = "";
-                item.price = "";
-                item.discountedPrice = "";
-                item.save( () => {
-                    const response = {
-                        name: "", 
-                        price: "", 
-                        discountedPrice: "",
-                        registerCode: "",
-                        err: "wrong name",
-                    };
-                res.send(response);                
-                });
+                item = setMenuValuesIntoItem(item);
+                item.save(() => { res.send({item, err:"wrong name" }); });
             }
         });
     }
 });
 
 router.post('/edit/type', (req, res) => {
-    let promisedItem = dbFunctions.promiseToUpdateFromCollectionById(Item, req.body.item_id, {type: req.body.type});
+    let promisedItem = dbFunctions.promiseToUpdateFromCollectionById(Item, req.body.itemId, {type: req.body.type});
+    let promisedOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body.orderId);
     promisedItem.then((item) => {
-        let promisedOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body.order_id);
         let promisedMenuItem = dbFunctions.promiseToGetFromCollectionByObject(MenuItem, {name: item.name});
         Promise.all([promisedOrder, promisedMenuItem]).then((data) => {
             const order = data[0];
             const menuItem = data[1];
             item.price = pricesAndSums.calculatePrice(menuItem, item);
             item.discountedPrice = item.price * pricesAndSums.calculateDiscount(item, order);
-            item.save(() => {
-               const response = {price: item.price, discountedPrice: item.discountedPrice};
-               res.send(response); 
-            });
+            item.save(() => { res.send(item); });
         });
     });
 });
 // very much the same as type
 router.post('/edit/quantity', (req, res) => {
-    let promisedItem = dbFunctions.promiseToUpdateFromCollectionById(Item, req.body.item_id, {quantity: req.body.quantity});
+    let promisedItem = dbFunctions.promiseToUpdateFromCollectionById(Item, req.body.itemId, {quantity: req.body.quantity});
+    let promisedOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body.orderId);
     promisedItem.then((item) => {
-        let promisedOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body.order_id);
         let promisedMenuItem = dbFunctions.promiseToGetFromCollectionByObject(MenuItem, {name: item.name});
         Promise.all([promisedOrder, promisedMenuItem]).then((data) => {
             const order = data[0];
@@ -126,7 +83,7 @@ router.post('/edit/quantity', (req, res) => {
 
     });
 });
-
+//this guy is wrong
 router.post("/edit/price", (req, res) => {
     let promisedItem = dbFunctions.promiseToUpdateFromCollectionById(Item, req.body.itemId, {price: req.body.price});
     let promisedOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body.orderId);
@@ -145,7 +102,7 @@ router.post("/edit/price", (req, res) => {
         });
     });
 });
-
+//this too
 router.post("/edit/discounted-price", (req, res) => {
     let promisedItem = dbFunctions.promiseToUpdateFromCollectionById(Item, req.body.itemId, {discountedPrice: req.body.discountedPrice});
     let promisedOrder = dbFunctions.promiseToGetFromCollectionById(Order, req.body.orderId);
@@ -177,4 +134,21 @@ router.post("/delete", (req, res) => {
     });
 });
 
+function setMenuValuesIntoItem(item, menuItem, order){
+    if(menuItem && order){
+        item.name = menuItem.name;
+        item.registerCode = menuItem.registerCode;
+        item.price = pricesAndSums.calculatePrice(menuItem, item);
+        item.discountedPrice = item.price * pricesAndSums.calculateDiscount(item, order);
+        return item;
+    } else {
+        item.name = "";
+        item.registerCode = "";
+        item.price = "";
+        item.discountedPrice = "";
+        return item;
+    }
+    
+    
+}
 module.exports = router;

@@ -38,9 +38,24 @@ function promiseToGetFromCollectionByObject(collection, object){
     return promise;
 }
 
+function promiseToFindMenuItem(menu, name){
+    let promise = new Promise( (resolve, reject) => {
+        menu.find({name: { $regex: new RegExp(name,  "i")}}, (err, foundMenuItem) => {
+            if(err){ reject(err); }
+            else{
+                if(foundMenuItem.length > 1){
+                    foundMenuItem.forEach(item => { if(item.name == name){ resolve(item); }}); } 
+                else { resolve(foundMenuItem[0]); }
+            }
+        }); 
+    });
+    return promise;
+}
+
 module.exports = {
     promiseToGetFromCollectionById,
     promiseToDeleteFromCollectionById,
     promiseToUpdateFromCollectionById,
     promiseToGetFromCollectionByObject,
+    promiseToFindMenuItem,
 };

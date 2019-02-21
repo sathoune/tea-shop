@@ -1,74 +1,40 @@
 // create item
 
 function createItem(orderId){
-    const parentSelector = "#"+orderId+".order .item-container";
     sendRequest('/item/new', {orderID: orderId}, 
-    (emptyItem) => { createItemDiv(emptyItem._id, parentSelector);});
+    (emptyItem) => { createItemContainer(orderId, emptyItem._id);});
 }
 
-function createItemDiv(item_id, parentSelector){
-    const div = `<div id=${item_id} class='item'></div>`;     
-    $(parentSelector).append(div);  
-    insertInputsInto($(`#${item_id}`));
-}
-
-function insertInputsInto(div){
-    const   itemID = div[0].id;
-    const   deleteButton          = `<button class='delete-button' onclick='removeItemFromDisplay("${itemID}")'>
-    <i class="fas fa-trash-alt"></i></button>`, 
-            nameInput             = '<input type="text" class="name" list="tees">',
-            codeInput             = '<input type="text" class="register-code" readonly>',
-            priceInput            = '<input type="number" class="price">',
-            quantityInput         = '<input type="number" class="quantity" name="quantity" min="0" value="1">',
-            hintInput             = '<input type="text" class="hint">',
-            discountedPriceInput  = '<input type="number" class="discounted-price">',
-            typeInput             = `<select class="type">
-                                        <option value="sztuka">sztuka</option>
-                                        <option value="czajnik">czajnik</option>
-                                        <option value="gaiwan">gaiwan</option>
-                                        <option value="opakowanie">opakowanie</option>
-                                        <option value="gram">gram</option>
-                                    </select>`;
-  const inputElements = [
-        deleteButton,
-        codeInput,
-        nameInput,
-        typeInput,
-        quantityInput,
-        priceInput,
-        hintInput,
-        discountedPriceInput,
-    ];
-    div.append(inputElements);
+function createItemContainer(orderId, itemId){
+    const itemContainer = `<div id=${itemId} class='item'></div>`;     
+    $(`#${orderId}.order .item-container`).append(itemContainer);  
+    $(`#${itemId}.item`).append(itemHTML.createItemInputs(itemId));
 }
 
 // editing scripts
 
 function updateItemName(){
-    const itemId = $(this).parent()[0].id,
-          orderId = $(this).parent().parent().parent()[0].id;
-    const nameValue = $(this).val()
-    sendRequest('/item/edit/name', {item_id: itemId, name: nameValue, order_id: orderId}, 
+    const   orderId   = $(this).parent().parent().parent()[0].id, 
+            itemId    = $(this).parent()[0].id;
+    
+    sendRequest('/item/edit/name', {orderId: orderId, itemId: itemId, name: $(this).val()}, 
     (data) => {
-        $(`#${itemId}.item .price`)           .val(data.price);
-        $(`#${itemId}.item .discounted-price`).val(data.discountedPrice);
-        $(`#${itemId}.item .register-code`)    .val(data.registerCode);
-        if(data.name != nameValue){ $(`#${itemId}.item .name`).val(data.name); }
-        if(checkIfAllNameInputsAreUsed(orderId)){ createItem(orderId); };
+        setItemValues(data.item);
+        if(data.err){ $(`#${itemId}.item .name`).css('background-color', 'red'); } 
+        else { 
+            if(checkIfAllNameInputsAreUsed(orderId)){ createItem(orderId); };
+            $(`#${itemId}.item .name`).css('background-color', 'silver'); 
+        }
         updateSumOfPrices(orderId);
         updateSumOfDiscountedPrices(orderId);
-        if(data.err){
-            $(`#${itemId}.item .name`).css('background-color', 'red');
-        } else {
-            $(`#${itemId}.item .name`).css('background-color', 'silver');
-        }
+        
     });
 }
 
 function updateItemType(){
     const   itemId  = $(this).parent()[0].id,
             orderId = $(this).parent().parent().parent()[0].id;
-    sendRequest('/item/edit/type', {item_id: itemId, type: $(this).val(), order_id: orderId}, 
+    sendRequest('/item/edit/type', {orderId: orderId, itemId: itemId, type: $(this).val()}, 
     (updatedItem) => {
         $(`#${itemId}.item .price`)             .val(Number(updatedItem.price).toFixed(2));
         $(`#${itemId}.item .discounted-price`)  .val(Number(updatedItem.discountedPrice).toFixed(2));
@@ -81,7 +47,7 @@ function updateItemType(){
 function updateItemQuantity(){
     const   itemId      = $(this).parent()[0].id,
             orderId     = $(this).parent().parent().parent()[0].id;
-    sendRequest('/item/edit/quantity', {item_id: itemId, quantity: $(this).val(), order_id: orderId}, 
+    sendRequest('/item/edit/quantity', {orderId: orderId, itemId: itemId, quantity: $(this).val()}, 
     (updatedItem) => {
         $(`#${itemId}.item .price`)             .val(Number(updatedItem.price).toFixed(2));
         $(`#${itemId}.item .discounted-price`)  .val(Number(updatedItem.discountedPrice).toFixed(2));
@@ -116,7 +82,7 @@ function restoreItem(orderId, itemId){
     sendRequest('/item/show', {_id: itemId}, 
     (foundItem) => {
     var promise = new Promise((resolve,reject) => {
-        createItemDiv(itemId, orderSelector); 
+        createItemContainer( orderId, itemId); 
         resolve();
     });
     promise.then((resolve) => { setItemValues(foundItem); }); 
@@ -136,3 +102,24 @@ function setItemValues(itemObject){
 function removeItemFromDisplay(itemId){
     sendRequest('/item/delete', {_id: itemId}, (msg) => { $(`#${itemId}.item`).remove(); });
 }
+
+const itemHTML = {
+    createItemInputs: (itemId) => {
+        const   dumpsterIcon = `<i class="fas fa-trash-alt"></i>`;
+        const   deleteButton          = `<button onclick='removeItemFromDisplay("${itemId}")' class='delete-button' >${dumpsterIcon}</button>`, 
+                nameInput             = '<input type="text"     class="name"            list="tees">',
+                codeInput             = '<input type="text"     class="register-code"   readonly>',
+                priceInput            = '<input type="number"   class="price">',
+                quantityInput         = '<input type="number"   class="quantity"        name="quantity" min="0" value="1">',
+                hintInput             = '<input type="text"     class="hint">',
+                discountedPriceInput  = '<input type="number"   class="discounted-price">',
+                typeInput             = `<select class="type">
+                                            <option value="sztuka">     sztuka      </option>
+                                            <option value="czajnik">    czajnik     </option>
+                                            <option value="gaiwan">     gaiwan      </option>
+                                            <option value="opakowanie"> opakowanie  </option>
+                                            <option value="gram">       gram        </option>
+                                        </select>`;
+        return [deleteButton, codeInput, nameInput, typeInput, quantityInput, priceInput, hintInput, discountedPriceInput, ];
+    }
+};

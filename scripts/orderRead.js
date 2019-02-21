@@ -4,7 +4,7 @@ function findOpenOrders(){
 
 function restoreOrder(orderData, tableParameters){
     const promise = new Promise((resolve, reject) => {
-        restoreOrderDiv(orderData._id, orderData.items);  
+        restoreOrderContainer(orderData._id, orderData.items);  
         resolve();        
     });
     promise.then( (resolve) => { restoreOrderValues(orderData, tableParameters); });
@@ -20,12 +20,15 @@ function restoreOrderValues(orderData, tableParameters){
     $(`#${orderData._id}.order .table`).css('background-color', tableParameters.color);
 }
 
-function restoreOrderDiv(orderId, itemIds){
-    const div = `<div id=${orderId} class='order' style="display: flex; flex-direction: column;"></div>`;     
+function restoreOrderContainer(orderId, itemIds){
+    //createOrderContainer(orderId, itemIds.length);
+    //dis is like create order container
+    
+    const div = `<div id=${orderId} class='order'></div>`;     
     
     $("#order-display").append(div);
     createOrderTopPanel(orderId);
-    createOrderLabels(orderId); 
+    createOrderLabelsContainer(orderId); 
     createOrderBottomPanel(orderId);
     createOrderItemPanel(orderId);
     itemIds.forEach( (itemId) => { restoreItem(orderId, itemId); });
