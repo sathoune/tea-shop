@@ -25,7 +25,7 @@ function createOrderTopPanel(orderId){
 function createOrderLabelsContainer(orderId){
     const labelsDiv = `<div class="labels"></div>`;
     $(`#${orderId}.order`).append(labelsDiv);
-    $(`#${orderId}.order .labels`).append(orderHTML.createOrderLabels());
+    $(`#${orderId}.order .labels`).append(orderHTML.createOrderLabels(orderId));
 }
 
 function createOrderBottomPanel(orderId){
@@ -44,7 +44,7 @@ function createOrderItemPanel(orderId, itemsQuantity){
 const orderHTML = {
     createTopPanelInputs: (orderId) => {
         const icons = {
-            plus: `<i class="fas fa-plus"></i>`,
+
             angleUp: `<i class="fas fa-angle-up"></i>`,
             pencil: `<i class="fas fa-pencil-alt"></i>`,
         };
@@ -53,20 +53,21 @@ const orderHTML = {
                 percentLabel            = "<input class='percent' type='text' value='%' readonly>",
                 discountToGoCheckbox    = "<label class='to-go-button'><input class='discount-to-go' type='checkbox' name='checkbox' value='discountToGo'>na wagę</label>",
                 sendButton              = `<button onclick='closeOrder("${orderId}")'       class='send-button'      >Zamknij zamówienie ${icons.pencil}</button>`,
-                addItemButton           = `<button onclick='createItem("${orderId}")'       class='add-item-button'  >${icons.plus} Dodaj rząd</button>`,
                 collapseButton          = `<button onclick='collapseItems("${orderId}")'    class='collapse-order cosmic-fusion-up'>${icons.angleUp} Zwiń zamówienie ${icons.angleUp}</button>`;
-        return [addItemButton, tableInput, collapseButton, discountInput, discountToGoCheckbox, percentLabel, sendButton, ];
+        return [tableInput, collapseButton, discountInput, discountToGoCheckbox, percentLabel, sendButton, ];
     },
     
-    createOrderLabels: () => {
-        const   labelCode               = `<input type='text' class='register-code'     value='Kod'         readonly>`,
+    createOrderLabels: (orderId) => {
+        const plus = `<i class="fas fa-plus"></i>`;
+        const   addItemButton           = `<button onclick='createItem("${orderId}")' class='add-item-button'  >${plus}</button>`,
+                labelCode               = `<input type='text' class='register-code'     value='Kod'         readonly>`,
                 labelName               = `<input type='text' class='name'              value='Nazwa'       readonly>`,
                 labelType               = `<input type='text' class='type'              value='Typ'         readonly>`,
                 labelQuantity           = `<input type='text' class='quantity'          value='Ilość'       readonly>`,
                 labelPrice              = `<input type='text' class='price'             value='Cena'        readonly>`,
                 labelHint               = `<input type='text' class='hint'              value='Uwagi'       readonly>`,
                 labelDiscountedPrice    = `<input type='text' class='discounted-price'  value='Po zniżce'   readonly>`;
-        return [labelCode, labelName, labelType, labelQuantity, labelPrice, labelHint, labelDiscountedPrice, ];
+        return [addItemButton, labelCode, labelName, labelType, labelQuantity, labelPrice, labelHint, labelDiscountedPrice, ];
     },
     
     createBottomPanelInputs: (orderId) => {
