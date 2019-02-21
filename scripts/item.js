@@ -100,7 +100,13 @@ function setItemValues(itemObject){
 }
 
 function removeItemFromDisplay(itemId){
-    sendRequest('/item/delete', {_id: itemId}, (msg) => { $(`#${itemId}.item`).remove(); });
+    sendRequest('/item/delete', {_id: itemId}, (msg) => { 
+        const orderId = $(`#${itemId}.item`).parent().parent()[0].id;
+        updateSumOfPrices(orderId);
+        updateSumOfDiscountedPrices(orderId);
+        $(`#${itemId}.item`).remove();
+        if(checkIfAllNameInputsAreUsed(orderId)){ createItem(orderId); };
+    });
 }
 
 const itemHTML = {

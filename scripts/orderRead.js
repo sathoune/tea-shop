@@ -32,4 +32,5 @@ function restoreOrderContainer(orderId, itemIds){
     createOrderBottomPanel(orderId);
     createOrderItemPanel(orderId);
     itemIds.forEach( (itemId) => { restoreItem(orderId, itemId); });
+    if(checkIfAllNameInputsAreUsed(orderId)){createItem(orderId)};
 }
