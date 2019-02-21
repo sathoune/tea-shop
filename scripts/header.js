@@ -12,10 +12,10 @@ function createHeader(){
     <i class="fas fa-book-open"></i> Magazyn <i class="fas fa-book-open"></i></button>`,
             showArchive         = `<button id='show-archive' class='navigation-button'>
             <i class="fas fa-archive"></i> Archiwum <i class="fas fa-archive"></i></button>`,
-            version = "<label id='version'>v.2. bai-hao</label>";
-    const   headerNavigation    = [version, showMenu, showArchive];
+            version = "<label id='version'>v.2 bai-hao</label>";
+    const   headerNavigation    = [showMenu, showArchive];
     const   headerDiv           = "<div id='header'></div>";
-    $('body').prepend(headerDiv);
+    $('body').prepend(version, headerDiv);
     //$('body').prepend(version);
     $('#header').append(headerNavigation);
     $("#show-menu").on("click", openMenu);
