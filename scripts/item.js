@@ -15,10 +15,9 @@ function createItemContainer(orderId, itemId){
 
 function updateItemName(){
     const   orderId   = $(this).parent().parent().parent()[0].id, 
-            itemId    = $(this).parent()[0].id,
-            nameValue = $(this).val();
+            itemId    = $(this).parent()[0].id;
     
-    sendRequest('/item/edit/name', {orderId: orderId, itemId: itemId, name: nameValue}, 
+    sendRequest('/item/edit/name', {orderId: orderId, itemId: itemId, name: $(this).val()}, 
     (data) => {
         setItemValues(data.item);
         if(data.err){ $(`#${itemId}.item .name`).css('background-color', 'red'); } 
@@ -35,7 +34,7 @@ function updateItemName(){
 function updateItemType(){
     const   itemId  = $(this).parent()[0].id,
             orderId = $(this).parent().parent().parent()[0].id;
-    sendRequest('/item/edit/type', {item_id: itemId, type: $(this).val(), order_id: orderId}, 
+    sendRequest('/item/edit/type', {orderId: orderId, itemId: itemId, type: $(this).val()}, 
     (updatedItem) => {
         $(`#${itemId}.item .price`)             .val(Number(updatedItem.price).toFixed(2));
         $(`#${itemId}.item .discounted-price`)  .val(Number(updatedItem.discountedPrice).toFixed(2));
@@ -48,7 +47,7 @@ function updateItemType(){
 function updateItemQuantity(){
     const   itemId      = $(this).parent()[0].id,
             orderId     = $(this).parent().parent().parent()[0].id;
-    sendRequest('/item/edit/quantity', {item_id: itemId, quantity: $(this).val(), order_id: orderId}, 
+    sendRequest('/item/edit/quantity', {orderId: orderId, itemId: itemId, quantity: $(this).val()}, 
     (updatedItem) => {
         $(`#${itemId}.item .price`)             .val(Number(updatedItem.price).toFixed(2));
         $(`#${itemId}.item .discounted-price`)  .val(Number(updatedItem.discountedPrice).toFixed(2));

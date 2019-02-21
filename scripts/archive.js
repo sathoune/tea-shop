@@ -161,7 +161,6 @@ function showMainContainers(){
     for(var i=0; i<mainContainers.length;i++){ $(mainContainers[i]).show(); }
 }
 
-
 function getDate(){
     const now = new Date();
     const date ={
