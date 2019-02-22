@@ -16,6 +16,7 @@ function createHeader(){
     $('#header').append(headerHTML.createButtons());
     $("#show-menu").on("click", openMenu);
     $("#show-archive").on("click", openArchive);
+    $("#show-tasks").on("click", openTasks);
     
 }
 
