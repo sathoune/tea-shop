@@ -8,17 +8,27 @@ $(document).ready(function(){
 
 
 function createHeader(){
-    const   showMenu            = `<button id='show-menu' class='navigation-button'>
-    <i class="fas fa-book-open"></i> Magazyn <i class="fas fa-book-open"></i></button>`,
-            showArchive         = `<button id='show-archive' class='navigation-button'>
-            <i class="fas fa-archive"></i> Archiwum <i class="fas fa-archive"></i></button>`,
-            version = "<label id='version'>v.2 bai-hao</label>";
-    const   headerNavigation    = [showMenu, showArchive];
+    
+    const   version = "<label id='version'>v.2 bai-hao</label>";
     const   headerDiv           = "<div id='header'></div>";
     $('body').prepend(version, headerDiv);
     //$('body').prepend(version);
-    $('#header').append(headerNavigation);
+    $('#header').append(headerHTML.createButtons());
     $("#show-menu").on("click", openMenu);
     $("#show-archive").on("click", openArchive);
     
+}
+
+const headerHTML = {
+    createButtons: () => {
+        const icons = {
+            openBook: `<i class="fas fa-book-open"></i>`,
+            box: `<i class="fas fa-archive"></i>`,
+        };
+        const   showMenu    = `<button id='show-menu' class='navigation-button'>${icons.openBook} Magazyn ${icons.openBook}</button>`,
+                showArchive = `<button id='show-archive' class='navigation-button'>${icons.box} Archiwum ${icons.box}</button>`,
+                showTasks   = `<button id='show-tasks' class='navigation-button'>Zadania</button>`;
+            
+        return [showTasks, showMenu, showArchive];
+    }
 }

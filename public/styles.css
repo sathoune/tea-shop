@@ -15,7 +15,8 @@ button, input, select {
   font-size: 1em; }
 
 .navigation-button {
-  margin: 1% 1% 1% 1%; }
+  margin: 1% 1% 1% 1%;
+  background: #360a1b; }
 
 #header {
   display: flex;
@@ -88,16 +89,10 @@ button, input, select {
 .send-button {
   background: #24ba4e; }
 
-#show-archive {
-  background: #360a1b; }
-
 button {
   outline: none;
   padding: 3px 8px 3px 8px;
   color: white; }
-
-#show-menu {
-  background: #360a1b; }
 
 .sum, .discounted-sum {
   border-color: #EB5757;
@@ -161,9 +156,6 @@ button {
 #menu-navigation {
   display: flex;
   justify-content: flex-end; }
-
-button {
-  outline: none; }
 
 .update-button {
   background: #00416A;
