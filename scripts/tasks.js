@@ -3,6 +3,8 @@ function openTasks(){
     $("#show-tasks").html(`<i class="fas fa-chevron-left"></i> Wróć do zamówień <i class="fas fa-chevron-left"></i>`);
     $("#show-tasks").off("click").on("click", closeTasks);
     createTaskContainer();
+    sendRequest("/task", {}, 
+    (data) => { console.log(data)});
 }
 
 function closeTasks(){
@@ -32,5 +34,4 @@ const tasksHTML = {
                 tasksContainer   = `<div id='${ids.tasksContainer}'>dsadad</div>`;
         return {tasks, containers: [navigationPanel, tasksContainer]};
     },
-    xd : "xd",
 };
