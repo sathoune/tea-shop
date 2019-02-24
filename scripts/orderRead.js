@@ -31,7 +31,7 @@ function restoreOrderContainer(orderId, itemIds){
     createOrderLabelsContainer(orderId); 
     createOrderBottomPanel(orderId);
     createOrderItemPanel(orderId);
-    itemIds.reduce( (empty, itemId) => {
+    itemIds.forEach( itemId => {
         restoreItem(orderId, itemId); 
     });
 

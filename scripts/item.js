@@ -78,7 +78,6 @@ function updateItemDiscountedPrice(){
 }
 
 function restoreItem(orderId, itemId){
-    const orderSelector = "#"+orderId+".order .item-container";
     sendRequest('/item/show', {_id: itemId}, 
     (foundItem) => {
     var promise = new Promise((resolve,reject) => {

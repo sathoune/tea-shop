@@ -26,32 +26,15 @@ function closeArchive(){
 }
 
 function createArchiveContainers(){
+    const mainContainers = archiveHTML.createMainContainers();
     
-    const ids = {
-        archiveContainer:          'archive',
-        archivePanel:              'archive-panel',
-        archivedOrdersContainer:   'archived-orders',
-    };
-    const   archiveContainer            = `<div id='${ids.archiveContainer}' class='main-container'></div`,
-            archivedOrdersContainer     = `<div id='${ids.archivedOrdersContainer}'></div>`,
-            archivePanel                = `<div id='${ids.archivePanel}'></div>`;
-   
-    $('body').append(archiveContainer);
-    const expandAllButton = `<button id='expand-all-button' class="expand-button">Rozwiń wszystkie <i class="fas fa-search-plus"></i></button>`;
-    const   dateInput           = `<input                   id="day-for-display"    type="date" name="trip-start"   value='${getDate()}' min="2019-01-01" max="2025-12-31">`,
-            sumInput            = `<input class="day-sum"   id='day-sum'            type="number"                   value='0'           readonly>`,
-            discountedSumInput  = `<input class="day-sum"   id='discounted-day-sum' type="number"                   value='0'           readonly>`,
-            dateLabel           = `<input class='date-label'                        type='text'                     value='Otwarto'     readonly>`,
-            tableLabel          = `<input class='date-label'                        type='text'                     value='Stolik'      readonly>`,
-            sumLabel            = `<input class='date-label'                        type='text'                     value='Suma'        readonly>`,
-            discountedSumLabel  = `<input class='date-label'                        type='text'                     value='Po zniżce'   readonly>`;
-    const archivedOrderLabels = `<div id='archived-orders-labels' readonly></div>`;
-
-    const dayDiv = `<div class='thingies'><input type='text' class='date-label' value='Data' readonly>`+dateInput+`<input type='text' class='date-label' value='Suma dnia' readonly>`+sumInput+`<input type='text' class='date-label' value='Po zniżce' readonly>`+discountedSumInput+`</div>`;
+    $('body').append(mainContainers.archiveContainer);
+    $('#archive').append([mainContainers.archivePanel, mainContainers.archivedOrdersContainer]);
     
-    $('#archive').append([archivePanel, archivedOrdersContainer]);
-    $('#archive-panel').append([dayDiv, archivedOrderLabels]);
-    $(`#archived-orders-labels`).append([dateLabel, tableLabel, sumLabel, discountedSumLabel, expandAllButton]);
+    const panelHTML = archiveHTML.createPanelControls();
+    $('#archive-panel').append([panelHTML.panel.container, panelHTML.labels.container]);
+    $(`#archived-orders-labels`).append(panelHTML.labels.labels);
+    $(`#thingies`).append(panelHTML.panel.inputs);
     $(`#expand-all-button`).on("click", expandAll);
     $('#day-for-display').on('change' , generateDay);
 }
@@ -85,18 +68,9 @@ function constructArchiveDiv(orderData){
 }
 
 function constructOrderDisplay(orderData){
-    if(!orderData.table) { orderData.table = '' };
-    const date = new Date(orderData.createdAt).getHours()+":"+new Date(orderData.createdAt).getMinutes()+":"+new Date(orderData.createdAt).getSeconds();
-    const   summaryDiv      = `<div class='div-summary'></div>`
-    const   sendBackButton  = `<button class='send-back' onclick='sendOrderBack("${orderData._id}")'><i class="fas fa-long-arrow-alt-left"></i> Otwórz ponownie</button>`,
-            dateInput       = `<input type='text' class='order-date' value='${date}' readonly>`,
-            table           = `<input type='text' class='order-table' value='${orderData.table}' readonly>`,
-            sum             = `<input type='text' class='order-sum' value='${Number(orderData.sum).toFixed(2)}' readonly>`,
-            discountedSum   = `<input type='text' class='order-sum' value='${Number(orderData.discountedSum).toFixed(2)}' readonly>`,
-            expandButton    = `<button class="expand-button">Rozwiń <i class="fas fa-search-plus"></i></button>`;
-    const   inputs          = [ sendBackButton, dateInput, table, sum, discountedSum, expandButton ];
-    $('#'+orderData._id).append(summaryDiv);
-    $(`#${orderData._id} .div-summary`).append(inputs);
+    const orderHTML = archiveHTML.createOrderHTML(orderData);
+    $('#'+orderData._id).append(orderHTML.container);
+    $(`#${orderData._id} .div-summary`).append(orderHTML.inputs);
     $(`#${orderData._id} .expand-button`).on("click", expandOrder);
 }
 
@@ -121,15 +95,9 @@ function collapseOrder(){
 }
 
 function constructItemDisplay(orderId, itemObject){
-    const   itemDiv             = `<div id='${itemObject._id}' class='item-div'></div>`,
-            nameInput           = `<input type="text" class="name" value='${itemObject.name}' readonly>`,
-            priceInput          = `<input class="price" type="number" value='${Number(itemObject.price).toFixed(2)}' readonly>`,
-            quantityInput       = `<input class="quantity" type="number" value='${itemObject.quantity}' readonly>`,
-            typeInput           = `<input class="type" type="text" value='${itemObject.type}' readonly>`,
-            discountedPriceInput= `<input class="discounted-price" type="number" value='${Number(itemObject.discountedPrice).toFixed(2)}' readonly>`;
-    const inputs = [nameInput, typeInput, quantityInput, priceInput, discountedPriceInput];
-    $(`#${orderId}.archived-order .item-container`).append(itemDiv);
-    $(`#${itemObject._id}.item-div`).append(inputs);
+    const itemHTML = archiveHTML.createItemHTML(itemObject)
+    $(`#${orderId}.archived-order .item-container`).append(itemHTML.container);
+    $(`#${itemObject._id}.item-div`).append(itemHTML.inputs);
 }
 
 function setSums(sum, discountedSum){
@@ -156,6 +124,7 @@ function hideMainContainers(){
     var mainContainers = $('.main-container');
     for(var i=0; i<mainContainers.length;i++){ $(mainContainers[i]).hide(); }
 }
+
 function showMainContainers(){
     var mainContainers = $('.main-container');
     for(var i=0; i<mainContainers.length;i++){ $(mainContainers[i]).show(); }
@@ -170,3 +139,67 @@ function getDate(){
     };
     return `${date.year}-${date.month}-${date.day}`;
 }
+
+const archiveHTML = {
+    createMainContainers: () => {
+        const ids = {
+            archiveContainer:          'archive',
+            archivePanel:              'archive-panel',
+            archivedOrdersContainer:   'archived-orders',
+        };
+        const   archiveContainer            = `<div id='${ids.archiveContainer}' class='main-container'></div`,
+                archivedOrdersContainer     = `<div id='${ids.archivedOrdersContainer}'></div>`,
+                archivePanel                = `<div id='${ids.archivePanel}'></div>`;
+        return {archiveContainer: archiveContainer, archivedOrdersContainer: archivedOrdersContainer, archivePanel: archivePanel};
+    },
+    
+    createPanelControls: () => {
+        const   expandIcon = `<i class="fas fa-search-plus"></i>`;
+        const   classes = {
+            dateLabel: 'date-label',  
+            daySum: 'day-sum',
+        };
+        const   expandAllButton     = `<button id='expand-all-button' class="expand-button">Rozwiń wszystkie ${expandIcon}</button>`;
+        const   dateInput           = `<input                   id="day-for-display"    type="date" name="trip-start"   value='${getDate()}' min="2019-01-01" max="2025-12-31">`,
+                sumInput            = `<input class='${classes.daySum}'   id='day-sum'            type="number"                   value='0'           readonly>`,
+                discountedSumInput  = `<input class='${classes.daySum}'   id='discounted-day-sum' type="number"                   value='0'           readonly>`,
+                hourLabel           = `<input class='${classes.dateLabel}'                        type='text'                     value='Otwarto'     readonly>`,
+                tableLabel          = `<input class='${classes.dateLabel}'                        type='text'                     value='Stolik'      readonly>`,
+                sumLabel            = `<input class='${classes.dateLabel}'                        type='text'                     value='Suma'        readonly>`,
+                discountedSumLabel  = `<input class='${classes.dateLabel}'                        type='text'                     value='Po zniżce'   readonly>`,
+                advancedButton      = `<button>Wincyj statystyk</button>`,
+                dateLabel           = `<input type='text' class='${classes.dateLabel}' value='Data' readonly>`,
+                daySumLabel         = `<input type='text' class='${classes.dateLabel}' value='Suma dnia' readonly>`,
+                discountedDaySumLabel = `<input type='text' class='${classes.dateLabel}' value='Po zniżce' readonly>`;
+        const   labelsContainer     = `<div id='archived-orders-labels' readonly></div>`;
+        const   dayContainer = `<div id='thingies' class='thingies'></div>`;
+        return {
+            labels: {container: labelsContainer, labels: [advancedButton, hourLabel, tableLabel, sumLabel, discountedSumLabel, expandAllButton]},
+            panel: {container: dayContainer, inputs: [dateLabel, dateInput, daySumLabel, sumInput, discountedDaySumLabel, discountedSumInput]},
+        };
+        
+    
+    },
+    
+    createItemHTML: (itemObject) => {
+        const   itemContainer       = `<div id='${itemObject._id}' class='item-div'></div>`,
+                nameInput           = `<input type="text" class="name" value='${itemObject.name}' readonly>`,
+                priceInput          = `<input class="price" type="number" value='${Number(itemObject.price).toFixed(2)}' readonly>`,
+                quantityInput       = `<input class="quantity" type="number" value='${itemObject.quantity}' readonly>`,
+                typeInput           = `<input class="type" type="text" value='${itemObject.type}' readonly>`,
+                discountedPriceInput= `<input class="discounted-price" type="number" value='${Number(itemObject.discountedPrice).toFixed(2)}' readonly>`;
+    return {container: itemContainer, inputs: [nameInput, typeInput, quantityInput, priceInput, discountedPriceInput] };
+    },
+    
+    createOrderHTML: (orderData) => {
+        const   date = new Date(orderData.createdAt).getHours()+":"+new Date(orderData.createdAt).getMinutes()+":"+new Date(orderData.createdAt).getSeconds();
+        const   summaryContainer      = `<div class='div-summary'></div>`;
+        const   sendBackButton  = `<button class='send-back' onclick='sendOrderBack("${orderData._id}")'><i class="fas fa-long-arrow-alt-left"></i> Otwórz ponownie</button>`,
+                dateInput       = `<input type='text' class='order-date' value='${date}' readonly>`,
+                table           = `<input type='text' class='order-table' value='${orderData.table}' readonly>`,
+                sum             = `<input type='text' class='order-sum' value='${Number(orderData.sum).toFixed(2)}' readonly>`,
+                discountedSum   = `<input type='text' class='order-sum' value='${Number(orderData.discountedSum).toFixed(2)}' readonly>`,
+                expandButton    = `<button class="expand-button">Rozwiń <i class="fas fa-search-plus"></i></button>`;
+        return {container: summaryContainer, inputs: [ sendBackButton, dateInput, table, sum, discountedSum, expandButton ]};
+    },
+};
