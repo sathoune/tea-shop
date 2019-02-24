@@ -25,6 +25,8 @@ button, input, select {
 
 .navigation-button {
     margin: 1% 1% 1% 1%;
+    background: #360a1b;
+
 }
 
 #header {
@@ -117,18 +119,11 @@ button, input, select {
     background: #24ba4e;  
 }
 
-#show-archive {
-    background: #360a1b;  
-}
 
 button {
     outline: none;
     padding: 3px 8px 3px 8px;
     color: white;
-}
-
-#show-menu {
-    background: #360a1b
 }
 
 .sum, .discounted-sum {
@@ -210,10 +205,6 @@ button {
     display: flex;
     justify-content: flex-end;
     
-}
-
-button {
-    outline: none;
 }
 
 .update-button {
