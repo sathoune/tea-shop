@@ -1,3 +1,7 @@
+/* global $ */
+/* global sendRequest */
+/* global item */
+
 function createOrder(){
     sendRequest('/order/new', {}, 
     (emptyOrder) => {createOrderContainer(emptyOrder._id);});
@@ -37,7 +41,7 @@ function createOrderBottomPanel(orderId){
 function createOrderItemPanel(orderId, itemsQuantity){
     const orderPanelDiv = `<div class='item-container'></div>`
     $(`#${orderId}.order`).append(orderPanelDiv);
-    for(var i=0; i<itemsQuantity; i++){ createItem(orderId); }
+    for(var i=0; i<itemsQuantity; i++){ item.create.inside(orderId); }
 }
  
  
@@ -59,7 +63,7 @@ const orderHTML = {
     
     createOrderLabels: (orderId) => {
         const plus = `<i class="fas fa-plus"></i>`;
-        const   addItemButton           = `<button onclick='createItem("${orderId}")' class='add-item-button'  >${plus}</button>`,
+        const   addItemButton           = `<button onclick='item.create.inside("${orderId}")' class='add-item-button'  >${plus}</button>`,
                 labelCode               = `<input type='text' class='register-code'     value='Kod'         readonly>`,
                 labelName               = `<input type='text' class='name'              value='Nazwa'       readonly>`,
                 labelType               = `<input type='text' class='type'              value='Typ'         readonly>`,
