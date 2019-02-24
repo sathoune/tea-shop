@@ -9,11 +9,12 @@ const item = {
                 item.create.container(orderId, emptyItem._id);});
         },
         container: (orderId, itemId) => {
-            const itemContainer = `<div id=${itemId} class='item'></div>`;     
-            $(`#${orderId}.order .item-container`).append(itemContainer);  
+            const container = `<div id=${itemId} class='item'></div>`;     
+            $(`#${orderId}.order .item-container`).append(container);  
             $(`#${itemId}.item`).append(item.html.inputs(itemId));
         },
     },
+    
     update: {
         name: function(){
             const   orderId   = $(this).parent().parent().parent()[0].id, 
@@ -74,14 +75,15 @@ const item = {
             });
         },
     },
+    
     read: {
         restore: (orderId, itemId) => {
                 sendRequest('/item/show', {_id: itemId}, 
                 (foundItem) => {
-                var promise = new Promise((resolve,reject) => {
-                    item.create.container( orderId, itemId); 
-                    resolve();
-                });
+                    var promise = new Promise((resolve,reject) => {
+                        item.create.container( orderId, itemId); 
+                        resolve();
+                    });
                 promise.then((resolve) => { item.read.setValues(foundItem); }); 
               });
             },
@@ -95,6 +97,7 @@ const item = {
             $(`${itemSelector} .discounted-price`)  .val(Number(itemObject.discountedPrice).toFixed(2));
         },
     },
+    
     delete: (itemId) =>{
         sendRequest('/item/delete', {_id: itemId}, (msg) => { 
             const orderId = $(`#${itemId}.item`).parent().parent()[0].id;
@@ -105,6 +108,7 @@ const item = {
         });
     
     },
+    
     html: {
         inputs: (itemId) => {
             const   dumpsterIcon = `<i class="fas fa-trash-alt"></i>`;

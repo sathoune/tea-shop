@@ -3,7 +3,7 @@ $(document).ready(function(){
     createHeader();
     createListenersOrderInputs();
     createNavigation();
-    findOpenOrders();
+    order.read.findOpen();
     });
 
 
