@@ -1,5 +1,9 @@
+/* global $ */
+/* global sendRequest */
+/* global header */
+
 function openTasks(){
-    hideMainContainers();
+    header.manageMainContainers.hideAll();
     $("#show-tasks").html(`<i class="fas fa-chevron-left"></i> Wróć do zamówień <i class="fas fa-chevron-left"></i>`);
     $("#show-tasks").off("click").on("click", closeTasks);
     createTaskContainer();
@@ -10,7 +14,7 @@ function closeTasks(){
     $('#tasks').remove();
     $('#show-tasks').html(`zadania`);
     $('#show-tasks').off("click").on("click", openTasks);
-    showMainContainers();
+    header.manageMainContainers.showAll();
 }
 
 function createTaskContainer(){

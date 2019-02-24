@@ -1,6 +1,6 @@
 /* global $ */
 /* global menu */
-/* global order */
+
 
 $(document).ready(function(){
     createListenersItemInputs();
@@ -13,6 +13,8 @@ $(document).ready(function(){
 
 
 
+
+
 const header = {
     create: () => {
         const   version = "<label id='version'>v.2 bai-hao</label>";
@@ -21,9 +23,21 @@ const header = {
         //$('body').prepend(version);
         $('#header').append(header.html.createButtons());
         $("#show-menu").on("click", menu.create.open);
-        $("#show-archive").on("click", openArchive);
+        $("#show-archive").on("click", archive.create.open);
         $("#show-tasks").on("click", openTasks);
     },
+    manageMainContainers: {
+        hideAll: () => {
+            var mainContainers = $('.main-container');
+            for(var i=0; i<mainContainers.length;i++){ $(mainContainers[i]).hide(); }
+        },
+        
+        showAll: () => {
+            var mainContainers = $('.main-container');
+            for(var i=0; i<mainContainers.length;i++){ $(mainContainers[i]).show(); }
+        },
+    },
+    
     html: {
         createButtons: () => {
         const icons = {

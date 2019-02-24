@@ -1,10 +1,11 @@
 /* global $ */
 /* global sendRequest */
+/* global header */
 
 const menu = {
     create: {
         open: () => {
-            hideMainContainers();
+            header.manageMainContainers.hideAll();
             $("#show-menu").html(`<i class="fas fa-chevron-left"></i> Wróć do zamówień <i class="fas fa-chevron-left"></i>`);
             $("#show-menu").off("click").on("click", menu.delete.close);
             menu.create.container();
@@ -58,7 +59,7 @@ const menu = {
             $('#menu').remove();
             $('#show-menu').html(`<i class="fas fa-book-open"></i> Magazyn <i class="fas fa-book-open"></i>`);
             $('#show-menu').off("click").on("click", menu.create.open);
-            showMainContainers();
+            header.manageMainContainers.showAll();
     
         },
         item(itemId){ 
