@@ -13,12 +13,12 @@ const menu = {
             (data) => { data.forEach( (item) => { menu.read.item(item); }); });
         },
         container: () => {
-            const templateHTML = menu.html.createMenuTemplate();
+            const templateHTML = menu.html.containers();
             $('body').  append(templateHTML.menu);
             $('#menu'). append(templateHTML.containers);
         },
         labels: () => { 
-            $('#menu-navigation').append(menu.html.createMenuLabels()); 
+            $('#menu-navigation').append(menu.html.labels()); 
         },
         item: () => { 
             sendRequest("/menu/new", {}, (data) => { menu.read.item(data) }); 
@@ -38,8 +38,8 @@ const menu = {
     },
     read: {
         item: (menuValues) => {
-            $('#menu-container').append(menu.html.createMenuItemContainer(menuValues._id));
-            $(`#${menuValues._id}.menu-item`).append(menu.html.createMenuItem(menuValues));
+            $('#menu-container').append(menu.html.itemContainer(menuValues._id));
+            $(`#${menuValues._id}.menu-item`).append(menu.html.item(menuValues));
             menu.manage.sortByRegisterCode(menuValues);
         },  
     },
@@ -76,7 +76,7 @@ const menu = {
     },
     
     html : {
-        createMenuTemplate: () => {
+        containers: () => {
             const ids = {
                 menuContainer : "menu",
                 navigationPanel : "menu-navigation",
@@ -88,7 +88,7 @@ const menu = {
             return {menu: menu, containers: [navigationPanel, menuContainer]};
         },
         
-        createMenuLabels : () => {
+        labels : () => {
             const classes = {
                     codeInput:  'menu-code',
                     nameInput:  'menu-name',
@@ -106,9 +106,9 @@ const menu = {
                                 createNewButton];    
         },
         
-        createMenuItemContainer: (itemId) => { return `<div id='${itemId}' class='menu-item'></div>`; },
+        itemContainer: (itemId) => { return `<div id='${itemId}' class='menu-item'></div>`; },
         
-        createMenuItem: (menuValues) => {
+        item: (menuValues) => {
             const classes = {
                 codeInput:      'menu-code',
                 nameInput:      'menu-name',
