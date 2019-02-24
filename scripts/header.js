@@ -1,19 +1,16 @@
 /* global $ */
 /* global menu */
+/* global item */
+/* global order */
 
 
 $(document).ready(function(){
-    createListenersItemInputs();
+    eventListeners.itemInputs();
     header.create();
-    createListenersOrderInputs();
+    eventListeners.orderInputs();
     createNavigation();
     order.read.findOpen();
     });
-
-
-
-
-
 
 const header = {
     create: () => {
@@ -52,3 +49,33 @@ const header = {
         },
     },
 };
+
+const eventListeners = {
+    itemInputs: () => {
+        $('#record-view').on('change',  'div .name',                item.update.name);
+        $('#record-view').on('change',  'div .type',                item.update.type);
+        $('#record-view').on('change',  'div .quantity',            item.update.quantity);
+        $('#record-view').on('keyup',   'div .quantity',            item.update.quantity);
+        $('#record-view').on('keyup',   'div .price',               item.update.price);
+        $('#record-view').on('keyup',   'div .discounted-price',    item.update.discountedPrice);
+    },
+    
+    orderInputs: () => {
+        $('#record-view').on('change',  '.discount',        order.update.discount);
+        $('#record-view').on('keydown', '.discount',        order.update.discount);
+        $('#record-view').on('change',  '.discount-to-go',  order.update.discountToGo);
+        $('#record-view').on('change',  '.table',           order.update.table);
+        
+    },
+};
+
+function sendRequest(url, newData, callback){
+    $.ajax(
+    {
+    	method: 'post',
+    	url: url,
+    	data: JSON.stringify(newData),
+    	contentType: "application/json",
+    	success: (data) => { callback(data); },
+    });
+}
