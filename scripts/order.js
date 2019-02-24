@@ -101,7 +101,68 @@ const order = {
         },
 
     },
+    update: {
+        close: (orderID) =>{
+            sendRequest('/order/close', {_id: orderID}, (data) => { $(`#${data}.order`).remove(); });
+        },
+        table: function(){
+            const orderId = $(this).parent().parent()[0].id;
+            const tableValue = $(this).val();
+            sendRequest('/order/edit/table', {_id: orderId, table: tableValue}, 
+            (tableParameters) => {
+                $(`#${orderId}.order`).css('order', tableParameters.order);
+                $(`#${orderId}.order .table`).css('background-color', tableParameters.color);
+                window.location.href = `#${orderId}`;
+            });
+        },
     
+        sum: (orderId) => {
+            sendRequest('/order/edit/sum', { _id: orderId }, 
+            (updatedOrder) => {$(`#${orderId}.order .sum`).val(Number(updatedOrder.sum).toFixed(2));});
+        },
+    
+        discountedSum(orderId){
+            sendRequest('/order/edit/discounted-sum', { _id: orderId }, 
+            (updatedOrder) => {$(`#${orderId}.order .discounted-sum`).val(Number(updatedOrder.discountedSum).toFixed(2));});
+        },
+    
+        discount: function(){
+            const orderId = $(this).parent().parent()[0].id;
+            sendRequest('/order/edit/discount', {_id: orderId, discount: $(this).val()}, 
+            (data) => {
+                $(`#${orderId}.order  .discounted-sum`).val(Number(data.discountedSum).toFixed(2)); 
+                data.items.forEach((item) => 
+                { $(`#${item._id}.item .discounted-price`).val(Number(item.discountedPrice).toFixed(2)); });    
+            });
+        },
+    
+        discountToGo(){
+            const orderID = $(this).parent().parent().parent()[0].id;
+            sendRequest('/order/edit/discount-togo', {_id: orderID, discountToGo: $(this).is(":checked")}, 
+            (data) => {
+                $(`#${orderID}.order .discounted-sum`).val(Number(data.discountedSum).toFixed(2)); 
+                data.items.forEach((item) => 
+                { $(`#${item._id}.item .discounted-price`).val(Number(item.discountedPrice).toFixed(2)); });
+            });
+        },
+    
+
+
+    },
+    
+    delete: (orderId) => {
+        sendRequest('/order/delete', {_id: orderId}, (res) => { $(`#${orderId}.order`).remove(); });
+    },
+    
+    manage: { 
+        checkIfAllInputsUsed: (orderId) => {
+            var items = $(`#${orderId}.order .item .name`);
+            for(var i=0; i< items.length; i++){
+                if($(items[i]).val() == ""){ return false; }
+            }
+            return true;
+        },
+    },
     html:  {
         topPanel: (orderId) => {
             const icons = {
@@ -113,7 +174,7 @@ const order = {
                     discountInput           = "<input type='text' class='discount-label' value='Zniżka:'readonly><input type='number' class='discount' value='0' min='0' max='100' step='5'>",
                     percentLabel            = "<input class='percent' type='text' value='%' readonly>",
                     discountToGoCheckbox    = "<label class='to-go-button'><input class='discount-to-go' type='checkbox' name='checkbox' value='discountToGo'>na wagę</label>",
-                    sendButton              = `<button onclick='closeOrder("${orderId}")'       class='send-button'      >Zamknij zamówienie ${icons.pencil}</button>`,
+                    sendButton              = `<button onclick='order.update.close("${orderId}")'       class='send-button'      >Zamknij zamówienie ${icons.pencil}</button>`,
                     collapseButton          = `<button onclick='collapseItems("${orderId}")'    class='collapse-order cosmic-fusion-up'>${icons.angleUp} Zwiń zamówienie ${icons.angleUp}</button>`;
             return [tableInput, collapseButton, discountInput, discountToGoCheckbox, percentLabel, sendButton, ];
         },
@@ -133,7 +194,7 @@ const order = {
         
         bottomPanel: (orderId) => {
             const   dumpster = `<i class="fas fa-dumpster"></i>`;
-            const   deleteButton        = `<button class='delete-button' onclick='deleteOrder("${orderId}")'>${dumpster} Usuń zamówienie ${dumpster}</button>`,  
+            const   deleteButton        = `<button class='delete-button' onclick='order.delete("${orderId}")'>${dumpster} Usuń zamówienie ${dumpster}</button>`,  
                     sumLabel            = "<input type='text'   class='sum-label'               value='Suma'            readonly>",
                     sumInput            = "<input type='number' class='sum'                     value='0'               readonly>",
                     discountedSumLabel  = "<input type='text'   class='discounted-sum-label'    value='Suma po zniżce'  readonly>",

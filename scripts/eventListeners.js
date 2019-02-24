@@ -1,3 +1,6 @@
+/* global $ */
+/* global item */
+/* global order */
 
 function createListenersItemInputs(){
     $('#record-view').on('change',  'div .name',                item.update.name);
@@ -9,9 +12,9 @@ function createListenersItemInputs(){
 }
 
 function createListenersOrderInputs(){
-    $('#record-view').on('change',  '.discount',        updateDiscount);
-    $('#record-view').on('keydown', '.discount',        updateDiscount);
-    $('#record-view').on('change',  '.discount-to-go',  updateToGoDiscount);
-    $('#record-view').on('change',  '.table',           updateOrderTable);
+    $('#record-view').on('change',  '.discount',        order.update.discount);
+    $('#record-view').on('keydown', '.discount',        order.update.discount);
+    $('#record-view').on('change',  '.discount-to-go',  order.update.discountToGo);
+    $('#record-view').on('change',  '.table',           order.update.table);
     
 }

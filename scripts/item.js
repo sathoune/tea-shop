@@ -1,5 +1,6 @@
 /* global $ */
 /* global sendRequest */
+/* global order */
 
 const item = {
     create: {
@@ -24,11 +25,11 @@ const item = {
                 item.read.setValues(data.item);
                 if(data.err){ $(`#${itemId}.item .name`).css('background-color', 'red'); } 
                 else { 
-                    if(checkIfAllNameInputsAreUsed(orderId)){ item.create.inside(orderId); };
+                    if(order.manage.checkIfAllInputsUsed(orderId)){ item.create.inside(orderId); };
                     $(`#${itemId}.item .name`).css('background-color', 'silver'); 
                 }
-                updateSumOfPrices(orderId);
-                updateSumOfDiscountedPrices(orderId);
+                order.update.sum(orderId);
+                order.update.discountedSum(orderId);
                 
             });
         },
@@ -39,8 +40,8 @@ const item = {
             (updatedItem) => {
                 $(`#${itemId}.item .price`)             .val(Number(updatedItem.price).toFixed(2));
                 $(`#${itemId}.item .discounted-price`)  .val(Number(updatedItem.discountedPrice).toFixed(2));
-                updateSumOfPrices(orderId);
-                updateSumOfDiscountedPrices(orderId)
+                order.update.sum(orderId);
+                order.update.discountedSum(orderId);
             });
             
         },
@@ -51,8 +52,8 @@ const item = {
             (updatedItem) => {
                 $(`#${itemId}.item .price`)             .val(Number(updatedItem.price).toFixed(2));
                 $(`#${itemId}.item .discounted-price`)  .val(Number(updatedItem.discountedPrice).toFixed(2));
-                updateSumOfPrices(orderId);
-                updateSumOfDiscountedPrices(orderId)
+                order.update.sum(orderId);
+                order.update.discountedSum(orderId);
             });
         },
         price: function(){
@@ -101,10 +102,10 @@ const item = {
     delete: (itemId) =>{
         sendRequest('/item/delete', {_id: itemId}, (msg) => { 
             const orderId = $(`#${itemId}.item`).parent().parent()[0].id;
-            updateSumOfPrices(orderId);
-            updateSumOfDiscountedPrices(orderId);
+            order.update.sum(orderId);
+            order.update.discountedSum(orderId);
             $(`#${itemId}.item`).remove();
-            if(checkIfAllNameInputsAreUsed(orderId)){ item.create.inside(orderId); };
+            if(order.manage.checkIfAllInputsUsed(orderId)){ item.create.inside(orderId); };
         });
     
     },
