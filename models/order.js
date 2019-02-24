@@ -10,7 +10,7 @@ var OrderSchema = new mongoose.Schema({
     items: [
         {
                     type: mongoose.Schema.Types.ObjectId,
-                    ref: "OrderedItem"
+                    ref: "Item"
         }
    ],
     
