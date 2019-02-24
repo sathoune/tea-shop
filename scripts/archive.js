@@ -159,7 +159,7 @@ const archive = {
                     tableLabel          = `<input class='${classes.dateLabel}'                        type='text'                     value='Stolik'      readonly>`,
                     sumLabel            = `<input class='${classes.dateLabel}'                        type='text'                     value='Suma'        readonly>`,
                     discountedSumLabel  = `<input class='${classes.dateLabel}'                        type='text'                     value='Po zniżce'   readonly>`,
-                    advancedButton      = `<button>Wincyj statystyk</button>`,
+                    advancedButton      = `<button onclick='summary.create.open()'>Wincyj statystyk</button>`,
                     dateLabel           = `<input type='text' class='${classes.dateLabel}' value='Data' readonly>`,
                     daySumLabel         = `<input type='text' class='${classes.dateLabel}' value='Suma dnia' readonly>`,
                     discountedDaySumLabel = `<input type='text' class='${classes.dateLabel}' value='Po zniżce' readonly>`;
