@@ -1,27 +1,31 @@
+/* global $ */
+/* global menu */
+/* global order */
+
 $(document).ready(function(){
     createListenersItemInputs();
-    createHeader();
+    header.create();
     createListenersOrderInputs();
     createNavigation();
     order.read.findOpen();
     });
 
 
-function createHeader(){
-    
-    const   version = "<label id='version'>v.2 bai-hao</label>";
-    const   headerDiv           = "<div id='header'></div>";
-    $('body').prepend(version, headerDiv);
-    //$('body').prepend(version);
-    $('#header').append(headerHTML.createButtons());
-    $("#show-menu").on("click", openMenu);
-    $("#show-archive").on("click", openArchive);
-    $("#show-tasks").on("click", openTasks);
-    
-}
 
-const headerHTML = {
-    createButtons: () => {
+
+const header = {
+    create: () => {
+        const   version = "<label id='version'>v.2 bai-hao</label>";
+        const   headerDiv           = "<div id='header'></div>";
+        $('body').prepend(version, headerDiv);
+        //$('body').prepend(version);
+        $('#header').append(header.html.createButtons());
+        $("#show-menu").on("click", menu.create.open);
+        $("#show-archive").on("click", openArchive);
+        $("#show-tasks").on("click", openTasks);
+    },
+    html: {
+        createButtons: () => {
         const icons = {
             openBook: `<i class="fas fa-book-open"></i>`,
             box: `<i class="fas fa-archive"></i>`,
@@ -31,5 +35,6 @@ const headerHTML = {
                 showTasks   = `<button id='show-tasks' class='navigation-button'>Zadania</button>`;
             
         return [showTasks, showMenu, showArchive];
-    }
-}
+        },
+    },
+};

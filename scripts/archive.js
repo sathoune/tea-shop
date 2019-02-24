@@ -1,3 +1,7 @@
+/* global $ */
+/* global sendRequest */
+
+
 function openArchive(){
     hideMainContainers();
     $("#show-archive").html(`<i class="fas fa-chevron-left"></i> Wróć do zamówień <i class="fas fa-chevron-left"></i>`);
