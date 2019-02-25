@@ -64,7 +64,6 @@ const summary = {
             const   nameInput       = `<input class='name' value='${item.name}' readonly>`,
                     quantityInput   = `<input class='quantity' value='${item.quantity}'' readonly>`,
                     incomeInput     = `<input class='income' value='${Number(item.income).toFixed(2)}' readonly>`;
-                    
             return {container: container, inputs: [nameInput, quantityInput, incomeInput]};
         },
     },
