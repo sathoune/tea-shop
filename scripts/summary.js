@@ -9,9 +9,8 @@ const summary = {
             $('body').append(summary.html.mainContainer);
             sendRequest("/summary", {}, (data) => {
                 data.names.forEach((name, i) => {
-                   $('#summary').append(`<div>${name}, ${data.count[i]}</div>`); 
+                   $('#summary').append(`<div style="background-color: white;">${name}     ilość zamówień: ${data.count[i]}    wpływ: ${data.income[i].toFixed(2)}</div>`); 
                 });
-                
             });
         }, 
         container: () => {

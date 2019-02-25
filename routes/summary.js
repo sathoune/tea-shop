@@ -13,8 +13,9 @@ router.post("/", (req, res) => {
             var names = menuItems.reduce((accumulator, menuItem) => {
                 accumulator.names.push(menuItem.name);
                 accumulator.count.push(0);
+                accumulator.income.push(0);
                 return accumulator;
-            }, {names: [], count: []});
+            }, {names: [], count: [], income: []});
             let promise = new Promise((resolve, reject) => {
             Order.find({}, (err, foundOrders) => {
                 if(err){ reject(err); }
@@ -22,7 +23,7 @@ router.post("/", (req, res) => {
                 });
             });
             promise.then((foundOrders) => {
-               var itemIds = foundOrders.reduce((idArray, order) => {
+                var itemIds = foundOrders.reduce((idArray, order) => {
                     return idArray.concat(order.items);
                 }, []); 
                 Item.find({'_id': { $in: itemIds}}, (err, foundItems)=> {
@@ -32,6 +33,7 @@ router.post("/", (req, res) => {
                             return promiseChain.then( () => new Promise( (resolve) => {
                                var itemIndex = names.names.indexOf(foundItem.name);
                                 names.count[itemIndex] += 1; 
+                                names.income[itemIndex] += Number(foundItem.discountedPrice); 
                                 resolve();
                             }));
                         
