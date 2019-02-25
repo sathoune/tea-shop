@@ -243,4 +243,9 @@ input, select {
   .panel .name {
     margin-left: auto; }
 
+#summary-items {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
 /*# sourceMappingURL=styles.css.map */
