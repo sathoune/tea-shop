@@ -64,13 +64,13 @@ router.post("/", (req, res) => {
                 let promises = foundItems.reduce((promiseChain, foundItem) => {
                     return promiseChain.then( () => new Promise( (resolve) => {
                         var itemIndex = menuStats.names.indexOf(foundItem.name);
-                        menuStats.quantity.all[itemIndex] += Number(foundItem.quantity);
                         const englishType = translateType(foundItem.type);
-                        if(foundItem.type){
-                            menuStats.quantity[englishType][itemIndex] += Number(foundItem.quantity);
-                        }
+                        menuStats.quantity[englishType][itemIndex] += Number(foundItem.quantity);
                         if(foundItem.type == 'bulk'){
                             menuStats.quantity.bulkCount += 1;
+                            menuStats.quantity.all[itemIndex] += 1;
+                        } else {
+                            menuStats.quantity.all[itemIndex] += Number(foundItem.quantity);
                         }
                         menuStats.income[itemIndex] += Number(foundItem.discountedPrice); 
                         resolve();
