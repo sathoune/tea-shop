@@ -43,13 +43,15 @@ const   indexRoutes         = require("./routes/index"),
         orderRoutes         = require("./routes/orders"),
         itemRoutes          = require("./routes/items"),
         menuRoutes          = require("./routes/menu"),
+        summaryRoutes       = require("./routes/summary"),
         archiveRoutes       = require("./routes/archive");
 
-app.use("/order",           orderRoutes);
+app.use("/order",   orderRoutes);
 app.use("/item",    itemRoutes);
 app.use("/menu",    menuRoutes);
-app.use("/archive",    archiveRoutes);
-app.use("/",                indexRoutes);
+app.use("/archive", archiveRoutes);
+app.use("/summary", summaryRoutes);
+app.use("/",        indexRoutes);
 
 
 // menu seed

@@ -243,4 +243,17 @@ input, select {
   .panel .name {
     margin-left: auto; }
 
+#summary-items {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+
+#summary-panel {
+  display: flex;
+}
+
+#buttons{
+  display: flex;
+}
 /*# sourceMappingURL=styles.css.map */
