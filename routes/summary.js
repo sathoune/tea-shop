@@ -67,7 +67,7 @@ router.post("/", (req, res) => {
                         const englishType = translateType(foundItem.type);
                         menuStats.quantity[englishType][itemIndex] += Number(foundItem.quantity);
                         if(englishType == 'bulk'){
-                            menuStats.quantity.bulkCount += 1;
+                            menuStats.quantity.bulkCount[itemIndex] += 1;
                             menuStats.quantity.all[itemIndex] += 1;
                         } else {
                             menuStats.quantity.all[itemIndex] += Number(foundItem.quantity);
