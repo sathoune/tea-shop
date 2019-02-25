@@ -17,14 +17,32 @@ router.post("/", (req, res) => {
     let promisedMenuItems = new Promise( (resolve, reject) => {
         Menu.find({}, (err, menuItems) => {
             if(err){ reject(err); }
-            else { 
+            else {
+                const object = {
+                    id: [], 
+                    names: [], 
+                    quantity: {
+                        all: [], 
+                        default: [], 
+                        gaiwan: [], 
+                        package: [], 
+                        bulkCount: [],
+                        bulk: [],
+                    }, 
+                    income: []
+                };
                 resolve(menuItems.reduce((accumulator, menuItem) => {
                     accumulator.id.push(menuItem._id);
                     accumulator.names.push(menuItem.name);
-                    accumulator.count.push(0);
+                    accumulator.quantity.all.push(0);
+                    accumulator.quantity.default.push(0);
+                    accumulator.quantity.gaiwan.push(0);
+                    accumulator.quantity.package.push(0);
+                    accumulator.quantity.bulkCount.push(0);
+                    accumulator.quantity.bulk.push(0);
                     accumulator.income.push(0);
                     return accumulator;
-                }, {id: [], names: [], count: [], income: []}));
+                }, object));
             }
         }); 
     });
@@ -46,7 +64,14 @@ router.post("/", (req, res) => {
                 let promises = foundItems.reduce((promiseChain, foundItem) => {
                     return promiseChain.then( () => new Promise( (resolve) => {
                         var itemIndex = menuStats.names.indexOf(foundItem.name);
-                        menuStats.count[itemIndex] += 1; 
+                        menuStats.quantity.all[itemIndex] += Number(foundItem.quantity);
+                        const englishType = translateType(foundItem.type);
+                        if(foundItem.type){
+                            menuStats.quantity[englishType][itemIndex] += Number(foundItem.quantity);
+                        }
+                        if(foundItem.type == 'bulk'){
+                            menuStats.quantity.bulkCount += 1;
+                        }
                         menuStats.income[itemIndex] += Number(foundItem.discountedPrice); 
                         resolve();
                     }));
@@ -80,5 +105,13 @@ router.post("/hours", (req, res) => {
         res.send(creationHours);
     });
 });
+
+function translateType(type){
+    if(type == 'sztuka'){ return 'default'; }
+    else if(type == 'gaiwan'){ return 'gaiwan'; }
+    else if(type == 'opakowanie'){ return 'package'; }
+    else if(type == 'gram'){ return 'bulk'; }
+    else { return "translateType error: Wrong type"; }
+}
 
 module.exports = router;

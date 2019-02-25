@@ -18,16 +18,34 @@ const summary = {
             const labels = summary.html.itemLabels();
             $('#summary-navigation').append(labels.container);
             $('#summary-labels').append(labels.inputs);
-            $('#summary-labels .quantity').on('click', null, '.quantity', summary.update.orderBy);
+            $('#summary-labels .all-count').on('click', null, '.all-count', summary.update.orderBy);
+            $('#summary-labels .default-count').on('click', null, '.default-count', summary.update.orderBy);
+            $('#summary-labels .gaiwan-count').on('click', null, '.gaiwan-count', summary.update.orderBy);
+            $('#summary-labels .package-count').on('click', null, '.package-count', summary.update.orderBy);
+            $('#summary-labels .bulk-count').on('click', null, '.bulk-count', summary.update.orderBy);
+            $('#summary-labels .bulk-count-count').on('click', null, '.bulk-count-count', summary.update.orderBy);
             $('#summary-labels .income').on('click', null, '.income', summary.update.orderBy);
             let firstDay    = $('#day-start').val();
             let lastDay     = $('#day-end').val();
             sendRequest("/summary", {first: firstDay, last: lastDay}, (data) => {
                 data.names.forEach((name, i) => {
-                    const html = summary.html.itemContainer({id: data.id[i], name: name, quantity: data.count[i], income: data.income[i]});
+                    const itemStats = {
+                        id: data.id[i], 
+                        name: name, 
+                        quantity: {
+                            all: data.quantity.all[i], 
+                            default: data.quantity.default[i], 
+                            gaiwan: data.quantity.gaiwan[i], 
+                            package: data.quantity.package[i], 
+                            bulkCount: data.quantity.bulkCount[i],
+                            bulk: data.quantity.bulk[i],
+                        },
+                        income: data.income[i]
+                    };
+                    const html = summary.html.itemContainer(itemStats);
                     $('#summary-items').append(html.container); 
                     $(`#${data.id[i]}`).append(html.inputs);
-                    $(`#${data.id[i]}`).css('order', data.count[i]);
+                    $(`#${data.id[i]}`).css('order', data.quantity.all[i]);
                 });
             }); 
         },
@@ -85,18 +103,28 @@ const summary = {
             return [dateStartInput, dateEndInput, sellingStatsButton, hoursStatsButton];
         },
         itemContainer: (item) => {
-            const   container       = `<div id='${item.id}' class='stats-item'</div>`;
-            const   nameInput       = `<input class='name'     value='${item.name}' readonly>`,
-                    quantityInput   = `<input class='quantity' value='${item.quantity}' readonly>`,
-                    incomeInput     = `<input class='income'   value='${Number(item.income).toFixed(2)}' readonly>`;
-            return {container: container, inputs: [nameInput, quantityInput, incomeInput]};
+            const   container           = `<div id='${item.id}' class='stats-item'</div>`;
+            const   nameInput           = `<input class='name'     value='${item.name}' readonly>`,
+                    allCount            = `<input class='quantity all-count' value='${item.quantity.all}' readonly>`,
+                    defaultCount        = `<input class='quantity default-count' value='${item.quantity.default}' readonly>`,
+                    gaiwanCount         = `<input class='quantity gaiwan-count' value='${item.quantity.gaiwan}' readonly>`,
+                    packageCount        = `<input class='quantity package-count' value='${item.quantity.package}' readonly>`,
+                    bulkCount           = `<input class='quantity bulk-count' value='${item.quantity.bulk}' readonly>`,
+                    bulkCountCount      = `<input class='quantity bulk-count-count' value='${item.quantity.bulkCount}' readonly>`,
+                    incomeInput         = `<input class='quantity income'   value='${Number(item.income).toFixed(2)}' readonly>`;
+            return {container: container, inputs: [nameInput, allCount, defaultCount, gaiwanCount, packageCount, bulkCount, bulkCountCount, incomeInput]};
         },
         itemLabels: () => {
             const       container = `<div id='summary-labels'></div>`,
                         nameLabel       = `<input class='name'     value='Nazwa' readonly>`,
-                        quantityLabel   = `<input class='quantity' value='Ilość' readonly>`,
-                        incomeLabel     = `<input class='income'   value='Wpływ' readonly>`;
-            return {container: container, inputs: [nameLabel, quantityLabel, incomeLabel]};
+                    allCount            = `<input class='quantity all-count' value='Suma' readonly>`,
+                    defaultCount        = `<input class='quantity default-count' value='Sztuka' readonly>`,
+                    gaiwanCount         = `<input class='quantity gaiwan-count' value='Gaiwan' readonly>`,
+                    packageCount        = `<input class='quantity package-count' value='Opakowanie' readonly>`,
+                    bulkCount           = `<input class='quantity bulk-count' value='Na wagę' readonly>`,
+                    bulkCountCount      = `<input class='quantity bulk-count-count' value='Zakupy' readonly>`,
+                        incomeLabel     = `<input class='quantity income'   value='Wpływ' readonly>`;
+            return {container: container, inputs: [nameLabel, allCount, defaultCount, gaiwanCount, packageCount, bulkCount, bulkCountCount, incomeLabel]};
         },
         hourContainer: (hour, quantity) => {
             const   hourContainer = `<div id='${hour}' class='stats-item'></div>`,
