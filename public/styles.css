@@ -248,4 +248,12 @@ input, select {
     flex-direction: column-reverse;
 }
 
+
+#summary-panel {
+  display: flex;
+}
+
+#buttons{
+  display: flex;
+}
 /*# sourceMappingURL=styles.css.map */

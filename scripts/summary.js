@@ -8,7 +8,10 @@ const summary = {
             header.manageMainContainers.hideAll();
             $('body').append(summary.html.mainContainer);
             $('#summary').append([summary.html.navigationContainer, summary.html.resultsContainer]);
-            $('#summary-navigation').append(summary.html.navigation);
+            const navigation = summary.html.navigation();
+            $('#summary-navigation').append(summary.html.panelContainer);
+            $('#dates').append(navigation.dates);
+            $('#buttons').append(navigation.buttons);
             
         }, 
         sellingStats: () => {
@@ -68,6 +71,7 @@ const summary = {
             });    
         },
     },
+    
     update: {
         orderBy: (event) => {
             const items = $('.stats-item');
@@ -77,6 +81,14 @@ const summary = {
             }
         }
     },
+    
+    delete: {
+        close: () => {
+            $('#summary').remove();
+            $('#archive').css('display', 'block');
+        }    
+    },
+    
     manage: {
         getDate: () => {
             const now = new Date();
@@ -92,15 +104,19 @@ const summary = {
     html: {
         mainContainer:          `<div id='summary' class='main-container'></div>`,
         navigationContainer:    `<div id='summary-navigation'></div>`,
+        panelContainer:         `<div id='summary-panel'><div id='dates'></div><div id='buttons'></div></div>`,
         resultsContainer:       `<div id='summary-results'></div>`,
         itemsContainer:         `<div id='summary-items'></div>`,
         hoursContainer:         `<div id='summary-hours'></div>`,
         navigation: () => {
-            const   dateStartInput      = `<input id="day-start" type="date" name="trip-start" value='${summary.manage.getDate()}' min="2019-01-01" max="2025-12-31">`,
+            const   dateStartInput      = `<input id="day-start" type="date" name="trip-start" value='${summary.manage.getDate()}' min="2019-01-01" max="2025-12-31"><br>`,
                     dateEndInput        = `<input id="day-end"   type="date" name="trip-start" value='${summary.manage.getDate()}' min="2019-01-01" max="2025-12-31">`,
-                    sellingStatsButton  = `<button onclick='summary.create.sellingStats()'>przedmiociki</button>`,
-                    hoursStatsButton    = `<button onclick='summary.create.hourStats()'>godzinki</button>`; 
-            return [dateStartInput, dateEndInput, sellingStatsButton, hoursStatsButton];
+                    startLabel          = `<label>Od</label>`,
+                    endLabel            = `<label>Do</label>`,
+                    backButton          = `<button onclick='summary.delete.close()' class='navigation-button'>Wróć</button>`,
+                    sellingStatsButton  = `<button onclick='summary.create.sellingStats()' class='update-button'>przedmiociki</button>`,
+                    hoursStatsButton    = `<button onclick='summary.create.hourStats()' class='update-button'>godzinki</button>`; 
+            return {dates: [startLabel, dateStartInput,  endLabel, dateEndInput], buttons:[ sellingStatsButton, hoursStatsButton, backButton]};
         },
         itemContainer: (item) => {
             const   container           = `<div id='${item.id}' class='stats-item'</div>`;

@@ -88,6 +88,7 @@ const archive = {
     
     delete: {
         close: () => {
+            if($('#summary')){ $('#summary').remove() }
             $('#record-view').show();
             $("#show-archive").html(`<i class="fas fa-archive"></i> Archiwum <i class="fas fa-archive"></i>`);
             $("#show-archive").off("click").on("click", archive.create.open);
@@ -159,7 +160,7 @@ const archive = {
                     tableLabel          = `<input class='${classes.dateLabel}'                        type='text'                     value='Stolik'      readonly>`,
                     sumLabel            = `<input class='${classes.dateLabel}'                        type='text'                     value='Suma'        readonly>`,
                     discountedSumLabel  = `<input class='${classes.dateLabel}'                        type='text'                     value='Po zniżce'   readonly>`,
-                    advancedButton      = `<button onclick='summary.create.open()'>Wincyj statystyk</button>`,
+                    advancedButton      = `<button onclick='summary.create.open()' class='navigation-button'>Wincyj statystyk</button>`,
                     dateLabel           = `<input type='text' class='${classes.dateLabel}' value='Data' readonly>`,
                     daySumLabel         = `<input type='text' class='${classes.dateLabel}' value='Suma dnia' readonly>`,
                     discountedDaySumLabel = `<input type='text' class='${classes.dateLabel}' value='Po zniżce' readonly>`;
