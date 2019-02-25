@@ -41,17 +41,17 @@ router.post("/", (req, res) => {
             return idArray.concat(order.items);
         }, []); 
         Item.find({'_id': { $in: itemIds}}, (err, foundItems)=> {
-            if(err){console.log(err);}
+            if(err){ console.log(err);}
             else {
                 let promises = foundItems.reduce((promiseChain, foundItem) => {
                     return promiseChain.then( () => new Promise( (resolve) => {
-                       var itemIndex = menuStats.names.indexOf(foundItem.name);
+                        var itemIndex = menuStats.names.indexOf(foundItem.name);
                         menuStats.count[itemIndex] += 1; 
                         menuStats.income[itemIndex] += Number(foundItem.discountedPrice); 
                         resolve();
                     }));
                 }, Promise.resolve());
-                promises.then( () => { res.send(menuStats)});
+                promises.then( () => { res.send(menuStats); });
             }                    
         });
     });
@@ -64,22 +64,21 @@ router.post("/hours", (req, res) => {
         $gte: new Date(first.getFullYear(), first.getMonth(), first.getDate()),
         $lt: new Date(last.getFullYear(), last.getMonth(), last.getDate()+1),
     };
-    
-    let promise = new Promise((resolve, reject) => {
-            Order.find({createdAt: dateCriteria}, (err, foundOrders) => {
-                if(err){ reject(err); }
-                else{ resolve(foundOrders) }
-                });
-            });
-            promise.then((foundOrders) => {
-                var creationDates = foundOrders.reduce((hourCounter, order) => {
-                    const hours = new Date(order.createdAt).getHours();
-                    if(hourCounter[hours]== undefined){ hourCounter[hours]=1 }
-                    else{ hourCounter[hours] += 1; }
-                    return hourCounter;
-                }, {}); 
-                res.send(creationDates);
-            });
+    let promisedOrders = new Promise((resolve, reject) => {
+        Order.find({createdAt: dateCriteria}, (err, foundOrders) => {
+            if(err){ reject(err); }
+            else{ resolve(foundOrders); }
+        });
+    });
+    promisedOrders.then((foundOrders) => {
+        var creationHours = foundOrders.reduce((hourCounter, order) => {
+            const hours = new Date(order.createdAt).getHours();
+            if(hourCounter[hours]== undefined){ hourCounter[hours] = 1; }
+            else{ hourCounter[hours] += 1; }
+            return hourCounter;
+        }, {} ); 
+        res.send(creationHours);
+    });
 });
 
 module.exports = router;

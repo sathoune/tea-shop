@@ -12,27 +12,30 @@ const summary = {
             
         }, 
         sellingStats: () => {
+            $('#summary-results').empty();
+            $('#summary-results').append(summary.html.itemsContainer);
             let firstDay    = $('#day-start').val();
             let lastDay     = $('#day-end').val();
-
             sendRequest("/summary", {first: firstDay, last: lastDay}, (data) => {
                 data.names.forEach((name, i) => {
                     const html = summary.html.itemContainer({id: data.id[i], name: name, quantity: data.count[i], income: data.income[i]});
-                    if($(`#${data.id[i]}`)){
-                        $(`#${data.id[i]}`).remove();
-                    }
-                    $('#summary-results').append(html.container); 
+                    $('#summary-items').append(html.container); 
                     $(`#${data.id[i]}`).append(html.inputs);
                 });
             }); 
         },
         hourStats: () => {
+            $('#summary-results').empty();
+            $('#summary-results').append(summary.html.hoursContainer);
             let firstDay    = $('#day-start').val();
             let lastDay     = $('#day-end').val();
-
             sendRequest("/summary/hours", {first: firstDay, last: lastDay}, (data) => {
-                    console.log(data);
-                });    
+                    for(var key in data) {
+                        const html = summary.html.hourContainer(key, data[key]);
+                        $('#summary-hours').append(html.container);
+                        $(`#${key}`).append(html.inputs);
+                    }
+            });    
         },
     },
     
@@ -52,19 +55,27 @@ const summary = {
         mainContainer:          `<div id='summary' class='main-container'></div>`,
         navigationContainer:    `<div id='summary-navigation'></div>`,
         resultsContainer:       `<div id='summary-results'></div>`,
+        itemsContainer:         `<div id='summary-items'></div>`,
+        hoursContainer:         `<div id='summary-hours'></div>`,
         navigation: () => {
             const   dateStartInput      = `<input id="day-start" type="date" name="trip-start" value='${summary.manage.getDate()}' min="2019-01-01" max="2025-12-31">`,
-                    dateEndInput        = `<input id="day-end" type="date" name="trip-start" value='${summary.manage.getDate()}' min="2019-01-01" max="2025-12-31">`,
+                    dateEndInput        = `<input id="day-end"   type="date" name="trip-start" value='${summary.manage.getDate()}' min="2019-01-01" max="2025-12-31">`,
                     sellingStatsButton  = `<button onclick='summary.create.sellingStats()'>przedmiociki</button>`,
                     hoursStatsButton    = `<button onclick='summary.create.hourStats()'>godzinki</button>`; 
             return [dateStartInput, dateEndInput, sellingStatsButton, hoursStatsButton];
         },
         itemContainer: (item) => {
             const   container       = `<div id='${item.id}'</div>`;
-            const   nameInput       = `<input class='name' value='${item.name}' readonly>`,
+            const   nameInput       = `<input class='name'     value='${item.name}' readonly>`,
                     quantityInput   = `<input class='quantity' value='${item.quantity}'' readonly>`,
-                    incomeInput     = `<input class='income' value='${Number(item.income).toFixed(2)}' readonly>`;
+                    incomeInput     = `<input class='income'   value='${Number(item.income).toFixed(2)}' readonly>`;
             return {container: container, inputs: [nameInput, quantityInput, incomeInput]};
+        },
+        hourContainer: (hour, quantity) => {
+            const   hourContainer = `<div id='${hour}'></div>`,
+                    hourInput = `<input type='text' value='${hour}:00' readonly>`,
+                    quantityInput = `<input type='text' value ='${quantity}' readonly>`;
+            return {container: hourContainer, inputs: [hourInput, quantityInput]};
         },
     },
 };
