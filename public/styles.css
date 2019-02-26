@@ -243,9 +243,14 @@ input, select {
   .panel .name {
     margin-left: auto; }
 
-#summary-items {
+#summary-items{
     display: flex;
     flex-direction: column-reverse;
+}
+
+#summary-hours{
+  display: flex;
+  flex-direction: column;
 }
 
 
@@ -253,7 +258,7 @@ input, select {
   display: flex;
 }
 
-#buttons{
+#buttons {
   display: flex;
 }
 /*# sourceMappingURL=styles.css.map */

@@ -67,7 +67,7 @@ router.post("/", (req, res) => {
                         const englishType = translateType(foundItem.type);
                         menuStats.quantity[englishType][itemIndex] += Number(foundItem.quantity);
                         if(englishType == 'bulk'){
-                            menuStats.quantity.bulkCount += 1;
+                            menuStats.quantity.bulkCount[itemIndex] += 1;
                             menuStats.quantity.all[itemIndex] += 1;
                         } else {
                             menuStats.quantity.all[itemIndex] += Number(foundItem.quantity);
@@ -96,13 +96,26 @@ router.post("/hours", (req, res) => {
         });
     });
     promisedOrders.then((foundOrders) => {
-        var creationHours = foundOrders.reduce((hourCounter, order) => {
+        var dataStructure = {
+            hour: [],
+            count: [],
+            income: [],
+        };
+        var data = foundOrders.reduce((data, order) => {
             const hours = new Date(order.createdAt).getHours();
-            if(hourCounter[hours]== undefined){ hourCounter[hours] = 1; }
-            else{ hourCounter[hours] += 1; }
-            return hourCounter;
-        }, {} ); 
-        res.send(creationHours);
+            if(data.hour.indexOf(hours) < 0){
+                data.hour.push(hours);
+                data.count.push(1);
+                data.income.push(Number(order.discountedSum));
+                return data;
+            } else {
+                const i = data.hour.indexOf(hours);
+                data.count[i] += 1;
+                data.income[i] += Number(order.discountedSum);
+                return data;
+            }
+        }, dataStructure ); 
+        res.send(data);
     });
 });
 

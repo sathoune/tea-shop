@@ -14,14 +14,14 @@ $(document).ready(function(){
 
 const header = {
     create: () => {
-        const   version = "<label id='version'>v.2 bai-hao</label>";
+        const   version = "<label id='version'>v.3 Chun-Mee</label>";
         const   headerDiv           = "<div id='header'></div>";
         $('body').prepend(version, headerDiv);
         //$('body').prepend(version);
         $('#header').append(header.html.createButtons());
         $("#show-menu").on("click", menu.create.open);
         $("#show-archive").on("click", archive.create.open);
-        $("#show-tasks").on("click", openTasks);
+        //$("#show-tasks").on("click", openTasks);
     },
     manageMainContainers: {
         hideAll: () => {
