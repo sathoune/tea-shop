@@ -243,4 +243,22 @@ input, select {
   .panel .name {
     margin-left: auto; }
 
+#summary-items{
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+#summary-hours{
+  display: flex;
+  flex-direction: column;
+}
+
+
+#summary-panel {
+  display: flex;
+}
+
+#buttons {
+  display: flex;
+}
 /*# sourceMappingURL=styles.css.map */

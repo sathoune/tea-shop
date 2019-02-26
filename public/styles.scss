@@ -314,3 +314,8 @@ input, select{
         margin-left: auto;
     }
 }
+
+#summary-items {
+    display: flex;
+    flex-direction: column-reverse;;
+}
