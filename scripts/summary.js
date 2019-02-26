@@ -68,6 +68,7 @@ const summary = {
                         const html = summary.html.hourContainer(variables);
                         $('#summary-hours').append(html.container);
                         $(`#${variables.hour}`).append(html.inputs);
+                        $(`#${variables.hour}`).css('order', variables.hour);
                     }
             });    
         },
