@@ -21,7 +21,7 @@ const header = {
         $('#header').append(header.html.createButtons());
         $("#show-menu").on("click", menu.create.open);
         $("#show-archive").on("click", archive.create.open);
-        //$("#show-tasks").on("click", openTasks);
+        $("#show-tasks").on("click", openTasks);
     },
     manageMainContainers: {
         hideAll: () => {
