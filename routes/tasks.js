@@ -16,5 +16,11 @@ router.post("/new", (req, res) => {
     });
 });
 
+router.post("/delete", (req, res) => {
+    Task.findOneAndDelete({_id: req.body._id}, (err) => {
+        if(err){console.log('Delete task error' + err); }
+        else{res.send('task deleted');}
+    });
+});
 
 module.exports = router;

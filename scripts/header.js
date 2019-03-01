@@ -2,8 +2,6 @@
 /* global menu */
 /* global item */
 /* global order */
-
-
 $(document).ready(function(){
     eventListeners.itemInputs();
     header.create();
@@ -21,7 +19,7 @@ const header = {
         $('#header').append(header.html.createButtons());
         $("#show-menu").on("click", menu.create.open);
         $("#show-archive").on("click", archive.create.open);
-        $("#show-tasks").on("click", openTasks);
+        $("#show-tasks").on("click", tasks.create.open);
     },
     manageMainContainers: {
         hideAll: () => {

@@ -1,7 +1,6 @@
 /* global $ */
 /* global sendRequest */
 /* global item */
-
 const order = {
     create: {
         empty: () => {
