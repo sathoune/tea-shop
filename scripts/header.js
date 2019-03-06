@@ -8,15 +8,20 @@ $(document).ready(function(){
     eventListeners.orderInputs();
     createNavigation();
     order.read.findOpen();
-    });
+    tasks.create.taskReminder();
+    //var t = setInterval(annoy, 8000);
+    
+});
+
+function annoy(){
+    alert("click me");
+}
 
 const header = {
-    create: () => {
-        const   version = "<label id='version'>v.3 Chun-Mee</label>";
-        const   headerDiv           = "<div id='header'></div>";
-        $('body').prepend(version, headerDiv);
-        //$('body').prepend(version);
-        $('#header').append(header.html.createButtons());
+    create(){
+        $('body').prepend(header.version, header.html.containers.main);
+        $('#header').append( header.html.containers.messages, header.html.containers.buttons);
+        $('#header-buttons').append(header.html.createButtons());
         $("#show-menu").on("click", menu.create.open);
         $("#show-archive").on("click", archive.create.open);
         $("#show-tasks").on("click", tasks.create.open);
@@ -34,16 +39,22 @@ const header = {
     },
     
     html: {
-        createButtons: () => {
-        const icons = {
-            openBook: `<i class="fas fa-book-open"></i>`,
-            box: `<i class="fas fa-archive"></i>`,
-        };
-        const   showMenu    = `<button id='show-menu' class='navigation-button'>${icons.openBook} Magazyn ${icons.openBook}</button>`,
-                showArchive = `<button id='show-archive' class='navigation-button'>${icons.box} Archiwum ${icons.box}</button>`,
-                showTasks   = `<button id='show-tasks' class='navigation-button'>Zadania</button>`;
-            
-        return [showTasks, showMenu, showArchive];
+        version: "<label id='version'>v.3 Chun-Mee</label>",
+        containers: {
+            main: "<div id='header'></div>", 
+            buttons: `<div id='header-buttons'></div>`,
+            messages: `<div id='messages'></div>`,
+        },
+        createButtons(){
+            const icons = {
+                openBook: `<i class="fas fa-book-open"></i>`,
+                box: `<i class="fas fa-archive"></i>`,
+            };
+            const   showMenu    = `<button id='show-menu' class='navigation-button'>${icons.openBook} Magazyn ${icons.openBook}</button>`,
+                    showArchive = `<button id='show-archive' class='navigation-button'>${icons.box} Archiwum ${icons.box}</button>`,
+                    showTasks   = `<button id='show-tasks' class='navigation-button'>Zadania</button>`;
+                
+            return [showTasks, showMenu, showArchive];
         },
     },
 };
@@ -63,7 +74,6 @@ const eventListeners = {
         $('#record-view').on('keydown', '.discount',        order.update.discount);
         $('#record-view').on('change',  '.discount-to-go',  order.update.discountToGo);
         $('#record-view').on('change',  '.table',           order.update.table);
-        
     },
 };
 

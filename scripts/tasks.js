@@ -34,6 +34,20 @@ const tasks = {
             $('#day-of-the-week').on("click", tasks.update.day);
             $('#day-of-the-week').val(tasks.read.today());
         },
+        taskReminder(){
+            $(`#messages`).append(tasks.html.messageContainer);
+            $(`#task-message`).append("6665");
+            var taskTimer = setInterval(tasks.update.messages, 1000);
+        },
+        message(tasks){
+            if(tasks){
+                const message = "<p>Pozostałe zadania na dziś:</p>";
+                var taskNames = "";
+                tasks.forEach(task => taskNames += `<li>${task.task}</li>`);
+                $(`#task-message`).append(`${message} <ul>${taskNames}</ul`);
+            }
+        }
+
     },
     read: {
         today(){
@@ -47,7 +61,7 @@ const tasks = {
             else if(date == 6){ return "Saturday"; }
             else { return "this day is not a day"; }
         },
-        
+                
         
     },
     
@@ -73,6 +87,10 @@ const tasks = {
                     $(`#${task._id} select`).val(task.day);
                 });
             });
+        },
+        messages(){
+            $(`#task-message`).html("");
+            sendRequest("/task/todo", {day: tasks.read.today()}, (data) => { tasks.create.message(data); });
         }
     },
     delete: {
@@ -92,6 +110,7 @@ const tasks = {
     },
         
     html: {
+        messageContainer: `<div id="task-message"></div>`,
         selectDayLabel: `<input value="Zadania na:" readonly>`,
         selectDay: `<select id="day-of-the-week">
                         <option value="Monday">Poniedziałek</option>

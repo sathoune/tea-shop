@@ -31,4 +31,14 @@ router.post("/delete", (req, res) => {
     });
 });
 
+router.post("/todo", (req, res) => {
+   Task.find({day: req.body.day, done: false}, (err, foundTasks) => {
+       if(err){ 
+           console.log("err in tasks/todo route" + err); 
+           res.send("");
+       }
+       else{ res.send(foundTasks); }
+   });
+});
+
 module.exports = router;
