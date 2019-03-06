@@ -12,7 +12,6 @@ const summary = {
             $('#summary-navigation').append(summary.html.panelContainer);
             $('#dates').append(navigation.dates);
             $('#buttons').append(navigation.buttons);
-            
         }, 
         sellingStats: () => {
             $('#summary-results').empty();
@@ -21,13 +20,13 @@ const summary = {
             const labels = summary.html.itemLabels();
             $('#summary-navigation').append(labels.container);
             $('#summary-labels').append(labels.inputs);
-            $('#summary-labels .all-count').on('click', null, '.all-count', summary.update.orderBy);
-            $('#summary-labels .default-count').on('click', null, '.default-count', summary.update.orderBy);
-            $('#summary-labels .gaiwan-count').on('click', null, '.gaiwan-count', summary.update.orderBy);
-            $('#summary-labels .package-count').on('click', null, '.package-count', summary.update.orderBy);
-            $('#summary-labels .bulk-count').on('click', null, '.bulk-count', summary.update.orderBy);
-            $('#summary-labels .bulk-count-count').on('click', null, '.bulk-count-count', summary.update.orderBy);
-            $('#summary-labels .income').on('click', null, '.income', summary.update.orderBy);
+            $('#summary-labels .all-count').        on('click', null, '.all-count', summary.update.orderBy);
+            $('#summary-labels .default-count').    on('click', null, '.default-count', summary.update.orderBy);
+            $('#summary-labels .gaiwan-count').     on('click', null, '.gaiwan-count', summary.update.orderBy);
+            $('#summary-labels .package-count').    on('click', null, '.package-count', summary.update.orderBy);
+            $('#summary-labels .bulk-count').       on('click', null, '.bulk-count', summary.update.orderBy);
+            $('#summary-labels .bulk-count-count'). on('click', null, '.bulk-count-count', summary.update.orderBy);
+            $('#summary-labels .income').           on('click', null, '.income', summary.update.orderBy);
             let firstDay    = $('#day-start').val();
             let lastDay     = $('#day-end').val();
             sendRequest("/summary", {first: firstDay, last: lastDay}, (data) => {
@@ -62,14 +61,13 @@ const summary = {
             let firstDay    = $('#day-start').val();
             let lastDay     = $('#day-end').val();
             sendRequest("/summary/hours", {first: firstDay, last: lastDay}, (data) => {
-                    
-                    for(var i=0; i<data.hour.length; i++) {
-                        const variables = { hour: data.hour[i], quantity: data.count[i], income: data.income[i] };
-                        const html = summary.html.hourContainer(variables);
-                        $('#summary-hours').append(html.container);
-                        $(`#${variables.hour}`).append(html.inputs);
-                        $(`#${variables.hour}`).css('order', variables.hour);
-                    }
+                for(var i=0; i<data.hour.length; i++) {
+                    const variables = { hour: data.hour[i], quantity: data.count[i], income: data.income[i] };
+                    const html = summary.html.hourContainer(variables);
+                    $('#summary-hours').append(html.container);
+                    $(`#${variables.hour}`).append(html.inputs);
+                    $(`#${variables.hour}`).css('order', variables.hour);
+                }
             });    
         },
     },
