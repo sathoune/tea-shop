@@ -1,6 +1,7 @@
 /* global $ */
 /* global sendRequest */
 /* global header */
+
 const tasks = {
     create: {
         open(){
@@ -36,23 +37,19 @@ const tasks = {
         },
         taskReminder(){
             $(`#messages`).append(tasks.html.messageContainer);
-            var looperino = true
-            if(looperino){
-                var taskTimer = setInterval(tasks.update.messages, 5000);
-            } else {
-                tasks.update.messages();    
-            }
-            
+            var millis = 30*60*1000;
+            tasks.update.messages();
+            if(millis){ var taskTimer = setInterval(tasks.update.messages, millis);
+            } else { tasks.update.messages(); }
         },
         message(todos){
-            if(todos){
-                const message = "<p>Pozostałe zadania na dziś:</p>";
-                var taskNames = "";
-                todos.forEach(todo => taskNames += `<li>${todo.task}</li>`);
-                $(`#task-message`).append(`${message} <ul>${taskNames}</ul> ${tasks.html.messageButton}`);
-            }
+            const message = "<div>Pozostałe zadania na dziś:";
+            var taskNames = "";
+            todos.forEach(todo => taskNames += `<li>${todo.task}</li>`);
+            $(`#tasks-message`).append(`${message} <ul>${taskNames}</ul> </div>${tasks.html.messageButton}`);
         },
     },
+    
     read: {
         today(){
             var date = new Date().getDay();
@@ -65,8 +62,6 @@ const tasks = {
             else if(date == 6){ return "Saturday"; }
             else { return "this day is not a day"; }
         },
-                
-        
     },
     
     update: {
@@ -83,7 +78,7 @@ const tasks = {
         day(){
             $('#tasks-container').html("");
             sendRequest("/task", {day: $('#day-of-the-week').val()}, 
-            (data) => { 
+            data => { 
                 data.forEach(task => {
                     const taskHTML = tasks.html.task(task);
                     $('#tasks-container').append(taskHTML.taskContainer);
@@ -93,10 +88,13 @@ const tasks = {
             });
         },
         messages(){
-            $(`#task-message`).html("");
-            sendRequest("/task/todo", {day: tasks.read.today()}, (data) => { tasks.create.message(data); });
+            $(`#tasks-message`).html("");
+            sendRequest("/task/todo", {day: tasks.read.today()}, data => {
+                if(data){ tasks.create.message(data); }
+            });
         }
     },
+    
     delete: {
         close(){
             $('#record-view').show();
@@ -105,20 +103,13 @@ const tasks = {
             $('#show-tasks').off("click").on("click", tasks.create.open);
             header.manageMainContainers.showAll();
         },   
-        task(taskId){
-            sendRequest('/task/delete', {_id: taskId}, (data) => {
-               $(`#${taskId}`).remove(); 
-            });
-        },
-        message(){
-            $('#task-message').html("");
-        }
-        
+        task(taskId){ sendRequest('/task/delete', {_id: taskId}, (data) => { $(`#${taskId}`).remove();  }); },
+        message(){ $('#tasks-message').html(""); }
     },
         
     html: {
-        messageContainer: `<div id="task-message"></div>`,
-        messageButton: `<button onclick='tasks.delete.message()'>Usuń wiadomość</button>`,
+        messageContainer: `<div id="tasks-message"></div>`,
+        messageButton: `<button style='width: 100%;' onclick='tasks.delete.message()'>Usuń wiadomość</button>`,
         selectDayLabel: `<input value="Zadania na:" readonly>`,
         selectDay: `<select id="day-of-the-week">
                         <option value="Monday">Poniedziałek</option>
@@ -157,11 +148,13 @@ const tasks = {
                                         </select>`,
                     inputTask       =   `<input type='text'>`,
                     saveButton      =   `<button onclick='tasks.create.new()'>Dodaj</button>`;
-            return {containers: [labelContainer, inputContainer], labels: [tasks.html.selectDayLabel, tasks.html.selectDay, labelDay, labelTask], inputs: [inputDay, inputTask, saveButton]};
+            return {containers: [labelContainer, inputContainer], 
+            labels: [tasks.html.selectDayLabel, tasks.html.selectDay, labelDay, labelTask], 
+            inputs: [inputDay, inputTask, saveButton]};
         },
         task(taskValues){
-            var checked = "";
-            if(taskValues.done){ checked="checked"; } 
+            let checked = "";
+            if(taskValues.done){ checked = "checked"; } 
             const   taskContainer   = `<div id='${taskValues._id}'></div>`,
                     day             = `<select class="task-day">
                                             <option value="Monday">Poniedziałek</option>

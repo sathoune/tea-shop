@@ -26,7 +26,6 @@ const header = {
             var mainContainers = $('.main-container');
             for(var i=0; i<mainContainers.length;i++){ $(mainContainers[i]).hide(); }
         },
-        
         showAll: () => {
             var mainContainers = $('.main-container');
             for(var i=0; i<mainContainers.length;i++){ $(mainContainers[i]).show(); }
@@ -81,4 +80,12 @@ function sendRequest(url, newData, callback){
     	contentType: "application/json",
     	success: (data) => { callback(data); },
     });
+}
+
+function createNavigation(){
+    const   topPanel = "<div id='top-panel'></div>",
+            createOrder = `<button id='create-order' onclick='order.create.empty()'><i class="fas fa-folder-plus"></i> Nowe zamówienie</button>`,
+            orderDiv = "<div id='order-display'></div>";
+    $('#record-view').append([topPanel, orderDiv]);
+    $('#top-panel').append(createOrder);
 }
