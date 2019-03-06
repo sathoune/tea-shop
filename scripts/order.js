@@ -1,6 +1,8 @@
 /* global $ */
 /* global sendRequest */
 /* global item */
+/* global strings */
+
 const order = {
     create: {
         empty: () => {
@@ -157,35 +159,35 @@ const order = {
                 angleUp: `<i class="fas fa-angle-up"></i>`,
                 pencil: `<i class="fas fa-pencil-alt"></i>`,
             };
-            const   tableInput              = "<input type='text' class='table' placeholder='stolik'>",
-                    discountInput           = "<input type='text' class='discount-label' value='Zniżka:'readonly><input type='number' class='discount' value='0' min='0' max='100' step='5'>",
-                    percentLabel            = "<input class='percent' type='text' value='%' readonly>",
-                    discountToGoCheckbox    = "<label class='to-go-button'><input class='discount-to-go' type='checkbox' name='checkbox' value='discountToGo'>na wagę</label>",
-                    sendButton              = `<button onclick='order.update.close("${orderId}")'       class='send-button'      >Zamknij zamówienie ${icons.pencil}</button>`,
-                    collapseButton          = `<button onclick='order.manage.collapseItems("${orderId}")'    class='collapse-order cosmic-fusion-up'>${icons.angleUp} Zwiń zamówienie ${icons.angleUp}</button>`;
+            const   tableInput              = `<input type='text' class='table' placeholder='${strings.table}'>`,
+                    discountInput           = `<input type='text' class='discount-label' value='${strings.discount}:'readonly><input type='number' class='discount' value='0' min='0' max='100' step='5'>`,
+                    percentLabel            = `<input class='percent' type='text' value='%' readonly>`,
+                    discountToGoCheckbox    = `<label class='to-go-button'><input class='discount-to-go' type='checkbox' name='checkbox' value='discountToGo'>${strings.toGo}</label>`,
+                    sendButton              = `<button onclick='order.update.close("${orderId}")'       class='send-button'      >${strings.closeOrder} ${icons.pencil}</button>`,
+                    collapseButton          = `<button onclick='order.manage.collapseItems("${orderId}")'    class='collapse-order cosmic-fusion-up'>${icons.angleUp} ${strings.collapseOrder} ${icons.angleUp}</button>`;
             return [tableInput, collapseButton, discountInput, discountToGoCheckbox, percentLabel, sendButton, ];
         },
         
         labels: (orderId) => {
             const plus = `<i class="fas fa-plus"></i>`;
             const   addItemButton           = `<button onclick='item.create.inside("${orderId}")' class='add-item-button'  >${plus}</button>`,
-                    labelCode               = `<input type='text' class='register-code'     value='Kod'         readonly>`,
-                    labelName               = `<input type='text' class='name'              value='Nazwa'       readonly>`,
-                    labelType               = `<input type='text' class='type'              value='Typ'         readonly>`,
-                    labelQuantity           = `<input type='text' class='quantity'          value='Ilość'       readonly>`,
-                    labelPrice              = `<input type='text' class='price'             value='Cena'        readonly>`,
-                    labelHint               = `<input type='text' class='hint'              value='Uwagi'       readonly>`,
-                    labelDiscountedPrice    = `<input type='text' class='discounted-price'  value='Po zniżce'   readonly>`;
+                    labelCode               = `<input type='text' class='register-code'     value='${strings.code}'         readonly>`,
+                    labelName               = `<input type='text' class='name'              value='${strings.name}'       readonly>`,
+                    labelType               = `<input type='text' class='type'              value='${strings.type}'         readonly>`,
+                    labelQuantity           = `<input type='text' class='quantity'          value='${strings.quantity}'       readonly>`,
+                    labelPrice              = `<input type='text' class='price'             value='${strings.price}'        readonly>`,
+                    labelHint               = `<input type='text' class='hint'              value='${strings.hints}'       readonly>`,
+                    labelDiscountedPrice    = `<input type='text' class='discounted-price'  value='${strings.discounted}'   readonly>`;
             return [addItemButton, labelCode, labelName, labelType, labelQuantity, labelPrice, labelHint, labelDiscountedPrice, ];
         },
         
         bottomPanel: (orderId) => {
             const   dumpster = `<i class="fas fa-dumpster"></i>`;
-            const   deleteButton        = `<button class='delete-button' onclick='order.delete("${orderId}")'>${dumpster} Usuń zamówienie ${dumpster}</button>`,  
-                    sumLabel            = "<input type='text'   class='sum-label'               value='Suma'            readonly>",
-                    sumInput            = "<input type='number' class='sum'                     value='0'               readonly>",
-                    discountedSumLabel  = "<input type='text'   class='discounted-sum-label'    value='Suma po zniżce'  readonly>",
-                    discountedSumInput  = "<input type='number' class='discounted-sum'          value='0'               readonly>";
+            const   deleteButton        = `<button class='delete-button' onclick='order.delete("${orderId}")'>${dumpster} ${strings.deleteOrder} ${dumpster}</button>`,  
+                    sumLabel            = `<input type='text'   class='sum-label'               value='${strings.sum}'            readonly>`,
+                    sumInput            = `<input type='number' class='sum'                     value='0'               readonly>`,
+                    discountedSumLabel  = `<input type='text'   class='discounted-sum-label'    value='${strings.discountedSum}'  readonly>`,
+                    discountedSumInput  = `<input type='number' class='discounted-sum'          value='0'               readonly>`;
             return [deleteButton, sumLabel, sumInput, discountedSumLabel, discountedSumInput, ];
         },
     },

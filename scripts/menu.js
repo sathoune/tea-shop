@@ -95,13 +95,13 @@ const menu = {
                     nameInput:  'menu-name',
                     priceInput: 'menu-price',
             };
-            const   createNewButton = '<button class="new-order-button" onclick="menu.create.item()"><i class="fas fa-folder-plus"></i> Dodaj pozycję</button>',
-                    codeInput       = `<input type='text' class='${classes.codeInput}'  value='Kod'         readonly>`,
-                    nameInput       = `<input type='text' class='${classes.nameInput}'  value='Nazwa'       readonly>`,
-                    price0Input     = `<input type='text' class='${classes.priceInput}' value='Sztuka'      readonly>`,
-                    price1Input     = `<input type='text' class='${classes.priceInput}' value='Gaiwan'      readonly>`,
-                    price2Input     = `<input type='text' class='${classes.priceInput}' value='Opakowanie'  readonly>`,
-                    price3Input     = `<input type='text' class='${classes.priceInput}' value='Na wagę'     readonly>`;
+            const   createNewButton = `<button class="new-order-button" onclick="menu.create.item()"><i class="fas fa-folder-plus"></i> ${strings.addPosition}</button>`,
+                    codeInput       = `<input type='text' class='${classes.codeInput}'  value='${strings.code}'         readonly>`,
+                    nameInput       = `<input type='text' class='${classes.nameInput}'  value='${strings.name}'       readonly>`,
+                    price0Input     = `<input type='text' class='${classes.priceInput}' value='${strings.piece}'      readonly>`,
+                    price1Input     = `<input type='text' class='${classes.priceInput}' value='${strings.gaiwan}'      readonly>`,
+                    price2Input     = `<input type='text' class='${classes.priceInput}' value='${strings.package}'  readonly>`,
+                    price3Input     = `<input type='text' class='${classes.priceInput}' value='${strings.toGo}'     readonly>`;
             
             return [codeInput, nameInput, price0Input, price1Input, price2Input, price3Input, 
                                 createNewButton];    
@@ -118,8 +118,8 @@ const menu = {
                 updateButton:   'update-button',
                 itemDiv:        'menu-item',
             };    
-            const   deleteButton    = `<button class='${classes.deleteButton}' onclick="menu.delete.item('${menuValues._id}')"><i class="fas fa-trash-alt"></i> Usuń</button>`,
-                    updateButton    = `<button class='${classes.updateButton}' onclick="menu.update.item('${menuValues._id}')">Zapisz <i class="fas fa-pencil-alt"></i></button>`,
+            const   deleteButton    = `<button class='${classes.deleteButton}' onclick="menu.delete.item('${menuValues._id}')"><i class="fas fa-trash-alt"></i> ${strings.delete}</button>`,
+                    updateButton    = `<button class='${classes.updateButton}' onclick="menu.update.item('${menuValues._id}')">${strings.save} <i class="fas fa-pencil-alt"></i></button>`,
                     codeInput       = `<input type='text'   class='${classes.codeInput}'                value='${menuValues.registerCode}'>`,
                     nameInput       = `<input type='text'   class='${classes.nameInput}'                value='${menuValues.name}'>`,
                     price0Input     = `<input type='text'   class='${classes.priceInput} menu-price0'   value='${menuValues.prices.default}'>`,

@@ -2,14 +2,18 @@
 /* global menu */
 /* global item */
 /* global order */
-$(document).ready(function(){
-    eventListeners.itemInputs();
-    header.create();
-    eventListeners.orderInputs();
-    createNavigation();
-    order.read.findOpen();
-    tasks.create.taskReminder();
+/* global strings */
 
+promiseLanguage.then( () => {
+    $(document).ready(function(){
+        eventListeners.itemInputs();
+        header.create();
+        eventListeners.orderInputs();
+        createNavigation();
+        order.read.findOpen();
+        tasks.create.taskReminder();
+    
+    });
 });
 
 const header = {
@@ -44,8 +48,8 @@ const header = {
                 openBook: `<i class="fas fa-book-open"></i>`,
                 box: `<i class="fas fa-archive"></i>`,
             };
-            const   showMenu    = `<button id='show-menu' class='navigation-button'>${icons.openBook} Magazyn ${icons.openBook}</button>`,
-                    showArchive = `<button id='show-archive' class='navigation-button'>${icons.box} Archiwum ${icons.box}</button>`,
+            const   showMenu    = `<button id='show-menu' class='navigation-button'>${icons.openBook} ${strings.warehouse} ${icons.openBook}</button>`,
+                    showArchive = `<button id='show-archive' class='navigation-button'>${icons.box} ${strings.archive} ${icons.box}</button>`,
                     showTasks   = `<button id='show-tasks' class='navigation-button'>Zadania</button>`;
                 
             return [showTasks, showMenu, showArchive];
@@ -71,20 +75,10 @@ const eventListeners = {
     },
 };
 
-function sendRequest(url, newData, callback){
-    $.ajax(
-    {
-    	method: 'post',
-    	url: url,
-    	data: JSON.stringify(newData),
-    	contentType: "application/json",
-    	success: (data) => { callback(data); },
-    });
-}
 
 function createNavigation(){
     const   topPanel = "<div id='top-panel'></div>",
-            createOrder = `<button id='create-order' onclick='order.create.empty()'><i class="fas fa-folder-plus"></i> Nowe zamówienie</button>`,
+            createOrder = `<button id='create-order' onclick='order.create.empty()'><i class="fas fa-folder-plus"></i> ${strings.newOrder}</button>`,
             orderDiv = "<div id='order-display'></div>";
     $('#record-view').append([topPanel, orderDiv]);
     $('#top-panel').append(createOrder);

@@ -238,10 +238,14 @@ input, select {
   color: red;
   text-align: right; }
 
-.panel {
-  display: flex; }
-  .panel .name {
-    margin-left: auto; }
+.item-labels-container {
+  display: flex; 
+  
+}
+.item-labels-container .name {
+  margin-left: auto; 
+  
+}
 
 #summary-items{
     display: flex;
