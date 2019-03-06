@@ -229,7 +229,7 @@ input, select {
 .top-panel .button {
   height: 2em; }
 
-#version {
+#version{
   position: fixed;
   top: 0;
   z-index: 999;
@@ -238,10 +238,25 @@ input, select {
   color: red;
   text-align: right; }
 
-.panel {
-  display: flex; }
-  .panel .name {
-    margin-left: auto; }
+#language{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+  width: 5em;
+  color: black;
+  background: gray;
+
+}
+  
+.item-labels-container {
+  display: flex; 
+  
+}
+.item-labels-container .name {
+  margin-left: auto; 
+  
+}
 
 #summary-items{
     display: flex;

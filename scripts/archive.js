@@ -98,31 +98,34 @@ const archive = {
     },
     
     manage: {
-        expandOrder: function(){
-            $(this).html(`Zwiń <i class="fas fa-search-minus"></i>`);
+        expandOrder(){
+            $(this).html(`${strings.collapseOrder} <i class="fas fa-search-minus"></i>`);
             $(this).off("click").on("click", archive.manage.collapseOrder);
             const orderID = $(this).parent().parent()[0].id;
             const itemContainer = `<div class='item-container'></div>`;
-            const panelContainer = `<div class='panel'><input type='text' class='name' value='Nazwa' readonly><input type='text' class='type' value='Typ' readonly><input type='text' class='quantity' value='Ilość' readonly><input type='text' class='price' value='Cena' readonly><input type='text' class='price' value='Po zniżce' readonly></div>`;
-            // Need labels
-            $(`#${orderID}.archived-order`).append([panelContainer, itemContainer]);
-            sendRequest("/archive/show-ordered-items", {_id: orderID}, (data) => 
-            { data.forEach( (item) => { archive.create.itemDisplay(orderID, item); }); });
+            const labelsHTML = archive.html.itemLabels();
+            $(`#${orderID}.archived-order`).append([labelsHTML.container, itemContainer]);
+            $(`#${orderID} .item-labels-container`).append(labelsHTML.labels);
+            sendRequest("/archive/show-ordered-items", {_id: orderID}, 
+            (data) => { 
+                data.forEach( (item) => { archive.create.itemDisplay(orderID, item); }); 
+                
+            });
         },
-        collapseOrder: function(){
-            $(this).html(`Rozwiń <i class="fas fa-search-plus"></i>`);
+        collapseOrder(){
+            $(this).html(`${strings.expandOrder} <i class="fas fa-search-plus"></i>`);
             $(this).off("click").on("click", archive.manage.expandOrder);
             const orderId = $(this).parent().parent()[0].id;
             $(`#${orderId}.archived-order .item-container`).remove();
-            $(`#${orderId}.archived-order .panel`).remove();
+            $(`#${orderId}.archived-order .item-labels-container`).remove();
         },
-        expandAllOrders: () => {
+        expandAllOrders(){
             var expandButtons = $('.archived-order .expand-button');
             for(var i=0; i<expandButtons.length; i++){
                 $(expandButtons[i]).trigger("click");
             }
         },
-        getDate: () => {
+        getDate(){
             const now = new Date();
             const date ={
                 year: now.getFullYear(),
@@ -152,18 +155,18 @@ const archive = {
                 dateLabel: 'date-label',  
                 daySum: 'day-sum',
             };
-            const   expandAllButton     = `<button id='expand-all-button' class="expand-button">Rozwiń wszystkie ${expandIcon}</button>`;
+            const   expandAllButton     = `<button id='expand-all-button' class="expand-button">${strings.expandAll} ${expandIcon}</button>`;
             const   dateInput           = `<input                   id="day-for-display"    type="date" name="trip-start"   value='${archive.manage.getDate()}' min="2019-01-01" max="2025-12-31">`,
                     sumInput            = `<input class='${classes.daySum}'   id='day-sum'            type="number"                   value='0'           readonly>`,
                     discountedSumInput  = `<input class='${classes.daySum}'   id='discounted-day-sum' type="number"                   value='0'           readonly>`,
-                    hourLabel           = `<input class='${classes.dateLabel}'                        type='text'                     value='Otwarto'     readonly>`,
-                    tableLabel          = `<input class='${classes.dateLabel}'                        type='text'                     value='Stolik'      readonly>`,
-                    sumLabel            = `<input class='${classes.dateLabel}'                        type='text'                     value='Suma'        readonly>`,
-                    discountedSumLabel  = `<input class='${classes.dateLabel}'                        type='text'                     value='Po zniżce'   readonly>`,
-                    advancedButton      = `<button onclick='summary.create.open()' class='navigation-button'>Wincyj statystyk</button>`,
-                    dateLabel           = `<input type='text' class='${classes.dateLabel}' value='Data' readonly>`,
-                    daySumLabel         = `<input type='text' class='${classes.dateLabel}' value='Suma dnia' readonly>`,
-                    discountedDaySumLabel = `<input type='text' class='${classes.dateLabel}' value='Po zniżce' readonly>`;
+                    hourLabel           = `<input class='${classes.dateLabel}'                        type='text'                     value='${strings.opened}'     readonly>`,
+                    tableLabel          = `<input class='${classes.dateLabel}'                        type='text'                     value='${strings.table}'      readonly>`,
+                    sumLabel            = `<input class='${classes.dateLabel}'                        type='text'                     value='${strings.sum}'        readonly>`,
+                    discountedSumLabel  = `<input class='${classes.dateLabel}'                        type='text'                     value='${strings.discountedSum}'   readonly>`,
+                    advancedButton      = `<button onclick='summary.create.open()' class='navigation-button'>${strings.moreStatistics}</button>`,
+                    dateLabel           = `<input type='text' class='${classes.dateLabel}' value='${strings.date}' readonly>`,
+                    daySumLabel         = `<input type='text' class='${classes.dateLabel}' value='${strings.total}' readonly>`,
+                    discountedDaySumLabel = `<input type='text' class='${classes.dateLabel}' value='${strings.discounted}' readonly>`;
             const   labelsContainer     = `<div id='archived-orders-labels' readonly></div>`;
             const   dayContainer = `<div id='thingies' class='thingies'></div>`;
             return {
@@ -184,15 +187,25 @@ const archive = {
         return {container: itemContainer, inputs: [nameInput, typeInput, quantityInput, priceInput, discountedPriceInput] };
         },
         
+        itemLabels: () => {
+            const   labelContainer = `<div class='item-labels-container'></div>`;
+            const   nameLabel               = `<input type='text' class='name'      value='${strings.name}' readonly>`,
+                    typeLabel               = `<input type='text' class='type'      value='${strings.type}' readonly>`,
+                    quantityLabel           = `<input type='text' class='quantity'  value='${strings.quantity}' readonly>`,                  
+                    priceLabel              = `<input type='text' class='price'     value='${strings.price}' readonly>`,
+                    discoutnedPriceLabel    = `<input type='text' class='price'     value='${strings.discounted}' readonly>`;
+            return {container: labelContainer, labels: [nameLabel, typeLabel, quantityLabel, priceLabel, discoutnedPriceLabel] };
+        },
+        
         order: (orderData) => {
             const   date = new Date(orderData.createdAt).getHours()+":"+new Date(orderData.createdAt).getMinutes()+":"+new Date(orderData.createdAt).getSeconds();
             const   summaryContainer      = `<div class='div-summary'></div>`;
-            const   sendBackButton  = `<button class='send-back' onclick='archive.update.reopenOrder("${orderData._id}")'><i class="fas fa-long-arrow-alt-left"></i> Otwórz ponownie</button>`,
+            const   sendBackButton  = `<button class='send-back' onclick='archive.update.reopenOrder("${orderData._id}")'><i class="fas fa-long-arrow-alt-left"></i> ${strings.reopen}</button>`,
                     dateInput       = `<input type='text' class='order-date' value='${date}' readonly>`,
                     table           = `<input type='text' class='order-table' value='${orderData.table}' readonly>`,
                     sum             = `<input type='text' class='order-sum' value='${Number(orderData.sum).toFixed(2)}' readonly>`,
                     discountedSum   = `<input type='text' class='order-sum' value='${Number(orderData.discountedSum).toFixed(2)}' readonly>`,
-                    expandButton    = `<button class="expand-button">Rozwiń <i class="fas fa-search-plus"></i></button>`;
+                    expandButton    = `<button class="expand-button">${strings.expandOrder} <i class="fas fa-search-plus"></i></button>`;
             return {container: summaryContainer, inputs: [ sendBackButton, dateInput, table, sum, discountedSum, expandButton ]};
         },
     },

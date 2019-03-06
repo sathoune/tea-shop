@@ -114,17 +114,17 @@ const item = {
         inputs: (itemId) => {
             const   dumpsterIcon = `<i class="fas fa-trash-alt"></i>`;
             const   deleteButton          = `<button onclick='item.delete("${itemId}")' class='delete-button' >${dumpsterIcon}</button>`, 
-                    nameInput             = '<input type="text"     class="name"            list="tees">',
-                    codeInput             = '<input type="text"     class="register-code"   readonly>',
-                    priceInput            = '<input type="number"   class="price">',
-                    quantityInput         = '<input type="number"   class="quantity"        name="quantity" min="0" value="1">',
-                    hintInput             = '<input type="text"     class="hint">',
-                    discountedPriceInput  = '<input type="number"   class="discounted-price">',
+                    nameInput             = `<input type="text"     class="name"            list="tees">`,
+                    codeInput             = `<input type="text"     class="register-code"   readonly>`,
+                    priceInput            = `<input type="number"   class="price">`,
+                    quantityInput         = `<input type="number"   class="quantity"        name="quantity" min="0" value="1">`,
+                    hintInput             = `<input type="text"     class="hint">`,
+                    discountedPriceInput  = `<input type="number"   class="discounted-price">`,
                     typeInput             = `<select class="type">
-                                                <option value="sztuka">     sztuka      </option>
-                                                <option value="czajnik">    czajnik     </option>
-                                                <option value="gaiwan">     gaiwan      </option>
-                                                <option value="opakowanie"> opakowanie  </option>
+                                                <option value="sztuka">     ${strings.piece}      </option>
+                                                <option value="czajnik">    ${strings.teapot}     </option>
+                                                <option value="gaiwan">     ${strings.gaiwan}      </option>
+                                                <option value="opakowanie"> ${strings.package}  </option>
                                                 <option value="gram">       gram        </option>
                                             </select>`;
             return [deleteButton, codeInput, nameInput, typeInput, quantityInput, priceInput, hintInput, discountedPriceInput, ];

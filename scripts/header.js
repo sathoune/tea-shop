@@ -2,24 +2,32 @@
 /* global menu */
 /* global item */
 /* global order */
-$(document).ready(function(){
-    eventListeners.itemInputs();
-    header.create();
-    eventListeners.orderInputs();
-    createNavigation();
-    order.read.findOpen();
-    tasks.create.taskReminder();
+/* global strings */
 
+promiseLanguage.then( () => {
+    $(document).ready(() => {
+        eventListeners.itemInputs();
+        header.create();
+        eventListeners.orderInputs();
+        createNavigation();
+        order.read.findOpen();
+        tasks.create.taskReminder();
+    
+    });
 });
+
 
 const header = {
     create(){
-        $('body').prepend(header.version, header.html.containers.main);
+        $('body').prepend(header.html.version, header.html.language, header.html.containers.main);
         $('#header').append( header.html.containers.messages, header.html.containers.buttons);
         $('#header-buttons').append(header.html.createButtons());
+        
+        $(`#language`).val(language);
         $("#show-menu").on("click", menu.create.open);
         $("#show-archive").on("click", archive.create.open);
         $("#show-tasks").on("click", tasks.create.open);
+        $("#language").on("change", changeLanguage);
     },
     manageMainContainers: {
         hideAll: () => {
@@ -34,6 +42,11 @@ const header = {
     
     html: {
         version: "<label id='version'>v.3 Chun-Mee</label>",
+        language:   `<select id='language'>
+                        <option value="english">english</option>
+                        <option value="polish">polish</option>
+                        <option value="czech">czech</option>
+                    </select>`,
         containers: {
             main: "<div id='header'></div>", 
             buttons: `<div id='header-buttons'></div>`,
@@ -44,8 +57,8 @@ const header = {
                 openBook: `<i class="fas fa-book-open"></i>`,
                 box: `<i class="fas fa-archive"></i>`,
             };
-            const   showMenu    = `<button id='show-menu' class='navigation-button'>${icons.openBook} Magazyn ${icons.openBook}</button>`,
-                    showArchive = `<button id='show-archive' class='navigation-button'>${icons.box} Archiwum ${icons.box}</button>`,
+            const   showMenu    = `<button id='show-menu' class='navigation-button'>${icons.openBook} ${strings.warehouse} ${icons.openBook}</button>`,
+                    showArchive = `<button id='show-archive' class='navigation-button'>${icons.box} ${strings.archive} ${icons.box}</button>`,
                     showTasks   = `<button id='show-tasks' class='navigation-button'>Zadania</button>`;
                 
             return [showTasks, showMenu, showArchive];
@@ -71,20 +84,10 @@ const eventListeners = {
     },
 };
 
-function sendRequest(url, newData, callback){
-    $.ajax(
-    {
-    	method: 'post',
-    	url: url,
-    	data: JSON.stringify(newData),
-    	contentType: "application/json",
-    	success: (data) => { callback(data); },
-    });
-}
 
 function createNavigation(){
     const   topPanel = "<div id='top-panel'></div>",
-            createOrder = `<button id='create-order' onclick='order.create.empty()'><i class="fas fa-folder-plus"></i> Nowe zamówienie</button>`,
+            createOrder = `<button id='create-order' onclick='order.create.empty()'><i class="fas fa-folder-plus"></i> ${strings.newOrder}</button>`,
             orderDiv = "<div id='order-display'></div>";
     $('#record-view').append([topPanel, orderDiv]);
     $('#top-panel').append(createOrder);
