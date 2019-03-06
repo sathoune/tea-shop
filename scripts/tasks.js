@@ -53,10 +53,12 @@ const tasks = {
     
     update: {
         task(taskId){
+            console.log($(`#${taskId} .task-done`).is(":checked"));
             const newValues = {
                 _id: taskId,
                 day: $(`#${taskId} .task-day`).val(),
                 task: $(`#${taskId} .task`).val(),
+                done: $(`#${taskId} .task-done`).is(":checked"),
             };
             sendRequest("/task/update", newValues, (data) => {console.log(data); });
         },    
@@ -131,6 +133,8 @@ const tasks = {
             return {containers: [labelContainer, inputContainer], labels: [tasks.html.selectDayLabel, tasks.html.selectDay, labelDay, labelTask], inputs: [inputDay, inputTask, saveButton]};
         },
         task(taskValues){
+            var checked = "";
+            if(taskValues.done){ checked="checked"; } 
             const   taskContainer   = `<div id='${taskValues._id}'></div>`,
                     day             = `<select class="task-day">
                                             <option value="Monday">Poniedziałek</option>
@@ -142,7 +146,7 @@ const tasks = {
                                             <option value="Sunday">Niedziela</option>
                                         </select>`,
                     text            = `<input class='task' type='text' value='${taskValues.task}'>`,
-                    done            = `<label><input type='checkbox' value='${taskValues.done}'>zrobione!</label>`,
+                    done            = `<label><input onclick='tasks.update.task("${taskValues._id}")' class='task-done' type='checkbox' ${checked}>zrobione!</label>`,
                     deleteButton    = `<button onclick='tasks.delete.task("${taskValues._id}")'>Usuń</button>`,
                     editButton      = `<button onclick='tasks.update.task("${taskValues._id}")'>Edytuj</button>`;
             return  {taskContainer: taskContainer, values: [deleteButton, editButton, day, text, done]};
