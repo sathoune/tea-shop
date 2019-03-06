@@ -3,27 +3,24 @@
 /* global header */
 const tasks = {
     create: {
-        open: () => {
+        open(){
             header.manageMainContainers.hideAll();
             $("#show-tasks").html(`<i class="fas fa-chevron-left"></i> Wróć do zamówień <i class="fas fa-chevron-left"></i>`);
             $("#show-tasks").off("click").on("click", tasks.delete.close);
             tasks.create.container();
-            sendRequest("/task", {}, 
-            (data) => { 
-                data.forEach(task => {
-                    const taskHTML = tasks.html.task(task);
-                    $('#tasks-container').append(taskHTML.taskContainer);
-                    $(`#${task._id}`).append(taskHTML.values);
-                });
-            });
+            tasks.update.day();
         }, 
-        new: () => {
+        new(){
             const day = $(`#tasks-inputs select`).val();
             const task = $(`#tasks-inputs input`).val();
             sendRequest('/task/new', {day: day, task: task}, 
-            (data) => {console.log(data)});
+            (data) => {
+                const taskHTML = tasks.html.task(data);
+                $('#tasks-container').append(taskHTML.taskContainer);
+                $(`#${data._id}`).append(taskHTML.values);
+            });
         },
-        container: () => {
+        container(){
             const templateHTML = tasks.html.containers();
             $('body').  append(templateHTML.tasks);
             $('#tasks'). append(templateHTML.containers);
@@ -34,18 +31,57 @@ const tasks = {
             $('#tasks-navigation').append(html.containers);
             $('#tasks-labels').append(html.labels);
             $('#tasks-inputs').append(html.inputs);
+            $('#day-of-the-week').on("click", tasks.update.day);
+            $('#day-of-the-week').val(tasks.read.today());
         },
     },
+    read: {
+        today(){
+            var date = new Date().getDay();
+            if(date == 0){ return "Sunday"; }
+            else if(date == 1){ return "Monday"; }
+            else if(date == 2){ return "Tuesday"; }
+            else if(date == 3){ return "Wednesday"; }
+            else if(date == 4){ return "Thursday"; }
+            else if(date == 5){ return "Friday"; }
+            else if(date == 6){ return "Saturday"; }
+            else { return "this day is not a day"; }
+        },
+        
+        
+    },
     
+    update: {
+        task(taskId){
+            const newValues = {
+                _id: taskId,
+                day: $(`#${taskId} .task-day`).val(),
+                task: $(`#${taskId} .task`).val(),
+            };
+            sendRequest("/task/update", newValues, (data) => {console.log(data); });
+        },    
+        day(){
+            $('#tasks-container').html("");
+            sendRequest("/task", {day: $('#day-of-the-week').val()}, 
+            (data) => { 
+                data.forEach(task => {
+                    const taskHTML = tasks.html.task(task);
+                    $('#tasks-container').append(taskHTML.taskContainer);
+                    $(`#${task._id}`).append(taskHTML.values);
+                    $(`#${task._id} select`).val(task.day);
+                });
+            });
+        }
+    },
     delete: {
-        close: () => {
+        close(){
             $('#record-view').show();
             $('#tasks').remove();
             $('#show-tasks').html(`zadania`);
             $('#show-tasks').off("click").on("click", tasks.create.open);
             header.manageMainContainers.showAll();
         },   
-        task: (taskId) => {
+        task(taskId){
             sendRequest('/task/delete', {_id: taskId}, (data) => {
                $(`#${taskId}`).remove(); 
             });
@@ -54,7 +90,18 @@ const tasks = {
     },
         
     html: {
-        containers: () => {
+        selectDayLabel: `<input value="Zadania na:" readonly>`,
+        selectDay: `<select id="day-of-the-week">
+                        <option value="Monday">Poniedziałek</option>
+                        <option value="Tuesday">Wtorek</option>
+                        <option value="Wednesday">Środa</option>
+                        <option value="Thursday">Czwartek</option>
+                        <option value="Friday">Piątek</option>
+                        <option value="Saturday">Sobota</option>
+                        <option value="Sunday">Niedziela</option>
+                    </select>`,
+                    
+        containers(){
             const ids = {
                 tasks  : "tasks",
                 navigationPanel : "tasks-navigation",
@@ -65,12 +112,12 @@ const tasks = {
                     tasksContainer   = `<div id='${ids.tasksContainer}'></div>`;
             return {tasks, containers: [navigationPanel, tasksContainer]};
         },
-        panelControls: () => {
+        panelControls(){
             const   labelContainer  =   `<div id='tasks-labels'></div>`,
                     inputContainer  =   `<div id='tasks-inputs'></div>`;
             const   labelDay        =   `<input type='text' value='dzień'>`,
                     labelTask       =   `<input type='text' value='zadanie'>`;
-            const   inputDay        =   `<select class="type">
+            const   inputDay        =   `<select class="day">
                                             <option value="Monday">Poniedziałek</option>
                                             <option value="Tuesday">Wtorek</option>
                                             <option value="Wednesday">Środa</option>
@@ -81,15 +128,24 @@ const tasks = {
                                         </select>`,
                     inputTask       =   `<input type='text'>`,
                     saveButton      =   `<button onclick='tasks.create.new()'>Dodaj</button>`;
-            return {containers: [labelContainer, inputContainer], labels: [labelDay, labelTask], inputs: [inputDay, inputTask, saveButton]};
+            return {containers: [labelContainer, inputContainer], labels: [tasks.html.selectDayLabel, tasks.html.selectDay, labelDay, labelTask], inputs: [inputDay, inputTask, saveButton]};
         },
-        task: (taskValues) => {
+        task(taskValues){
             const   taskContainer   = `<div id='${taskValues._id}'></div>`,
-                    text            = `<input type='text' value='${taskValues.task}'>`,
+                    day             = `<select class="task-day">
+                                            <option value="Monday">Poniedziałek</option>
+                                            <option value="Tuesday">Wtorek</option>
+                                            <option value="Wednesday">Środa</option>
+                                            <option value="Thursday">Czwartek</option>
+                                            <option value="Friday">Piątek</option>
+                                            <option value="Saturday">Sobota</option>
+                                            <option value="Sunday">Niedziela</option>
+                                        </select>`,
+                    text            = `<input class='task' type='text' value='${taskValues.task}'>`,
                     done            = `<label><input type='checkbox' value='${taskValues.done}'>zrobione!</label>`,
                     deleteButton    = `<button onclick='tasks.delete.task("${taskValues._id}")'>Usuń</button>`,
-                    editButton      = `<button>Edytuj</button>`;
-            return  {taskContainer: taskContainer, values: [deleteButton, editButton, text, done]};
+                    editButton      = `<button onclick='tasks.update.task("${taskValues._id}")'>Edytuj</button>`;
+            return  {taskContainer: taskContainer, values: [deleteButton, editButton, day, text, done]};
         },
     },
 };
