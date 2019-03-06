@@ -12,7 +12,6 @@ const summary = {
             $('#summary-navigation').append(summary.html.panelContainer);
             $('#dates').append(navigation.dates);
             $('#buttons').append(navigation.buttons);
-            
         }, 
         sellingStats: () => {
             $('#summary-results').empty();
@@ -21,13 +20,13 @@ const summary = {
             const labels = summary.html.itemLabels();
             $('#summary-navigation').append(labels.container);
             $('#summary-labels').append(labels.inputs);
-            $('#summary-labels .all-count').on('click', null, '.all-count', summary.update.orderBy);
-            $('#summary-labels .default-count').on('click', null, '.default-count', summary.update.orderBy);
-            $('#summary-labels .gaiwan-count').on('click', null, '.gaiwan-count', summary.update.orderBy);
-            $('#summary-labels .package-count').on('click', null, '.package-count', summary.update.orderBy);
-            $('#summary-labels .bulk-count').on('click', null, '.bulk-count', summary.update.orderBy);
-            $('#summary-labels .bulk-count-count').on('click', null, '.bulk-count-count', summary.update.orderBy);
-            $('#summary-labels .income').on('click', null, '.income', summary.update.orderBy);
+            $('#summary-labels .all-count').        on('click', null, '.all-count', summary.update.orderBy);
+            $('#summary-labels .default-count').    on('click', null, '.default-count', summary.update.orderBy);
+            $('#summary-labels .gaiwan-count').     on('click', null, '.gaiwan-count', summary.update.orderBy);
+            $('#summary-labels .package-count').    on('click', null, '.package-count', summary.update.orderBy);
+            $('#summary-labels .bulk-count').       on('click', null, '.bulk-count', summary.update.orderBy);
+            $('#summary-labels .bulk-count-count'). on('click', null, '.bulk-count-count', summary.update.orderBy);
+            $('#summary-labels .income').           on('click', null, '.income', summary.update.orderBy);
             let firstDay    = $('#day-start').val();
             let lastDay     = $('#day-end').val();
             sendRequest("/summary", {first: firstDay, last: lastDay}, (data) => {
@@ -62,12 +61,13 @@ const summary = {
             let firstDay    = $('#day-start').val();
             let lastDay     = $('#day-end').val();
             sendRequest("/summary/hours", {first: firstDay, last: lastDay}, (data) => {
-                    for(var key in data) {
-                        const html = summary.html.hourContainer(key, data[key]);
-                        $('#summary-hours').append(html.container);
-                        $(`#${key}`).append(html.inputs);
-                        
-                    }
+                for(var i=0; i<data.hour.length; i++) {
+                    const variables = { hour: data.hour[i], quantity: data.count[i], income: data.income[i] };
+                    const html = summary.html.hourContainer(variables);
+                    $('#summary-hours').append(html.container);
+                    $(`#${variables.hour}`).append(html.inputs);
+                    $(`#${variables.hour}`).css('order', variables.hour);
+                }
             });    
         },
     },
@@ -142,18 +142,20 @@ const summary = {
                         incomeLabel     = `<input class='quantity income'   value='Wpływ' readonly>`;
             return {container: container, inputs: [nameLabel, allCount, defaultCount, gaiwanCount, packageCount, bulkCount, bulkCountCount, incomeLabel]};
         },
-        hourContainer: (hour, quantity) => {
-            const   hourContainer = `<div id='${hour}' class='stats-item'></div>`,
-                    hourInput = `<input type='text' value='${hour}:00' readonly>`,
-                    quantityInput = `<input type='text' value ='${quantity}' readonly>`;
-            return {container: hourContainer, inputs: [hourInput, quantityInput]};
+        hourContainer: (values) => {
+            const   hourContainer = `<div id='${values.hour}' class='stats-item'></div>`,
+                    hourInput = `<input type='text' value='${values.hour}:00' readonly>`,
+                    incomeInput = `<input type='text' value='${values.income}' readonly>`,
+                    quantityInput = `<input type='text' value ='${values.quantity}' readonly>`;
+            return {container: hourContainer, inputs: [hourInput, quantityInput, incomeInput]};
         },
         hourLabels: () => {
             const   container = `<div id='summary-labels'></div>`,
                     hourLabel = `<input type='text' value='Godzina' readonly>`,
+                    incomeLabel = `<input type='text' value='Wpływ' readonly>`,
                     quantityLabel = `<input type='text' value ='Ilość zamówień' readonly>`;
                     
-            return {container: container, inputs: [hourLabel, quantityLabel]};
+            return {container: container, inputs: [hourLabel, quantityLabel, incomeLabel]};
         },
     },
 };

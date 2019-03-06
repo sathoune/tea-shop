@@ -24,7 +24,7 @@ mongoose.connect(dbURL, {useNewUrlParser: true}, (err) => {
 });
 
 app.use(require("express-session")({
-    secret: process.env.SECRET,
+    secret: "This is some secret password-storing",
     resave: false,
     saveUninitialized: false
 }));
@@ -44,6 +44,7 @@ const   indexRoutes         = require("./routes/index"),
         itemRoutes          = require("./routes/items"),
         menuRoutes          = require("./routes/menu"),
         summaryRoutes       = require("./routes/summary"),
+        tasksRoutes         = require("./routes/tasks"),
         archiveRoutes       = require("./routes/archive");
 
 app.use("/order",   orderRoutes);
@@ -51,6 +52,7 @@ app.use("/item",    itemRoutes);
 app.use("/menu",    menuRoutes);
 app.use("/archive", archiveRoutes);
 app.use("/summary", summaryRoutes);
+app.use("/task",    tasksRoutes);
 app.use("/",        indexRoutes);
 
 

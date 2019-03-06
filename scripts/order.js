@@ -1,46 +1,38 @@
 /* global $ */
 /* global sendRequest */
 /* global item */
-
 const order = {
     create: {
         empty: () => {
             sendRequest('/order/new', {}, 
             (emptyOrder) => {order.create.container(emptyOrder._id); });
         },
-                
         container: (orderId, itemsQuantity=4) => {
             const div = `<div id=${orderId} class='order'></div>`;     
             $("#order-display").prepend(div);
-            
             order.create.topPanel(orderId);
             order.create.labelsContainer(orderId); 
             order.create.bottomPanel(orderId);
             order.create.itemContainer(orderId, itemsQuantity);
-            
             $(`#${orderId}.order`).css("order", 0);
             window.location.href = `#${orderId}`;
         },
-        
         topPanel: (orderId) => {
             const   topPanelDiv = `<div class="top-panel"></div>`;
             $(`#${orderId}.order`).append(topPanelDiv);
             $(`#${orderId}.order .top-panel`).append(order.html.topPanel(orderId));
         },
-        
         labelsContainer: (orderId) => {
             const labelsDiv = `<div class="labels"></div>`;
             $(`#${orderId}.order`).append(labelsDiv);
             $(`#${orderId}.order .labels`).append(order.html.labels(orderId));
         },
-        
         bottomPanel: (orderId) => {
             const   bottomPanelContainer = `<div class="bottom-panel"></div>`;
             $(`#${orderId}.order`).append(bottomPanelContainer);
             $(`#${orderId}.order .bottom-panel`).append(order.html.bottomPanel(orderId));
         },
-        
-       itemContainer: (orderId, itemsQuantity) => {
+        itemContainer: (orderId, itemsQuantity) => {
             const orderPanelDiv = `<div class='item-container'></div>`;
             $(`#${orderId}.order`).append(orderPanelDiv);
             for(var i=0; i<itemsQuantity; i++){ item.create.inside(orderId); }
@@ -71,20 +63,16 @@ const order = {
             //createOrderContainer(orderId, itemIds.length);
             //dis is like create order container
             
-            const div = `<div id=${orderId} class='order'></div>`;     
-            
-            $("#order-display").append(div);
+            const orderContainer = `<div id=${orderId} class='order'></div>`;     
+            $("#order-display").append(orderContainer);
             order.create.topPanel(orderId);
             order.create.labelsContainer(orderId); 
             order.create.bottomPanel(orderId);
             order.create.itemContainer(orderId);
-            itemIds.forEach( itemId => {
-                item.read.restore(orderId, itemId); 
-            });
-        
+            itemIds.forEach( itemId => { item.read.restore(orderId, itemId); });
         },
-
     },
+    
     update: {
         close: (orderID) =>{
             sendRequest('/order/close', {_id: orderID}, (data) => { $(`#${data}.order`).remove(); });
@@ -161,13 +149,11 @@ const order = {
                 $(`#${orderId}.order .collapse-order`).toggleClass('cosmic-fusion-down');
             }
         }
-
     },
     
     html:  {
         topPanel: (orderId) => {
             const icons = {
-    
                 angleUp: `<i class="fas fa-angle-up"></i>`,
                 pencil: `<i class="fas fa-pencil-alt"></i>`,
             };
