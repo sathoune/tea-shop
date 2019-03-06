@@ -28,7 +28,7 @@ router.post("/language", middleware.isLoggedIn, (req, res) => {
     var obj = JSON.parse(fs.readFileSync('settings.json', 'utf8'));
     Localization.findOne({language: obj.language}, (err, foundLocalization) => {
         if(err){ console.error(err); }
-        else{ res.send(foundLocalization.data); }
+        else{ res.send(foundLocalization); }
     });
 });
 

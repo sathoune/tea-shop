@@ -22,6 +22,8 @@ const header = {
         $('body').prepend(header.html.version, header.html.language, header.html.containers.main);
         $('#header').append( header.html.containers.messages, header.html.containers.buttons);
         $('#header-buttons').append(header.html.createButtons());
+        
+        $(`#language`).val(language);
         $("#show-menu").on("click", menu.create.open);
         $("#show-archive").on("click", archive.create.open);
         $("#show-tasks").on("click", tasks.create.open);

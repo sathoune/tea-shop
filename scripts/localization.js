@@ -1,14 +1,14 @@
 /* global $ */
 
 var strings = {};
-
+var language = "";
 var promiseLanguage = new Promise(resolve => {
     sendRequest("/language", {}, data => {
-        strings = data;
+        strings = data.data;
+        language = data.language;
        resolve(); 
     });
 });
-
 
 function changeLanguage(event){
     const newLanguage = (this.value);
