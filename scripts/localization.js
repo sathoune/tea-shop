@@ -9,6 +9,14 @@ var promiseLanguage = new Promise(resolve => {
     });
 });
 
+
+function changeLanguage(event){
+    const newLanguage = (this.value);
+    sendRequest("/language/change", {language: newLanguage}, data => {
+        window.location.reload();
+    });
+}
+
 function sendRequest(url, newData, callback){
     $.ajax(
     {

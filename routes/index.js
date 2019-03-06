@@ -32,6 +32,21 @@ router.post("/language", middleware.isLoggedIn, (req, res) => {
     });
 });
 
+router.post("/language/change", middleware.isLoggedIn, (req, res) => {
+    var settings = JSON.parse(fs.readFileSync('settings.json', 'utf8'));
+    settings.language = req.body.language;
+    fs.writeFile("settings.json", JSON.stringify(settings), err => {
+        if(err){
+            console.log(err);
+            return;
+        }
+        res.send("language changed");
+    });
+    
+
+});
+
+
 router.get("/:x", middleware.isLoggedIn, (req, res) => { res.redirect("/"); });
 
 module.exports = router;

@@ -5,7 +5,7 @@
 /* global strings */
 
 promiseLanguage.then( () => {
-    $(document).ready(function(){
+    $(document).ready(() => {
         eventListeners.itemInputs();
         header.create();
         eventListeners.orderInputs();
@@ -16,14 +16,16 @@ promiseLanguage.then( () => {
     });
 });
 
+
 const header = {
     create(){
-        $('body').prepend(header.version, header.html.containers.main);
+        $('body').prepend(header.html.version, header.html.language, header.html.containers.main);
         $('#header').append( header.html.containers.messages, header.html.containers.buttons);
         $('#header-buttons').append(header.html.createButtons());
         $("#show-menu").on("click", menu.create.open);
         $("#show-archive").on("click", archive.create.open);
         $("#show-tasks").on("click", tasks.create.open);
+        $("#language").on("change", changeLanguage);
     },
     manageMainContainers: {
         hideAll: () => {
@@ -38,6 +40,11 @@ const header = {
     
     html: {
         version: "<label id='version'>v.3 Chun-Mee</label>",
+        language:   `<select id='language'>
+                        <option value="english">english</option>
+                        <option value="polish">polish</option>
+                        <option value="czech">czech</option>
+                    </select>`,
         containers: {
             main: "<div id='header'></div>", 
             buttons: `<div id='header-buttons'></div>`,
