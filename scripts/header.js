@@ -9,13 +9,8 @@ $(document).ready(function(){
     createNavigation();
     order.read.findOpen();
     tasks.create.taskReminder();
-    //var t = setInterval(annoy, 8000);
-    
-});
 
-function annoy(){
-    alert("click me");
-}
+});
 
 const header = {
     create(){

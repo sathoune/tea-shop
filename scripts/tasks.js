@@ -36,18 +36,22 @@ const tasks = {
         },
         taskReminder(){
             $(`#messages`).append(tasks.html.messageContainer);
-            $(`#task-message`).append("6665");
-            var taskTimer = setInterval(tasks.update.messages, 1000);
+            var looperino = true
+            if(looperino){
+                var taskTimer = setInterval(tasks.update.messages, 5000);
+            } else {
+                tasks.update.messages();    
+            }
+            
         },
-        message(tasks){
-            if(tasks){
+        message(todos){
+            if(todos){
                 const message = "<p>Pozostałe zadania na dziś:</p>";
                 var taskNames = "";
-                tasks.forEach(task => taskNames += `<li>${task.task}</li>`);
-                $(`#task-message`).append(`${message} <ul>${taskNames}</ul`);
+                todos.forEach(todo => taskNames += `<li>${todo.task}</li>`);
+                $(`#task-message`).append(`${message} <ul>${taskNames}</ul> ${tasks.html.messageButton}`);
             }
-        }
-
+        },
     },
     read: {
         today(){
@@ -105,12 +109,16 @@ const tasks = {
             sendRequest('/task/delete', {_id: taskId}, (data) => {
                $(`#${taskId}`).remove(); 
             });
+        },
+        message(){
+            $('#task-message').html("");
         }
         
     },
         
     html: {
         messageContainer: `<div id="task-message"></div>`,
+        messageButton: `<button onclick='tasks.delete.message()'>Usuń wiadomość</button>`,
         selectDayLabel: `<input value="Zadania na:" readonly>`,
         selectDay: `<select id="day-of-the-week">
                         <option value="Monday">Poniedziałek</option>
