@@ -4,9 +4,14 @@ var strings = {};
 var language = "";
 var promiseLanguage = new Promise(resolve => {
     sendRequest("/language", {}, data => {
-        strings = data.data;
-        language = data.language;
-       resolve(); 
+        if(data){
+            strings = data.data;
+            language = data.language;
+            resolve();            
+        } else {
+            window.location.reload();
+        }
+ 
     });
 });
 
