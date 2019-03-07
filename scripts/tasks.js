@@ -119,7 +119,7 @@ const tasks = {
                         <option value="Friday">Piątek</option>
                         <option value="Saturday">Sobota</option>
                         <option value="Sunday">Niedziela</option>
-                    </select>`,
+                    </select><br>`,
                     
         containers(){
             const ids = {
@@ -148,9 +148,9 @@ const tasks = {
                                         </select>`,
                     inputTask       =   `<input type='text'>`,
                     saveButton      =   `<button onclick='tasks.create.new()'>Dodaj</button>`;
-            return {containers: [labelContainer, inputContainer], 
-            labels: [tasks.html.selectDayLabel, tasks.html.selectDay, labelDay, labelTask], 
-            inputs: [inputDay, inputTask, saveButton]};
+            return {containers: [inputContainer, labelContainer], 
+            labels: [labelDay, labelTask], 
+            inputs: [tasks.html.selectDayLabel, tasks.html.selectDay, inputDay, inputTask, saveButton]};
         },
         task(taskValues){
             let checked = "";

@@ -277,3 +277,16 @@ input, select {
   display: flex;
 }
 /*# sourceMappingURL=styles.css.map */
+
+#tasks-message{
+  font-size: 0.7em;
+  background: rgba(0,255,0,0.2);
+}
+#tasks-message button {
+  color: black;
+  background: rgba(255,0,0,0.2);
+}
+
+#tasks button{
+  color: black;
+}
