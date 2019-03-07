@@ -25,29 +25,52 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
 });
 
 router.post("/language", middleware.isLoggedIn, (req, res) => {
-    var obj = JSON.parse(fs.readFileSync('settings.json', 'utf8'));
-    Localization.findOne({language: obj.language}, (err, foundLocalization) => {
+    var settings = JSON.parse(fs.readFileSync('settings.json', 'utf8'));
+    Localization.findOne({language: settings.language}, (err, foundLocalization) => {
         if(err){ console.error(err); }
-        else{ res.send(foundLocalization); }
+        else{
+            if(foundLocalization){ res.send(foundLocalization); }
+            else { 
+                let promiseToChangeLanguage = setLanguage("defaultLanguage");
+                promiseToChangeLanguage.then( (resolve, reject) => {   
+                    Localization.findOne({language: settings.language}, (err, foundLocalization) => {
+                        if(err){ console.error("Error at db search at /language" + err); }
+                        else { res.send(foundLocalization); }
+                    });
+                });
+            }
+        }
     });
 });
 
 router.post("/language/change", middleware.isLoggedIn, (req, res) => {
-    var settings = JSON.parse(fs.readFileSync('settings.json', 'utf8'));
-    settings.language = req.body.language;
-    fs.writeFile("settings.json", JSON.stringify(settings), err => {
-        if(err){
-            console.log(err);
-            return;
+    Localization.findOne({language: req.body.language}, (err, foundLocalization) => {
+        if(err){ console.error("language db err" + err); }
+        else {
+            if(foundLocalization){
+                let promiseToChangeLanguage = setLanguage(req.body.language);
+                promiseToChangeLanguage.then( (resolve, reject) => { res.send(resolve); });
+            } else {
+                let promiseToChangeLanguage = setLanguage("defaultLanguage");
+                promiseToChangeLanguage.then( (resolve, reject) => { res.send(resolve);  });
+            }
         }
-        res.send("language changed");
     });
-    
-
 });
 
-
 router.get("/:x", middleware.isLoggedIn, (req, res) => { res.redirect("/"); });
+
+function setLanguage(language){
+    let promise = new Promise( (resolve, reject) => {
+        let settings = JSON.parse(fs.readFileSync('settings.json', 'utf8'));
+        settings.language = language;
+        fs.writeFile("settings.json", JSON.stringify(settings), err => {
+            if(err){ console.log(reject("error hile writing file")); }
+            else { resolve("language changed"); }
+        });
+    });
+    return promise;
+}
 
 module.exports = router;
 
