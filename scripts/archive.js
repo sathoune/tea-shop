@@ -5,7 +5,7 @@
 
 const archive = {
     create: {
-        open: () => {
+        open(){
             header.manageMainContainers.hideAll();
             $("#show-archive").html(`<i class="fas fa-chevron-left"></i> Wróć do zamówień <i class="fas fa-chevron-left"></i>`);
             $("#show-archive").off("click").on("click", archive.delete.close);
@@ -23,7 +23,7 @@ const archive = {
                 archive.update.daySums(sum, discountedSum);
             });
         },
-        containers: () => {
+        containers(){
             const mainContainers = archive.html.containers();
             $('body').append(mainContainers.archiveContainer);
             $('#archive').append([mainContainers.archivePanel, mainContainers.archivedOrdersContainer]);
@@ -34,12 +34,12 @@ const archive = {
             $(`#expand-all-button`).on("click", archive.manage.expandAllOrders);
             $('#day-for-display').on('change' , archive.update.day);
         },
-        orderContainer: (orderData) => {
+        orderContainer(orderData){
             const orderDiv = `<div id='${orderData._id}' class='archived-order flex-column'></div>`;
             $('#archived-orders').append(orderDiv);
             archive.create.orderDisplay(orderData);
         },
-        orderDisplay: (orderData) => {
+        orderDisplay(orderData){
             const orderHTML = archive.html.order(orderData);
             $('#'+orderData._id).append(orderHTML.container);
             $(`#${orderData._id} .div-summary`).append(orderHTML.inputs);
@@ -53,7 +53,7 @@ const archive = {
     },
     
     update: {
-        day: () => {
+        day(){
             $('#archived-orders').empty();
                 let dayForDisplay = $('#day-for-display').val();
                 sendRequest('/archive', {date: dayForDisplay}, 
@@ -74,20 +74,20 @@ const archive = {
                     }
                 });
         },
-        reopenOrder: (orderId) => {
+        reopenOrder(orderId){
             sendRequest('/archive/reopen', {_id: orderId}, (data) => { 
                 $(`#${orderId}.archived-order`).remove(); 
                 order.read.restore(data.order, data.tableProperties);
             });
         },
-        daySums: (sum, discountedSum) => {
+        daySums(sum, discountedSum){
             $('#archive-panel #day-sum').val(Number(sum).toFixed(2));
             $('#archive-panel #discounted-day-sum').val(Number(discountedSum).toFixed(2));
         },
     },
     
     delete: {
-        close: () => {
+        close(){
             if($('#summary')){ $('#summary').remove() }
             $('#record-view').show();
             $("#show-archive").html(`<i class="fas fa-archive"></i> Archiwum <i class="fas fa-archive"></i>`);
@@ -137,7 +137,7 @@ const archive = {
     },
     
     html:  {
-        containers: () => {
+        containers(){
             const ids = {
                 archiveContainer:          'archive',
                 archivePanel:              'archive-panel',
@@ -149,7 +149,7 @@ const archive = {
             return {archiveContainer: archiveContainer, archivedOrdersContainer: archivedOrdersContainer, archivePanel: archivePanel};
         },
         
-        panelControls: () => {
+        panelControls(){
             const   expandIcon = `<i class="fas fa-search-plus"></i>`;
             const   classes = {
                 dateLabel: 'date-label',  
@@ -177,7 +177,7 @@ const archive = {
         
         },
         
-        item: (itemObject) => {
+        item(itemObject){
             const   itemContainer       = `<div id='${itemObject._id}' class='item-div'></div>`,
                     nameInput           = `<input type="text" class="name" value='${itemObject.name}' readonly>`,
                     priceInput          = `<input class="price" type="number" value='${Number(itemObject.price).toFixed(2)}' readonly>`,
@@ -187,7 +187,7 @@ const archive = {
         return {container: itemContainer, inputs: [nameInput, typeInput, quantityInput, priceInput, discountedPriceInput] };
         },
         
-        itemLabels: () => {
+        itemLabels(){
             const   labelContainer = `<div class='item-labels-container flex'></div>`;
             const   nameLabel               = `<input type='text' class='name'      value='${strings.name}' readonly>`,
                     typeLabel               = `<input type='text' class='type'      value='${strings.type}' readonly>`,
@@ -197,7 +197,7 @@ const archive = {
             return {container: labelContainer, labels: [nameLabel, typeLabel, quantityLabel, priceLabel, discoutnedPriceLabel] };
         },
         
-        order: (orderData) => {
+        order(orderData){
             const   date = new Date(orderData.createdAt).getHours()+":"+new Date(orderData.createdAt).getMinutes()+":"+new Date(orderData.createdAt).getSeconds();
             const   summaryContainer      = `<div class='div-summary'></div>`;
             const   sendBackButton  = `<button class='send-back' onclick='archive.update.reopenOrder("${orderData._id}")'><i class="fas fa-long-arrow-alt-left"></i> ${strings.reopen}</button>`,

@@ -4,7 +4,7 @@
 
 const summary = {
     create: {
-        open: () => {
+        open(){
             header.manageMainContainers.hideAll();
             $('body').append(summary.html.mainContainer);
             $('#summary').append([summary.html.navigationContainer, summary.html.resultsContainer]);
@@ -13,7 +13,7 @@ const summary = {
             $('#dates').append(navigation.dates);
             $('#summary-buttons').append(navigation.buttons);
         }, 
-        sellingStats: () => {
+        sellingStats(){
             $('#summary-results').empty();
             $('#summary-results').append(summary.html.itemsContainer);
             if($('#summary-labels')){$('#summary-labels').remove() }
@@ -51,7 +51,7 @@ const summary = {
                 });
             }); 
         },
-        hourStats: () => {
+        hourStats(){
             $('#summary-results').empty();
             $('#summary-results').append(summary.html.hoursContainer);
             if($('#summary-labels')){$('#summary-labels').remove() }
@@ -73,7 +73,7 @@ const summary = {
     },
     
     update: {
-        orderBy: (event) => {
+        orderBy(event){
             const items = $('.stats-item');
             for(var i=0; i<items.length; i++){
                 let value = 100 * Number(($(`#${items[i].id} ${event.data}`).val()));
@@ -83,14 +83,14 @@ const summary = {
     },
     
     delete: {
-        close: () => {
+        close(){
             $('#summary').remove();
             $('#archive').css('display', 'block');
         }    
     },
     
     manage: {
-        getDate: () => {
+        getDate(){
             const now = new Date();
             const date ={
                 year: now.getFullYear(),
@@ -108,7 +108,7 @@ const summary = {
         resultsContainer:       `<div id='summary-results'></div>`,
         itemsContainer:         `<div id='summary-items' class='flex-column'></div>`,
         hoursContainer:         `<div id='summary-hours' class='flex-column'></div>`,
-        navigation: () => {
+        navigation(){
             const   dateStartInput      = `<input id="day-start" type="date" name="trip-start" value='${summary.manage.getDate()}' min="2019-01-01" max="2025-12-31"><br>`,
                     dateEndInput        = `<input id="day-end"   type="date" name="trip-start" value='${summary.manage.getDate()}' min="2019-01-01" max="2025-12-31">`,
                     startLabel          = `<label>Od</label>`,
@@ -118,7 +118,7 @@ const summary = {
                     hoursStatsButton    = `<button onclick='summary.create.hourStats()' class='update-button'>godzinki</button>`; 
             return {dates: [startLabel, dateStartInput,  endLabel, dateEndInput], buttons:[ sellingStatsButton, hoursStatsButton, backButton]};
         },
-        itemContainer: (item) => {
+        itemContainer(item){
             const   container           = `<div id='${item.id}' class='stats-item'</div>`;
             const   nameInput           = `<input class='name'     value='${item.name}' readonly>`,
                     allCount            = `<input class='quantity all-count' value='${item.quantity.all}' readonly>`,
@@ -130,7 +130,7 @@ const summary = {
                     incomeInput         = `<input class='quantity income'   value='${Number(item.income).toFixed(2)}' readonly>`;
             return {container: container, inputs: [nameInput, allCount, defaultCount, gaiwanCount, packageCount, bulkCount, bulkCountCount, incomeInput]};
         },
-        itemLabels: () => {
+        itemLabels(){
             const       container = `<div id='summary-labels'></div>`,
                         nameLabel       = `<input class='name'     value='Nazwa' readonly>`,
                     allCount            = `<input class='quantity all-count' value='Suma' readonly>`,
@@ -142,14 +142,14 @@ const summary = {
                         incomeLabel     = `<input class='quantity income'   value='Wpływ' readonly>`;
             return {container: container, inputs: [nameLabel, allCount, defaultCount, gaiwanCount, packageCount, bulkCount, bulkCountCount, incomeLabel]};
         },
-        hourContainer: (values) => {
+        hourContainer(values){
             const   hourContainer = `<div id='${values.hour}' class='stats-item'></div>`,
                     hourInput = `<input type='text' value='${values.hour}:00' readonly>`,
                     incomeInput = `<input type='text' value='${values.income}' readonly>`,
                     quantityInput = `<input type='text' value ='${values.quantity}' readonly>`;
             return {container: hourContainer, inputs: [hourInput, quantityInput, incomeInput]};
         },
-        hourLabels: () => {
+        hourLabels(){
             const   container = `<div id='summary-labels'></div>`,
                     hourLabel = `<input type='text' value='Godzina' readonly>`,
                     incomeLabel = `<input type='text' value='Wpływ' readonly>`,

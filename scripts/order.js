@@ -5,11 +5,11 @@
 
 const order = {
     create: {
-        empty: () => {
+        empty(){
             sendRequest('/order/new', {}, 
             (emptyOrder) => {order.create.container(emptyOrder._id); });
         },
-        container: (orderId, itemsQuantity=4) => {
+        container(orderId, itemsQuantity=4){
             const div = `<div id='${orderId}' class='order flex-column'></div>`;     
             $("#order-display").prepend(div);
             order.create.topPanel(orderId);
@@ -19,22 +19,22 @@ const order = {
             $(`#${orderId}.order`).css("order", 0);
             window.location.href = `#${orderId}`;
         },
-        topPanel: (orderId) => {
+        topPanel(orderId){
             const   topPanelDiv = `<div class="top-panel flex"></div>`;
             $(`#${orderId}.order`).append(topPanelDiv);
             $(`#${orderId}.order .top-panel`).append(order.html.topPanel(orderId));
         },
-        labelsContainer: (orderId) => {
+        labelsContainer(orderId){
             const labelsDiv = `<div class="order-labels flex"></div>`;
             $(`#${orderId}.order`).append(labelsDiv);
             $(`#${orderId}.order .order-labels`).append(order.html.labels(orderId));
         },
-        bottomPanel: (orderId) => {
+        bottomPanel(orderId){
             const   bottomPanelContainer = `<div class="bottom-panel flex"></div>`;
             $(`#${orderId}.order`).append(bottomPanelContainer);
             $(`#${orderId}.order .bottom-panel`).append(order.html.bottomPanel(orderId));
         },
-        itemContainer: (orderId, itemsQuantity) => {
+        itemContainer(orderId, itemsQuantity){
             const orderPanelDiv = `<div class='item-container'></div>`;
             $(`#${orderId}.order`).append(orderPanelDiv);
             for(var i=0; i<itemsQuantity; i++){ item.create.inside(orderId); }
@@ -42,17 +42,17 @@ const order = {
     },
     
     read: {
-        findOpen: () => {
+        findOpen(){
             sendRequest('/order/old', {}, (data) => { data.orders.forEach((openOrder, i) =>{ order.read.restore(openOrder, data.tableProperties[i]) }); });
         },
-        restore: (orderData, tableParameters) => {
+        restore(orderData, tableParameters){
             const promise = new Promise((resolve, reject) => {
                 order.read.container(orderData._id, orderData.items);  
                 resolve();        
             });
             promise.then( (resolve) => { order.read.values(orderData, tableParameters); });
         },
-        values: (orderData, tableParameters) => {
+        values(orderData, tableParameters){
             $(`#${orderData._id}.order .table`)         .val(orderData.table);
             $(`#${orderData._id}.order .discount`)      .val(orderData.discount);
             $(`#${orderData._id}.order .table`)         .val(orderData.table);
@@ -61,7 +61,7 @@ const order = {
             $(`#${orderData._id}.order`).css('order', tableParameters.order);
             $(`#${orderData._id}.order .table`).css('background-color', tableParameters.color);
         },
-        container: (orderId, itemIds) => {
+        container(orderId, itemIds){
             //createOrderContainer(orderId, itemIds.length);
             //dis is like create order container
             
@@ -76,10 +76,10 @@ const order = {
     },
     
     update: {
-        close: (orderID) =>{
+        close(orderID){
             sendRequest('/order/close', {_id: orderID}, (data) => { $(`#${data}.order`).remove(); });
         },
-        table: function(){
+        table(){
             const orderId = $(this).parent().parent()[0].id;
             const tableValue = $(this).val();
             sendRequest('/order/edit/table', {_id: orderId, table: tableValue}, 
@@ -90,7 +90,7 @@ const order = {
             });
         },
     
-        sum: (orderId) => {
+        sum(orderId){
             sendRequest('/order/edit/sum', { _id: orderId }, 
             (updatedOrder) => {$(`#${orderId}.order .sum`).val(Number(updatedOrder.sum).toFixed(2));});
         },
@@ -100,7 +100,7 @@ const order = {
             (updatedOrder) => {$(`#${orderId}.order .discounted-sum`).val(Number(updatedOrder.discountedSum).toFixed(2));});
         },
     
-        discount: function(){
+        discount(){
             const orderId = $(this).parent().parent()[0].id;
             sendRequest('/order/edit/discount', {_id: orderId, discount: $(this).val()}, 
             (data) => {
@@ -124,19 +124,19 @@ const order = {
 
     },
     
-    delete: (orderId) => {
+    delete(orderId){
         sendRequest('/order/delete', {_id: orderId}, (res) => { $(`#${orderId}.order`).remove(); });
     },
     
     manage: { 
-        checkIfAllInputsUsed: (orderId) => {
+        checkIfAllInputsUsed(orderId){
             var items = $(`#${orderId}.order .item .name`);
             for(var i=0; i< items.length; i++){
                 if($(items[i]).val() == ""){ return false; }
             }
             return true;
         },
-        collapseItems: (orderId) => {
+        collapseItems(orderId){
             $(`#${orderId}.order .item-container`).toggleClass('hidden');
             $(`#${orderId}.order .order-labels`).toggleClass('hidden');
             if($(`#${orderId}.order .item-container`).hasClass('hidden')){
@@ -152,7 +152,7 @@ const order = {
     },
     
     html:  {
-        topPanel: (orderId) => {
+        topPanel(orderId){
             const icons = {
                 angleUp: `<i class="fas fa-angle-up"></i>`,
                 pencil: `<i class="fas fa-pencil-alt"></i>`,
@@ -166,7 +166,7 @@ const order = {
             return [tableInput, collapseButton, discountInput, discountToGoCheckbox, percentLabel, sendButton, ];
         },
         
-        labels: (orderId) => {
+        labels(orderId){
             const plus = `<i class="fas fa-plus"></i>`;
             const   addItemButton           = `<button onclick='item.create.inside("${orderId}")' class='add-item-button'  >${plus}</button>`,
                     labelCode               = `<input type='text' class='register-code'     value='${strings.code}'         readonly>`,
@@ -179,7 +179,7 @@ const order = {
             return [addItemButton, labelCode, labelName, labelType, labelQuantity, labelPrice, labelHint, labelDiscountedPrice, ];
         },
         
-        bottomPanel: (orderId) => {
+        bottomPanel(orderId){
             const   dumpster = `<i class="fas fa-dumpster"></i>`;
             const   deleteButton        = `<button class='delete-button' onclick='order.delete("${orderId}")'>${dumpster} ${strings.deleteOrder} ${dumpster}</button>`,  
                     sumLabel            = `<input type='text'   class='sum-label'               value='${strings.sum}'            readonly>`,

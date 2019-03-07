@@ -4,7 +4,7 @@
 
 const menu = {
     create: {
-        open: () => {
+        open(){
             header.manageMainContainers.hideAll();
             $("#show-menu").html(`<i class="fas fa-chevron-left"></i> Wróć do zamówień <i class="fas fa-chevron-left"></i>`);
             $("#show-menu").off("click").on("click", menu.delete.close);
@@ -13,18 +13,18 @@ const menu = {
             sendRequest("/menu/show/all", {}, 
             (data) => { data.forEach( (item) => { menu.read.item(item); }); });
         },
-        container: () => {
+        container(){
             const templateHTML = menu.html.containers();
             $('body').  append(templateHTML.menu);
             $('#menu'). append(templateHTML.containers);
         },
-        labels: () => { 
+        labels(){ 
             $('#menu-navigation').append(menu.html.labels()); 
         },
-        item: () => { 
+        item(){ 
             sendRequest("/menu/new", {}, (data) => { menu.read.item(data) }); 
         },
-        itemDbObject: (itemId) => {
+        itemDbObject(itemId){
             return {
                 name:           $(`#${itemId}.menu-item .menu-name`).val(),
                 registerCode:   $(`#${itemId}.menu-item .menu-code`).val(),
@@ -38,7 +38,7 @@ const menu = {
         },
     },
     read: {
-        item: (menuValues) => {
+        item(menuValues){
             $('#menu-container').append(menu.html.itemContainer(menuValues._id));
             $(`#${menuValues._id}.menu-item`).append(menu.html.item(menuValues));
             menu.manage.sortByRegisterCode(menuValues);
@@ -46,14 +46,14 @@ const menu = {
     },
     
     update: {
-        item: (itemId) => {
+        item(itemId){
         const newData = menu.create.itemDbObject(itemId);
         sendRequest("/menu/edit", {newData, _id: itemId}, (data) => { console.log("item edited"); });
         }
     },
     
     delete: {
-        close: () => {
+        close(){
             
             $('#record-view').show();
             $('#menu').remove();
@@ -69,7 +69,7 @@ const menu = {
     },
     
     manage: {
-        sortByRegisterCode: (menuValues) => {
+        sortByRegisterCode(menuValues){
         if(Number(menuValues.registerCode))     { $(`#${menuValues._id}.menu-item`).css('order', menuValues.registerCode); } 
         else if(menuValues.registerCode == "")  { $(`#${menuValues._id}.menu-item`).css('order', 0); } 
         else                                    { $(`#${menuValues._id}.menu-item`).css('order', 100); }
@@ -77,7 +77,7 @@ const menu = {
     },
     
     html : {
-        containers: () => {
+        containers(){
             const ids = {
                 menuContainer : "menu",
                 navigationContainer : "menu-navigation",
@@ -89,7 +89,7 @@ const menu = {
             return {menu: menu, containers: [navigationContainer, menuContainer]};
         },
         
-        labels : () => {
+        labels(){
             const classes = {
                     codeInput:  'menu-code',
                     nameInput:  'menu-name',
@@ -107,9 +107,9 @@ const menu = {
                                 createNewButton];    
         },
         
-        itemContainer: (itemId) => { return `<div id='${itemId}' class='menu-item'></div>`; },
+        itemContainer(itemId){ return `<div id='${itemId}' class='menu-item'></div>`; },
         
-        item: (menuValues) => {
+        item(menuValues){
             const classes = {
                 codeInput:      'menu-code',
                 nameInput:      'menu-name',
