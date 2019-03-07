@@ -24,7 +24,7 @@ mongoose.connect(dbURL, {useNewUrlParser: true}, (err) => {
 });
 
 app.use(require("express-session")({
-    secret: process.env.SECRET || "666",
+    secret: process.env.SECRET,
     resave: false,
     saveUninitialized: false
 }));

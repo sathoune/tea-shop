@@ -10,7 +10,7 @@ const item = {
                 item.create.container(orderId, emptyItem._id);});
         },
         container: (orderId, itemId) => {
-            const container = `<div id=${itemId} class='item'></div>`;     
+            const container = `<div id=${itemId} class='item flex'></div>`;     
             $(`#${orderId}.order .item-container`).append(container);  
             $(`#${itemId}.item`).append(item.html.inputs(itemId));
         },
@@ -25,12 +25,12 @@ const item = {
                 item.read.setValues(data.item);
                 if(data.err){ $(`#${itemId}.item .name`).css('background-color', 'red'); } 
                 else { 
-                    if(order.manage.checkIfAllInputsUsed(orderId)){ item.create.inside(orderId); };
+                    if(order.manage.checkIfAllInputsUsed(orderId)){ item.create.inside(orderId); }
                     $(`#${itemId}.item .name`).css('background-color', 'silver'); 
                 }
                 order.update.sum(orderId);
                 order.update.discountedSum(orderId);
-                
+                $(`#${itemId}.item`).next().children(".name").focus();
             });
         },
         type: function(){

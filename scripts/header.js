@@ -48,8 +48,8 @@ const header = {
                         <option value="czech">czech</option>
                     </select>`,
         containers: {
-            main: "<div id='header'></div>", 
-            buttons: `<div id='header-buttons'></div>`,
+            main: "<div id='header' class='flex'></div>", 
+            buttons: `<div id='header-buttons' class='flex-column'></div>`,
             messages: `<div id='messages'></div>`,
         },
         createButtons(){
@@ -88,7 +88,7 @@ const eventListeners = {
 function createNavigation(){
     const   topPanel = "<div id='top-panel'></div>",
             createOrder = `<button id='create-order' onclick='order.create.empty()'><i class="fas fa-folder-plus"></i> ${strings.newOrder}</button>`,
-            orderDiv = "<div id='order-display'></div>";
+            orderDiv = "<div id='order-display' class='flex-column'></div>";
     $('#record-view').append([topPanel, orderDiv]);
     $('#top-panel').append(createOrder);
 }

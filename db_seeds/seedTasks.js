@@ -69,7 +69,6 @@ for(var key in tasks){
             else{
                 console.log('task created');
                 newTask.save();
-                
             }
         });
     });

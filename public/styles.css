@@ -1,7 +1,13 @@
+.flex {
+  display: flex; }
+
+.flex-column {
+  display: flex;
+  flex-direction: column; }
+
 body {
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
   align-items: center;
   font-family: "Ubuntu", sans-serif;
   font-size: 1.3em;
@@ -19,12 +25,8 @@ button, input, select {
   background: #360a1b; }
 
 #header {
-  display: flex;
   justify-content: flex-end;
   width: 100%; }
-
-.top-panel {
-  display: flex; }
 
 .discount-label {
   width: 4em;
@@ -35,18 +37,21 @@ button, input, select {
   width: 3em;
   text-align: right; }
 
-.bottom-panel {
-  display: flex;
-  order: 4; }
+.top-panel {
+  order: 0; }
 
-.labels {
-  display: flex;
-  justify-content: flex-end; }
+.order-labels {
+  order: 1; }
+
+.item-container {
+  order: 2;
+  margin-left: auto; }
+
+.bottom-panel {
+  order: 3; }
 
 .order {
-  margin: 1% 0% 1% 0%;
-  display: flex;
-  flex-direction: column; }
+  margin: 1% 0% 1% 0%; }
 
 .register-code {
   width: 2em;
@@ -60,7 +65,7 @@ button, input, select {
   width: 3em; }
 
 .name {
-  width: 15em; }
+  width: 14em; }
 
 .table {
   width: 7em;
@@ -73,6 +78,7 @@ button, input, select {
   text-align: right; }
 
 .add-item-button {
+  margin-left: auto;
   background: #00416A; }
 
 #create-order {
@@ -98,20 +104,11 @@ button {
   border-color: #EB5757;
   background-color: #fb8eff; }
 
-#order-display {
-  display: flex;
-  flex-direction: column; }
-
 .hidden {
   display: none; }
 
 .collapse-order {
-  width: 11em; }
-
-.cosmic-fusion-up {
-  background: #ff00cc; }
-
-.cosmic-fusion-down {
+  width: 11em;
   background: #ff00cc; }
 
 .order-table, .order-sum {
@@ -125,26 +122,19 @@ button {
   border-width: 2px;
   border-style: inset; }
 
-#archived-orders {
-  display: flex;
-  flex-direction: column; }
-
 .archived-order {
-  display: flex;
-  flex-direction: column;
   justify-content: space-between; }
 
 .expand-button {
-  width: 6em;
-  padding: 1px 8px;
+  padding: 1px 4px;
   background: #215f00; }
 
 .send-back {
   background: #00416A;
-  padding: 1px 8px; }
+  padding: 1px 4px; }
 
 #menu {
-  font-family: 'Ubuntu', sans-serif;
+  font-family: "Ubuntu", sans-serif;
   font-size: 1em; }
 
 .menu-code {
@@ -154,7 +144,6 @@ button {
   width: 6em; }
 
 #menu-navigation {
-  display: flex;
   justify-content: flex-end; }
 
 .update-button {
@@ -181,10 +170,6 @@ input, select {
 .discount {
   width: 3em; }
 
-#archive-panel {
-  display: flex;
-  flex-direction: column; }
-
 .day-sum, .date-label {
   width: 5em; }
 
@@ -192,25 +177,14 @@ input, select {
   margin-left: auto;
   background-color: #ff9900; }
 
-.thingies {
-  display: flex;
+.day {
   margin-left: auto; }
-
-#version {
-  margin: 0 auto auto 0;
-  font-size: 0.5em;
-  color: gray; }
 
 .order-date {
   width: 4em; }
 
 #archived-orders-labels {
-  display: flex;
   margin-left: auto; }
-
-#menu-container {
-  display: flex;
-  flex-direction: column; }
 
 #top-panel {
   position: fixed;
@@ -220,73 +194,43 @@ input, select {
   width: 100%;
   height: 23px; }
 
-.item-container {
-  margin-left: auto; }
-
-.item {
-  display: flex; }
-
 .top-panel .button {
   height: 2em; }
 
-#version{
+#version {
   position: fixed;
   top: 0;
   z-index: 999;
   width: 100%;
   height: 1em;
   color: red;
-  text-align: right; }
+  text-align: right;
+  margin: 0 auto auto 0;
+  font-size: 0.5em; }
 
-#language{
+#language {
   position: fixed;
   bottom: 0;
   left: 0;
   z-index: 999;
   width: 5em;
   color: black;
-  background: gray;
+  background: gray; }
 
-}
-  
-.item-labels-container {
-  display: flex; 
-  
-}
 .item-labels-container .name {
-  margin-left: auto; 
-  
-}
+  margin-left: auto; }
 
-#summary-items{
-    display: flex;
-    flex-direction: column-reverse;
-}
-
-#summary-hours{
-  display: flex;
-  flex-direction: column;
-}
-
-
-#summary-panel {
-  display: flex;
-}
-
-#buttons {
-  display: flex;
-}
-/*# sourceMappingURL=styles.css.map */
-
-#tasks-message{
+#tasks-message {
   font-size: 0.7em;
-  background: rgba(0,255,0,0.2);
-}
+  background: rgba(0, 255, 0, 0.2); }
+
 #tasks-message button {
   color: black;
-  background: rgba(255,0,0,0.2);
-}
+  background: rgba(255, 0, 0, 0.2); }
 
-#tasks button{
-  color: black;
-}
+#tasks button {
+  color: black; }
+
+/*# sourceMappingURL=styles.css.map */
+
+/*# sourceMappingURL=styles.css.map */

@@ -30,12 +30,12 @@ const archive = {
             const panelHTML = archive.html.panelControls();
             $('#archive-panel').append([panelHTML.panel.container, panelHTML.labels.container]);
             $(`#archived-orders-labels`).append(panelHTML.labels.labels);
-            $(`#thingies`).append(panelHTML.panel.inputs);
+            $(`#day`).append(panelHTML.panel.inputs);
             $(`#expand-all-button`).on("click", archive.manage.expandAllOrders);
             $('#day-for-display').on('change' , archive.update.day);
         },
         orderContainer: (orderData) => {
-            const orderDiv = `<div id='${orderData._id}' class='archived-order'></div>`;
+            const orderDiv = `<div id='${orderData._id}' class='archived-order flex-column'></div>`;
             $('#archived-orders').append(orderDiv);
             archive.create.orderDisplay(orderData);
         },
@@ -144,8 +144,8 @@ const archive = {
                 archivedOrdersContainer:   'archived-orders',
             };
             const   archiveContainer            = `<div id='${ids.archiveContainer}' class='main-container'></div`,
-                    archivedOrdersContainer     = `<div id='${ids.archivedOrdersContainer}'></div>`,
-                    archivePanel                = `<div id='${ids.archivePanel}'></div>`;
+                    archivedOrdersContainer     = `<div id='${ids.archivedOrdersContainer}' class='flex-column'></div>`,
+                    archivePanel                = `<div id='${ids.archivePanel}' class='flex-column'></div>`;
             return {archiveContainer: archiveContainer, archivedOrdersContainer: archivedOrdersContainer, archivePanel: archivePanel};
         },
         
@@ -167,8 +167,8 @@ const archive = {
                     dateLabel           = `<input type='text' class='${classes.dateLabel}' value='${strings.date}' readonly>`,
                     daySumLabel         = `<input type='text' class='${classes.dateLabel}' value='${strings.total}' readonly>`,
                     discountedDaySumLabel = `<input type='text' class='${classes.dateLabel}' value='${strings.discounted}' readonly>`;
-            const   labelsContainer     = `<div id='archived-orders-labels' readonly></div>`;
-            const   dayContainer = `<div id='thingies' class='thingies'></div>`;
+            const   labelsContainer     = `<div id='archived-orders-labels' class='flex' readonly></div>`;
+            const   dayContainer = `<div id='day' class='day flex'></div>`;
             return {
                 labels: {container: labelsContainer, labels: [advancedButton, hourLabel, tableLabel, sumLabel, discountedSumLabel, expandAllButton]},
                 panel: {container: dayContainer, inputs: [dateLabel, dateInput, daySumLabel, sumInput, discountedDaySumLabel, discountedSumInput]},
@@ -188,7 +188,7 @@ const archive = {
         },
         
         itemLabels: () => {
-            const   labelContainer = `<div class='item-labels-container'></div>`;
+            const   labelContainer = `<div class='item-labels-container flex'></div>`;
             const   nameLabel               = `<input type='text' class='name'      value='${strings.name}' readonly>`,
                     typeLabel               = `<input type='text' class='type'      value='${strings.type}' readonly>`,
                     quantityLabel           = `<input type='text' class='quantity'  value='${strings.quantity}' readonly>`,                  

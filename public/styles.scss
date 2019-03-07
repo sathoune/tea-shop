@@ -5,317 +5,248 @@ $create-color: #00416A;
 $prize-input-width: 4em;
 $name-input-width: 15em;
 
-body {
+.flex {
+    display:flex;
+}
+.flex-column {
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
-    align-items: center;
-    font-family: $font-main;
-    font-size: 1.3em;
-    background: url("/teaplant.jpeg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
 }
+
+body {
+  display: flex;
+  flex-direction: column;
+  
+  align-items: center;
+  font-family: $font-main;
+  font-size: 1.3em;
+  
+  background: url("/teaplant.jpeg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed; }
 
 button, input, select {
-    font-family: $font-main;
-    font-size: $normal-font;
-}
+  font-family: $font-main;
+  font-size: $normal-font; }
 
 .navigation-button {
-    margin: 1% 1% 1% 1%;
-    background: #360a1b;
-
-}
+  margin: 1% 1% 1% 1%;
+  background: #360a1b; }
 
 #header {
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-}
+  justify-content: flex-end;
+  width: 100%; }
 
-.top-panel{
-    display: flex;
-}
-
-.discount-label{
-    width: $prize-input-width;
-    text-align: right;
-}
-
+.discount-label {
+  width: 4em;
+  text-align: right; }
 
 .sum-label {
-    margin-left: auto;
-    width: 3em;
-    text-align: right;
-}
+  margin-left: auto;
+  width: 3em;
+  text-align: right; }
 
-.bottom-panel {
-    display: flex;
-    order: 4;
-}
+.top-panel{
+  order: 0; }
 
 
-.labels{
-    display: flex;
-    justify-content: flex-end;
-}
-
-.order {
-    margin: 1% 0% 1% 0%;
-    display: flex;
-    flex-direction: column;
-}
-
-.register-code{
-    width: 2em;
-    text-align: center;
-    background-color: $pinky-color;
-}
-
-.sum, .discounted-sum, .price, .discounted-price {
-    width: $prize-input-width;
-}
-
-.quantity {
-    width: 3em;
-}
-
-.name {
-    width: $name-input-width;
-}
-.table{
-    width: 7em;
-    margin-left: auto;
-} 
-
-.hint, .discounted-sum-label {
-    width: 7em;
-}
-
-.discounted-sum-label {
-    text-align: right;
-}
-
-.add-item-button {
-    background: $create-color;  
-}
-
-#create-order{ 
-    background: $create-color;
-    height: 3em;
-    width: 12%;
-}
-
-.delete-button {
-    background: silver;
-    padding: 1px 8px;
-    margin-right: auto;
-    color: black;
-}
-
-.send-button {
-    background: #24ba4e;  
-}
-
-
-button {
-    outline: none;
-    padding: 3px 8px 3px 8px;
-    color: white;
-}
-
-.sum, .discounted-sum {
-    border-color: #EB5757;
-    background-color: $pinky-color ;
-
-}
-
-#order-display {
-    display: flex;
-    flex-direction: column;
-}
-
-.hidden {
-    display: none;
-}
-.collapse-order {
-    width: 11em;
-    
-}
-
-.cosmic-fusion-up {
-    background: #ff00cc;  
-}
-
-.cosmic-fusion-down {
-    background: #ff00cc;  
-}
-
-.order-table, .order-sum {
-    width: 5em;
-}
-
-.type {
-    width: 5em;
-    background-color: silver;
-    box-sizing: border-box;
-    padding: 1px 0px;
-    border-width: 2px;
-    border-style: inset;
-}
-
-#archived-orders {
-    display: flex;
-    flex-direction: column;
-
-}
-
-.archived-order {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.expand-button {
-    width: 6em;
-    padding: 1px 8px;
-    background: #215f00;  
-}
-
-.send-back {    
-    background: #00416A; 
-    padding: 1px 8px;
-    
-}#menu {
-    font-family: 'Ubuntu', sans-serif;
-    font-size: 1em;
-}
-
-.menu-code {
-    width: 2em;
-}
-
-.menu-price {
-    width: 6em;
-}
-
-#menu-navigation {
-    display: flex;
-    justify-content: flex-end;
-    
-}
-
-.update-button {
-    background: #00416A;
-    padding: 1px 8px;
-    width: 6em;
-}
-
-.new-order-button {
-    background: #215f00;
-    width: 6em;
-}
-
-input, select{
-    background: silver;
-}
-
-.percent {
-    width: 1em;
-}
-
-.to-go-button {
-    background-color: silver;
-    padding: 1px 0px;
-    border-width: 2px;
-    border-style: inset;
-}
-
-.discount {
-    width: 3em;
-}
-
-#archive-panel {
-    display: flex;
-    flex-direction: column;
-}
-
-.day-sum, .date-label {
-    width: 5em;
-}
-
-#expand-all-button {
-    margin-left: auto;
-    background-color: #ff9900;
-}
-
-.thingies {
-    display: flex;
-    margin-left: auto;
-}
-
-#version {
-    margin: 0 auto auto 0;
-    font-size: 0.5em;
-    color: gray;
-}
-
-.order-date {
-    width: 4em;
-}
-
-#archived-orders-labels {
-    display: flex;
-    margin-left: auto;
-    
-}
-
-#menu-container {
-    display: flex;
-    flex-direction: column;
-}
-
-#top-panel {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 999;
-    width: 100%;
-    height: 23px;
-}
+.order-labels {
+  order: 1; }
 
 .item-container {
-    margin-left: auto;
+  order: 2;
+  margin-left: auto; }
+
+.bottom-panel {
+  order: 3; }
+
+.order {
+  margin: 1% 0% 1% 0%;}
+
+.register-code {
+  width: 2em;
+  text-align: center;
+  background-color: #fb8eff; }
+
+.sum, .discounted-sum, .price, .discounted-price {
+  width: 4em; }
+
+.quantity {
+  width: 3em; }
+
+.name {
+  width: 14em; }
+
+.table {
+  width: 7em;
+  margin-left: auto; }
+
+.hint, .discounted-sum-label {
+  width: 7em; }
+
+.discounted-sum-label {
+  text-align: right; }
+
+.add-item-button {
+  margin-left: auto;
+  background: #00416A; }
+
+#create-order {
+  background: #00416A;
+  height: 3em;
+  width: 12%; }
+
+.delete-button {
+  background: silver;
+  padding: 1px 8px;
+  margin-right: auto;
+  color: black; }
+
+.send-button {
+  background: #24ba4e; }
+
+button {
+  outline: none;
+  padding: 3px 8px 3px 8px;
+  color: white; }
+
+.sum, .discounted-sum {
+  border-color: #EB5757;
+  background-color: #fb8eff; }
+
+.hidden {
+  display: none; }
+
+.collapse-order {
+  width: 11em;
+  background: #ff00cc;}
+
+.order-table, .order-sum {
+  width: 5em; }
+
+.type {
+  width: 5em;
+  background-color: silver;
+  box-sizing: border-box;
+  padding: 1px 0px;
+  border-width: 2px;
+  border-style: inset; }
+
+.archived-order {
+  justify-content: space-between; }
+
+.expand-button {
+  padding: 1px 4px;
+  background: #215f00; }
+
+.send-back {
+  background: #00416A;
+  padding: 1px 4px; }
+
+#menu {
+  font-family: $font-main;
+  font-size: $normal-font; }
+
+.menu-code {
+  width: 2em; }
+
+.menu-price {
+  width: 6em; }
+
+#menu-navigation {
+  justify-content: flex-end; }
+
+.update-button {
+  background: #00416A;
+  padding: 1px 8px;
+  width: 6em; }
+
+.new-order-button {
+  background: #215f00;
+  width: 6em; }
+
+input, select {
+  background: silver; }
+
+.percent {
+  width: 1em; }
+
+.to-go-button {
+  background-color: silver;
+  padding: 1px 0px;
+  border-width: 2px;
+  border-style: inset; }
+
+.discount {
+  width: 3em; }
+
+.day-sum, .date-label {
+  width: 5em; }
+
+#expand-all-button {
+  margin-left: auto;
+  background-color: #ff9900; }
+
+.day {
+  margin-left: auto; }
+
+.order-date {
+  width: 4em; }
+
+#archived-orders-labels {
+  margin-left: auto; }
+
+#top-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  width: 100%;
+  height: 23px; }
+
+.top-panel .button {
+  height: 2em; }
+
+#version{
+  position: fixed;
+  top: 0;
+  z-index: 999;
+  width: 100%;
+  height: 1em;
+  color: red;
+  text-align: right;
+  margin: 0 auto auto 0;
+  font-size: 0.5em;}
+
+#language{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+  width: 5em;
+  color: black;
+  background: gray;
+
+}
+ 
+.item-labels-container .name {
+  margin-left: auto; 
+  
 }
 
-.item {
-    display: flex;
+#tasks-message{
+  font-size: 0.7em;
+  background: rgba(0,255,0,0.2);
+}
+#tasks-message button {
+  color: black;
+  background: rgba(255,0,0,0.2);
 }
 
-.top-panel .button{
-    height: 2em;
+#tasks button{
+  color: black;
 }
 
-#version {
-    position: fixed;
-    top: 0;
-    z-index: 999;
-    width: 100%;
-    height: 1em;
-    color: red;
-    text-align: right;
-}
 
-.panel {
-    display: flex;
-    .name {
-        margin-left: auto;
-    }
-}
-
-#summary-items {
-    display: flex;
-    flex-direction: column-reverse;;
-}
+/*# sourceMappingURL=styles.css.map */

@@ -10,7 +10,7 @@ const order = {
             (emptyOrder) => {order.create.container(emptyOrder._id); });
         },
         container: (orderId, itemsQuantity=4) => {
-            const div = `<div id=${orderId} class='order'></div>`;     
+            const div = `<div id='${orderId}' class='order flex-column'></div>`;     
             $("#order-display").prepend(div);
             order.create.topPanel(orderId);
             order.create.labelsContainer(orderId); 
@@ -20,17 +20,17 @@ const order = {
             window.location.href = `#${orderId}`;
         },
         topPanel: (orderId) => {
-            const   topPanelDiv = `<div class="top-panel"></div>`;
+            const   topPanelDiv = `<div class="top-panel flex"></div>`;
             $(`#${orderId}.order`).append(topPanelDiv);
             $(`#${orderId}.order .top-panel`).append(order.html.topPanel(orderId));
         },
         labelsContainer: (orderId) => {
-            const labelsDiv = `<div class="labels"></div>`;
+            const labelsDiv = `<div class="order-labels flex"></div>`;
             $(`#${orderId}.order`).append(labelsDiv);
-            $(`#${orderId}.order .labels`).append(order.html.labels(orderId));
+            $(`#${orderId}.order .order-labels`).append(order.html.labels(orderId));
         },
         bottomPanel: (orderId) => {
-            const   bottomPanelContainer = `<div class="bottom-panel"></div>`;
+            const   bottomPanelContainer = `<div class="bottom-panel flex"></div>`;
             $(`#${orderId}.order`).append(bottomPanelContainer);
             $(`#${orderId}.order .bottom-panel`).append(order.html.bottomPanel(orderId));
         },
@@ -65,7 +65,7 @@ const order = {
             //createOrderContainer(orderId, itemIds.length);
             //dis is like create order container
             
-            const orderContainer = `<div id=${orderId} class='order'></div>`;     
+            const orderContainer = `<div id='${orderId}' class='order flex-column'></div>`;     
             $("#order-display").append(orderContainer);
             order.create.topPanel(orderId);
             order.create.labelsContainer(orderId); 
@@ -138,17 +138,15 @@ const order = {
         },
         collapseItems: (orderId) => {
             $(`#${orderId}.order .item-container`).toggleClass('hidden');
-            $(`#${orderId}.order .labels`).toggleClass('hidden');
+            $(`#${orderId}.order .order-labels`).toggleClass('hidden');
             if($(`#${orderId}.order .item-container`).hasClass('hidden')){
                 $(`#${orderId}.order .collapse-order`).html('<i class="fas fa-angle-down"></i> Pokaż zamówienie <i class="fas fa-angle-down"></i>');
                 $(`#${orderId}.order .table`).on("click", (event) => {order.manage.collapseItems($(event.target).parent().parent()[0].id)});
-                $(`#${orderId}.order .collapse-order`).toggleClass('cosmic-fusion-up');
-                $(`#${orderId}.order .collapse-order`).toggleClass('cosmic-fusion-down');
+            
             } else {
                 $(`#${orderId}.order .table`).off("click");
                 $(`#${orderId}.order .collapse-order`).html('<i class="fas fa-angle-up"></i> Zwiń zamówienie <i class="fas fa-angle-up"></i>');
-                $(`#${orderId}.order .collapse-order`).toggleClass('cosmic-fusion-up');
-                $(`#${orderId}.order .collapse-order`).toggleClass('cosmic-fusion-down');
+             
             }
         }
     },
@@ -164,7 +162,7 @@ const order = {
                     percentLabel            = `<input class='percent' type='text' value='%' readonly>`,
                     discountToGoCheckbox    = `<label class='to-go-button'><input class='discount-to-go' type='checkbox' name='checkbox' value='discountToGo'>${strings.toGo}</label>`,
                     sendButton              = `<button onclick='order.update.close("${orderId}")'       class='send-button'      >${strings.closeOrder} ${icons.pencil}</button>`,
-                    collapseButton          = `<button onclick='order.manage.collapseItems("${orderId}")'    class='collapse-order cosmic-fusion-up'>${icons.angleUp} ${strings.collapseOrder} ${icons.angleUp}</button>`;
+                    collapseButton          = `<button onclick='order.manage.collapseItems("${orderId}")'    class='collapse-order'>${icons.angleUp} ${strings.collapseOrder} ${icons.angleUp}</button>`;
             return [tableInput, collapseButton, discountInput, discountToGoCheckbox, percentLabel, sendButton, ];
         },
         

@@ -80,13 +80,13 @@ const menu = {
         containers: () => {
             const ids = {
                 menuContainer : "menu",
-                navigationPanel : "menu-navigation",
+                navigationContainer : "menu-navigation",
                 menuItemsContainer : "menu-container",
             };
-            const   menu            = `<div id='${ids.menuContainer}' class='main-container'></div>`,
-                    navigationPanel = `<div id='${ids.navigationPanel}'></div>`,
+            const   menu            = `<div id='${ids.menuContainer}' class='main-container flex-column'></div>`,
+                    navigationContainer = `<div id='${ids.navigationContainer}' class='flex'></div>`,
                     menuContainer   = `<div id='${ids.menuItemsContainer}'></div>`;
-            return {menu: menu, containers: [navigationPanel, menuContainer]};
+            return {menu: menu, containers: [navigationContainer, menuContainer]};
         },
         
         labels : () => {
