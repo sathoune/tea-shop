@@ -7,11 +7,13 @@ const item = {
         inside: (orderId) => {
             sendRequest('/item/new', {orderID: orderId}, 
             (emptyItem) => { 
-                item.create.container(orderId, emptyItem._id);});
+                item.create.container(orderId, emptyItem._id);
+                $(`#${emptyItem._id} .name`).focus();
+            });
         },
         container: (orderId, itemId) => {
             const container = `<div id=${itemId} class='item flex'></div>`;     
-            $(`#${orderId}.order .item-container`).append(container);  
+            $(`#${orderId}.order .item-container`).prepend(container);  
             $(`#${itemId}.item`).append(item.html.inputs(itemId));
         },
     },
