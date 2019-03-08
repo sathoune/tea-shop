@@ -65,7 +65,7 @@ button, input, select {
   width: 3em; }
 
 .name {
-  width: 14em; }
+  width: 14.5em; }
 
 .table {
   width: 7em;
@@ -236,6 +236,21 @@ select {
   -moz-appearance: none;
   text-indent: 1px;
   text-overflow: ''; }
+
+.reservation-name {
+  width: 6em; }
+
+.reservation-table {
+  width: 4em; }
+
+.reservation-people {
+  width: 3em; }
+
+.reservation-hints {
+  width: 6em; }
+
+#reservations-control {
+  flex-wrap: wrap; }
 
 /*# sourceMappingURL=styles.css.map */
 
