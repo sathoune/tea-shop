@@ -54,17 +54,14 @@ const menu = {
     
     delete: {
         close(){
-            
             $('#record-view').show();
             $('#menu').remove();
             $('#show-menu').html(`<i class="fas fa-book-open"></i> Magazyn <i class="fas fa-book-open"></i>`);
             $('#show-menu').off("click").on("click", menu.create.open);
             header.manageMainContainers.showAll();
-    
         },
         item(itemId){ 
             sendRequest("/menu/delete", {_id: itemId}, (data) => { $(`#${itemId}.menu-item`).remove(); }); 
-            
         },
     },
     

@@ -4,8 +4,8 @@ const   express     = require("express"),
 
 
 router.post("/", (req, res) => {
-
-    
+        console.log('hi');
+        res.send('hi');
 });
 
 

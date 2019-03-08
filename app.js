@@ -45,15 +45,17 @@ const   indexRoutes         = require("./routes/index"),
         menuRoutes          = require("./routes/menu"),
         summaryRoutes       = require("./routes/summary"),
         tasksRoutes         = require("./routes/tasks"),
+        reservationsRoutes         = require("./routes/reservations"),
         archiveRoutes       = require("./routes/archive");
 
-app.use("/order",   orderRoutes);
-app.use("/item",    itemRoutes);
-app.use("/menu",    menuRoutes);
-app.use("/archive", archiveRoutes);
-app.use("/summary", summaryRoutes);
-app.use("/task",    tasksRoutes);
-app.use("/",        indexRoutes);
+app.use("/order",           orderRoutes);
+app.use("/item",            itemRoutes);
+app.use("/menu",            menuRoutes);
+app.use("/archive",         archiveRoutes);
+app.use("/reservations",    reservationsRoutes);
+app.use("/summary",         summaryRoutes);
+app.use("/task",            tasksRoutes);
+app.use("/",                indexRoutes);
 
 
 // menu seed
