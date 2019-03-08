@@ -4,7 +4,10 @@ const   express     = require("express"),
 
 
 router.post("/", (req, res) => {
-        res.send('hi');
+        Reservation.find({}, (err, foundReservations) => {
+                 if(err){ console.error("error founding orders" + err); }
+                 else{ res.send(foundReservations); }
+        });
 });
 
 router.post("/new", (req, res) => {

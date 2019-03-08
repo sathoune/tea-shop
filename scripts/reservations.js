@@ -9,8 +9,12 @@ const reservations = {
             $("#show-reservations").off("click").on("click", reservations.delete.close);
             reservations.create.containers();
             sendRequest("/reservations", {}, 
-            (data) => { 
-                
+            (foundReservations) => { 
+                foundReservations.forEach( reservation => {
+                    const html = reservations.html.display(reservation);
+                    $(`#reservation-container`).append(html.container);
+                    $(`#${reservation._id}`).append(html.inputs);
+                });
             });
         },
         containers(){
@@ -55,7 +59,7 @@ const reservations = {
     html: {
         mainContainer: `<div id='reservations' class='main-container flex-column'></div>`,
         controlsContainer: `<div id='reservations-control' class='flex'></div>`,
-        reservationsContainer: `<div id='reservation-container' class='flex'></div>`,
+        reservationsContainer: `<div id='reservation-container' class='flex-column'></div>`,
         hourOptions(hour = '14'){
             var hourOptions = "";
             for(let i=0; i<24; i++){
@@ -92,8 +96,8 @@ const reservations = {
         },
         display(reservationData){
             const   container = `<div id='${reservationData._id}'></div>`;
-            const   hour = `<select class='reservation-hour' name='hour'>${reservations.html.hourOptions(reservationData.date.getHours())}</select>`,
-                    minutes = `:<select class='reservation-minutes' name='minutes'>${reservations.html.minuteOptions(reservationData.date.getMinutes())}</select>`,
+            const   hour = `<select class='reservation-hour' name='hour'>${reservations.html.hourOptions(new Date(reservationData.date).getHours()-1)}</select>`,
+                    minutes = `:<select class='reservation-minutes' name='minutes'>${reservations.html.minuteOptions(new Date(reservationData.date).getMinutes())}</select>`,
                     name = `<input class='reservation-name' type='text' value='${reservationData.name}'>`,
                     table = `<input class='reservation-table' type='text' value='${reservationData.table}'>`,
                     people = `<input class='reservation-people' type='number' value='${reservationData.people}'' min='0' max='100'>`,
