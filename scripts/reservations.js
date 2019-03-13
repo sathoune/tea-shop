@@ -20,8 +20,13 @@ const reservations = {
         containers(){
             $('body').append(reservations.html.mainContainer);
             $('#reservations').append([reservations.html.controlsContainer, reservations.html.reservationsContainer]);
-            $('#reservations-control').append(reservations.html.inputs());
-        
+            const html = reservations.html.inputs();
+            const html2 = reservations.html.controls();
+            $('#reservations-control').append(html.container);
+            $('#reservations-control').append(html2.container);
+            $('#new-reservation').append(html.inputs);
+            $('#reservation-day-choice').append(html2.inputs);
+            
         },
         reservation(){
             const reservationData = {
@@ -41,7 +46,20 @@ const reservations = {
     },
     update: {
         reservation(id){
-            
+            const reservationData = {
+                id: id,
+                day: $(`#reservation-day`).val(),
+                hour: $(`#${id} .reservation-hour`).val(),
+                minutes: $(`#${id} .reservation-minutes`).val(),
+                name: $(`#${id} .reservation-name`).val(),
+                table: $(`#${id} .reservation-table`).val(),
+                hints: $(`#${id} .reservation-hints`).val(),
+                people: $(`#${id} .reservation-people`).val(),
+                waterPipe: $(`#${id} .reservation-pipe`).is(":checked"),
+            };
+            sendRequest("reservations/update", reservationData, (beta) => {
+                console.log(beta);
+            });
         }
     },
     delete: {
@@ -52,13 +70,15 @@ const reservations = {
             $('#show-reservations').off("click").on("click", reservations.create.open);
         },
         reservation(id){
-            
+            sendRequest("/reservations/delete", {_id: id}, (beta) => {
+                $(`#${id}`).remove();
+            });
         }
     },
     
     html: {
         mainContainer: `<div id='reservations' class='main-container flex-column'></div>`,
-        controlsContainer: `<div id='reservations-control' class='flex'></div>`,
+        controlsContainer: `<div id='reservations-control'></div>`,
         reservationsContainer: `<div id='reservation-container' class='flex-column'></div>`,
         hourOptions(hour = '14'){
             var hourOptions = "";
@@ -80,7 +100,14 @@ const reservations = {
             }
             return minuteOptions;
         },
+        controls(){
+            const   controlsContainer = `<div id='reservation-day-choice'></div>`; //???????????
+            const   day = `<input id="show-day" type="date" value='${archive.manage.getDate()}' min="2019-01-01" max="2025-12-31">`,
+                    dayLabel = `<label>Wyświetl z dnia: </label>`;
+                    return {container: controlsContainer, inputs: [dayLabel, day]};
+        },
         inputs(){
+            const   newReservationContainer = `<div id="new-reservation"></div>`;
             const   dateInput = `<input id="reservation-day" class='reservation-day' type="date" value='${archive.manage.getDate()}' min="2019-01-01" max="2025-12-31">`,
                     hour = `<select id='reservation-hour' class='reservation-hour' name='hour'>${reservations.html.hourOptions()}</select>`,
                     minutes = `:<select id='reservation-minutes' class='reservation-minutes' name='minutes'>${reservations.html.minuteOptions()}</select>`,
@@ -91,10 +118,15 @@ const reservations = {
                     waterPipe = `<label>fajka wodna<input type='checkbox' id='reservation-pipe'></label>`,
                     save = `<button onclick='reservations.create.reservation()' id='reservation-save' class='reservation-save'>Zapisz</button>`;
             
-            
-            return [dateInput, hour, minutes, table, name, people, waterPipe, hints, save];
+            return {container: newReservationContainer, inputs: [dateInput, hour, minutes, table, name, people, waterPipe, hints, save] };
         },
         display(reservationData){
+            let waterPipeChecked = "";
+            let handledChecked = "";
+            if(reservationData.waterPipe == 'true'){ 
+                waterPipeChecked = "checked" ; }
+            if(reservationData.done == 'true'){ 
+                handledChecked = "checked" ; }
             const   container = `<div id='${reservationData._id}'></div>`;
             const   hour = `<select class='reservation-hour' name='hour'>${reservations.html.hourOptions(new Date(reservationData.date).getHours()-1)}</select>`,
                     minutes = `:<select class='reservation-minutes' name='minutes'>${reservations.html.minuteOptions(new Date(reservationData.date).getMinutes())}</select>`,
@@ -102,9 +134,9 @@ const reservations = {
                     table = `<input class='reservation-table' type='text' value='${reservationData.table}'>`,
                     people = `<input class='reservation-people' type='number' value='${reservationData.people}'' min='0' max='100'>`,
                     hints = `<input class='reservation-hints' type='text' value='${reservationData.hints}'>`,
-                    waterPipe = `<label>fajka wodna<input type='checkbox' id='reservation-pipe'></label>`,
-                    handled = `<label>gotowe<input type='checkbox' id='reservation-pipe'></label>`,
-                    editButton =`<button onclick='reservations.update.reservation("${reservationData._id}")' class='reservation-update'>Zapisz</button>`,
+                    waterPipe = `<label>fajka wodna<input type='checkbox' id='reservation-pipe' ${waterPipeChecked}></label>`,
+                    handled = `<label>gotowe<input type='checkbox' id='reservation-pipe' ${handledChecked}></label>`,
+                    editButton =`<button onclick='reservations.update.reservation("${reservationData._id}")' class='reservation-update'>Edytuj</button>`,
                     deleteButton = `<button onclick='reservations.delete.reservation("${reservationData._id}")' class='reservation-delete'>Usuń</button>`;
                     
                 return {container: container, inputs: [deleteButton, hour, minutes, table, name, people, waterPipe, hints, handled, editButton]};

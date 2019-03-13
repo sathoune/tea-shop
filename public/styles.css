@@ -5,6 +5,10 @@
   display: flex;
   flex-direction: column; }
 
+.flex-column-reverse {
+  display: flex;
+  flex-direction: column-reverse; }
+
 body {
   display: flex;
   flex-direction: column;
@@ -248,9 +252,6 @@ select {
 
 .reservation-hints {
   width: 6em; }
-
-#reservations-control {
-  flex-wrap: wrap; }
 
 /*# sourceMappingURL=styles.css.map */
 

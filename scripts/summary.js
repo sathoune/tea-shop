@@ -106,8 +106,8 @@ const summary = {
         navigationContainer:    `<div id='summary-navigation'></div>`,
         panelContainer:         `<div id='summary-panel' class='flex'><div id='dates'></div><div id='summary-buttons' class='flex'></div></div>`,
         resultsContainer:       `<div id='summary-results'></div>`,
-        itemsContainer:         `<div id='summary-items' class='flex-column'></div>`,
-        hoursContainer:         `<div id='summary-hours' class='flex-column'></div>`,
+        itemsContainer:         `<div id='summary-items' class='flex-column-reverse'></div>`,
+        hoursContainer:         `<div id='summary-hours' class='flex-column-reverse'></div>`,
         navigation(){
             const   dateStartInput      = `<input id="day-start" type="date" name="trip-start" value='${summary.manage.getDate()}' min="2019-01-01" max="2025-12-31"><br>`,
                     dateEndInput        = `<input id="day-end"   type="date" name="trip-start" value='${summary.manage.getDate()}' min="2019-01-01" max="2025-12-31">`,
