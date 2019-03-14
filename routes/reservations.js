@@ -4,7 +4,12 @@ const   express     = require("express"),
 
 
 router.post("/", (req, res) => {
-        Reservation.find({}, (err, foundReservations) => {
+        const now = new Date(req.body.today);
+        var dateCriteria = {
+            $gte: new Date(now.getFullYear(), now.getMonth(), now.getDate()),
+            $lt: new Date(now.getFullYear(), now.getMonth(), now.getDate()+1),
+        };
+        Reservation.find({createdAt: dateCriteria}, (err, foundReservations) => {
                  if(err){ console.error("error founding orders" + err); }
                  else{ res.send(foundReservations); }
         });

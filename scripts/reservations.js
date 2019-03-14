@@ -8,7 +8,7 @@ const reservations = {
             $("#show-reservations").html(`<i class="fas fa-chevron-left"></i> Wróć do zamówień <i class="fas fa-chevron-left"></i>`);
             $("#show-reservations").off("click").on("click", reservations.delete.close);
             reservations.create.containers();
-            sendRequest("/reservations", {}, 
+            sendRequest("/reservations", {today: archive.manage.getDate()}, 
             (foundReservations) => { 
                 foundReservations.forEach( reservation => {
                     const html = reservations.html.display(reservation);
@@ -39,8 +39,8 @@ const reservations = {
                 people: $(`#reservation-people`).val(),
                 waterPipe: $(`#reservation-pipe`).is(":checked"),
             };
-            sendRequest("/reservations/new", reservationData, (data) => {
-               console.log(data); 
+            sendRequest("/reservations/new", reservationData, (beta) => {
+               console.log(beta); 
             });
         },
     },
