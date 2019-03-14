@@ -12,7 +12,7 @@ promiseLanguage.then( () => {
         createNavigation();
         order.read.findOpen();
         tasks.create.taskReminder();
-    
+        reservations.create.reminder();
     });
 });
 
@@ -51,7 +51,7 @@ const header = {
         containers: {
             main: "<div id='header' class='flex'></div>", 
             buttons: `<div id='header-buttons' class='flex-column'></div>`,
-            messages: `<div id='messages'></div>`,
+            messages: `<div id='messages' class='flex'></div>`,
         },
         createButtons(){
             const icons = {

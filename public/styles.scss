@@ -240,11 +240,11 @@ input, select {
   
 }
 
-#tasks-message{
+#tasks-message, #reservations-message{
   font-size: 0.7em;
   background: rgba(0,255,0,0.2);
 }
-#tasks-message button {
+#tasks-message button, #reservations-message button {
   color: black;
   background: rgba(255,0,0,0.2);
 }

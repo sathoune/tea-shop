@@ -53,6 +53,21 @@ const reservations = {
                console.log(beta); 
             });
         },
+        reminder(){
+            $(`#messages`).append(reservations.html.messageContainer);
+            var millis = 30*60*1000;
+            reservations.update.messages();
+            if(millis){ var reservationTimer = setInterval(reservations.update.messages, millis);
+            } else { reservations.update.messages(); }
+        },
+        message(todos){
+            const message = "<div>Pozostałe rezerwacje na dziś:";
+            var reservations = "";
+            todos.forEach(todo => reservations += `<li>${new Date(todo.date).getHours()}:${new Date(todo.date).getMinutes()} na ${todo.table}</li>`);
+            $(`#reservations-message`).append(`${message} <ul>${reservations}</ul> </div> <button style='width: 100%;' onclick='tasks.delete.message()'>Usuń wiadomość</button>`);
+            
+            //investigate
+        },
     },
     update: {
         reservation(id){
@@ -70,7 +85,18 @@ const reservations = {
             sendRequest("reservations/update", reservationData, (beta) => {
                 console.log(beta);
             });
-        }
+        },
+        done(id){
+            sendRequest("reservations/update/close", {_id: id, done: $(`#${id} .reservation-done`).is(':checked')}, (beta) => {
+                console.log(beta);
+            });
+        },
+        messages(){
+            $(`#reservations-message`).html("");
+            sendRequest("/reservations/todo", {day: archive.manage.getDate()}, data => {
+                if(data){ reservations.create.message(data); }
+            });
+        },
     },
     delete: {
         close(){
@@ -83,10 +109,13 @@ const reservations = {
             sendRequest("/reservations/delete", {_id: id}, (beta) => {
                 $(`#${id}`).remove();
             });
-        }
+        },
+        message(){ $('#reservations-message').html(""); }
     },
     
     html: {
+        messageContainer: `<div id="reservations-message"></div>`,
+        lolo: `<button style='width: 100%;' onclick='tasks.delete.message()'>Usuń wiadomość</button>`,
         mainContainer: `<div id='reservations' class='main-container flex-column'></div>`,
         controlsContainer: `<div id='reservations-control'></div>`,
         reservationsContainer: `<div id='reservation-container' class='flex-column'></div>`,
@@ -144,8 +173,8 @@ const reservations = {
                     table = `<input class='reservation-table' type='text' value='${reservationData.table}'>`,
                     people = `<input class='reservation-people' type='number' value='${reservationData.people}'' min='0' max='100'>`,
                     hints = `<input class='reservation-hints' type='text' value='${reservationData.hints}'>`,
-                    waterPipe = `<label>fajka wodna<input type='checkbox' id='reservation-pipe' ${waterPipeChecked}></label>`,
-                    handled = `<label>gotowe<input type='checkbox' id='reservation-pipe' ${handledChecked}></label>`,
+                    waterPipe = `<label>fajka wodna<input type='checkbox' class='reservation-pipe' ${waterPipeChecked}></label>`,
+                    handled = `<label>gotowe<input onclick='reservations.update.done("${reservationData._id}")' type='checkbox' class='reservation-done' ${handledChecked}></label>`,
                     editButton =`<button onclick='reservations.update.reservation("${reservationData._id}")' class='reservation-update'>Edytuj</button>`,
                     deleteButton = `<button onclick='reservations.delete.reservation("${reservationData._id}")' class='reservation-delete'>Usuń</button>`;
                     
