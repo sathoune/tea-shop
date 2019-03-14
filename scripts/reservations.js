@@ -26,7 +26,17 @@ const reservations = {
             $('#reservations-control').append(html2.container);
             $('#new-reservation').append(html.inputs);
             $('#reservation-day-choice').append(html2.inputs);
-            
+            $('#show-day').on('change', () => {
+                $("#reservation-container").html("");
+                sendRequest("/reservations", {today: $('#show-day').val()}, 
+                (foundReservations) => { 
+                    foundReservations.forEach( reservation => {
+                        const html = reservations.html.display(reservation);
+                        $(`#reservation-container`).append(html.container);
+                        $(`#${reservation._id}`).append(html.inputs);
+                    });
+                });
+            });
         },
         reservation(){
             const reservationData = {
