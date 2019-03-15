@@ -164,8 +164,10 @@ const reservations = {
             let handledChecked = "";
             if(reservationData.waterPipe == 'true'){ 
                 waterPipeChecked = "checked" ; }
-            if(reservationData.done == 'true'){ 
-                handledChecked = "checked" ; }
+            if(Boolean(reservationData.done)){ 
+                handledChecked = "checked" ; 
+                console.log(handledChecked);
+            }
             const   container = `<div id='${reservationData._id}'></div>`;
             const   hour = `<select class='reservation-hour' name='hour'>${reservations.html.hourOptions(new Date(reservationData.date).getHours()-1)}</select>`,
                     minutes = `:<select class='reservation-minutes' name='minutes'>${reservations.html.minuteOptions(new Date(reservationData.date).getMinutes())}</select>`,
