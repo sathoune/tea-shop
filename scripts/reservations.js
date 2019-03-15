@@ -63,7 +63,7 @@ const reservations = {
         message(todos){
             const message = "<div>Pozostałe rezerwacje na dziś:";
             var reservations = "";
-            todos.forEach(todo => reservations += `<li>${new Date(todo.date).getHours()}:${new Date(todo.date).getMinutes()} na ${todo.table}</li>`);
+            todos.forEach(todo => reservations += `<li>${new Date(todo.date).getHours() -1}:${new Date(todo.date).getMinutes()} na ${todo.table}</li>`);
             $(`#reservations-message`).append(`${message} <ul>${reservations}</ul> </div> <button style='width: 100%;' onclick='tasks.delete.message()'>Usuń wiadomość</button>`);
             
             //investigate
