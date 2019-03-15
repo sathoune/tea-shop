@@ -12,7 +12,7 @@ promiseLanguage.then( () => {
         createNavigation();
         order.read.findOpen();
         tasks.create.taskReminder();
-    
+        reservations.create.reminder();
     });
 });
 
@@ -27,6 +27,7 @@ const header = {
         $("#show-menu").on("click", menu.create.open);
         $("#show-archive").on("click", archive.create.open);
         $("#show-tasks").on("click", tasks.create.open);
+        $("#show-reservations").on("click", reservations.create.open);
         $("#language").on("change", changeLanguage);
     },
     manageMainContainers: {
@@ -50,7 +51,7 @@ const header = {
         containers: {
             main: "<div id='header' class='flex'></div>", 
             buttons: `<div id='header-buttons' class='flex-column'></div>`,
-            messages: `<div id='messages'></div>`,
+            messages: `<div id='messages' class='flex'></div>`,
         },
         createButtons(){
             const icons = {
@@ -59,9 +60,10 @@ const header = {
             };
             const   showMenu    = `<button id='show-menu' class='navigation-button'>${icons.openBook} ${strings.warehouse} ${icons.openBook}</button>`,
                     showArchive = `<button id='show-archive' class='navigation-button'>${icons.box} ${strings.archive} ${icons.box}</button>`,
-                    showTasks   = `<button id='show-tasks' class='navigation-button'>Zadania</button>`;
+                    showTasks   = `<button id='show-tasks' class='navigation-button'>Zadania</button>`,
+                    showReservations = `<button id='show-reservations' class='navigation-button'>Rezerwacje</button>`;
                 
-            return [showTasks, showMenu, showArchive];
+            return [showReservations, showTasks, showMenu, showArchive];
         },
     },
 };

@@ -156,7 +156,7 @@ const archive = {
                 daySum: 'day-sum',
             };
             const   expandAllButton     = `<button id='expand-all-button' class="expand-button">${strings.expandAll} ${expandIcon}</button>`;
-            const   dateInput           = `<input                   id="day-for-display"    type="date" name="trip-start"   value='${archive.manage.getDate()}' min="2019-01-01" max="2025-12-31">`,
+            const   dateInput           = `<input                   id="day-for-display"    type="date"    value='${archive.manage.getDate()}' min="2019-01-01" max="2025-12-31">`,
                     sumInput            = `<input class='${classes.daySum}'   id='day-sum'            type="number"                   value='0'           readonly>`,
                     discountedSumInput  = `<input class='${classes.daySum}'   id='discounted-day-sum' type="number"                   value='0'           readonly>`,
                     hourLabel           = `<input class='${classes.dateLabel}'                        type='text'                     value='${strings.opened}'     readonly>`,

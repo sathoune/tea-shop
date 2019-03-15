@@ -5,6 +5,10 @@
   display: flex;
   flex-direction: column; }
 
+.flex-column-reverse {
+  display: flex;
+  flex-direction: column-reverse; }
+
 body {
   display: flex;
   flex-direction: column;
@@ -65,7 +69,7 @@ button, input, select {
   width: 3em; }
 
 .name {
-  width: 14em; }
+  width: 14.5em; }
 
 .table {
   width: 7em;
@@ -220,16 +224,34 @@ input, select {
 .item-labels-container .name {
   margin-left: auto; }
 
-#tasks-message {
+#tasks-message, #reservations-message {
   font-size: 0.7em;
   background: rgba(0, 255, 0, 0.2); }
 
-#tasks-message button {
+#tasks-message button, #reservations-message button {
   color: black;
   background: rgba(255, 0, 0, 0.2); }
 
 #tasks button {
   color: black; }
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-indent: 1px;
+  text-overflow: ''; }
+
+.reservation-name {
+  width: 6em; }
+
+.reservation-table {
+  width: 4em; }
+
+.reservation-people {
+  width: 3em; }
+
+.reservation-hints {
+  width: 6em; }
 
 /*# sourceMappingURL=styles.css.map */
 

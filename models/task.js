@@ -5,6 +5,6 @@ var TaskSchema = new mongoose.Schema({
     task:           {type: String, default: ""},
     done:           {type: Boolean, default: false},
 },
-                        {timestamps: { createdAt: 'createdAt' } });
+    {timestamps: { createdAt: 'createdAt' } });
 
 module.exports = mongoose.model("Task", TaskSchema);
