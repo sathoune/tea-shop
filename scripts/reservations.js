@@ -63,7 +63,7 @@ const reservations = {
         message(todos){
             const message = "<div>Pozostałe rezerwacje na dziś:";
             var reservations = "";
-            todos.forEach(todo => reservations += `<li>${new Date(todo.date).getHours() -1}:${new Date(todo.date).getMinutes()} na ${todo.table}</li>`);
+            todos.forEach(todo => reservations += `<li>${new Date(todo.date).getHours()}:${new Date(todo.date).getMinutes()} na ${todo.table}</li>`);
             $(`#reservations-message`).append(`${message} <ul>${reservations}</ul> </div> <button style='width: 100%;' onclick='tasks.delete.message()'>Usuń wiadomość</button>`);
             
             //investigate
@@ -169,7 +169,7 @@ const reservations = {
                 console.log(handledChecked);
             }
             const   container = `<div id='${reservationData._id}'></div>`;
-            const   hour = `<select class='reservation-hour' name='hour'>${reservations.html.hourOptions(new Date(reservationData.date).getHours()-1)}</select>`,
+            const   hour = `<select class='reservation-hour' name='hour'>${reservations.html.hourOptions(new Date(reservationData.date).getHours())}</select>`,
                     minutes = `:<select class='reservation-minutes' name='minutes'>${reservations.html.minuteOptions(new Date(reservationData.date).getMinutes())}</select>`,
                     name = `<input class='reservation-name' type='text' value='${reservationData.name}'>`,
                     table = `<input class='reservation-table' type='text' value='${reservationData.table}'>`,
