@@ -49,7 +49,7 @@ router.post("/delete", (req, res) => {
 
 router.post("/update", (req, res) => {
   const updatedReservation = {
-    date: new Date(`${req.body.day}T${req.body.hour}:${req.body.minutes}:00`),
+    date: new Date(`${req.body.day}T${req.body.hour-2}:${req.body.minutes}:00`),
     name: req.body.name,
     table: req.body.table,
     people: req.body.people,
