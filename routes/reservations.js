@@ -17,7 +17,7 @@ router.post("/", (req, res) => {
 
 router.post("/new", (req, res) => {
         const newReservation = {
-                date: new Date(`${req.body.day} ${req.body.hour}:${req.body.minutes}:00 GMT+01:00`),
+                date: new Date(`${req.body.day} ${req.body.hour }:${req.body.minutes}:00 GMT+01:00`),
                 name: req.body.name,
                 table: req.body.table,
                 people: req.body.people,

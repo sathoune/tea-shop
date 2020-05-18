@@ -119,7 +119,7 @@ const reservations = {
         mainContainer: `<div id='reservations' class='main-container flex-column'></div>`,
         controlsContainer: `<div id='reservations-control'></div>`,
         reservationsContainer: `<div id='reservation-container' class='flex-column'></div>`,
-        hourOptions(hour = '14'){
+        hourOptions(hour='14'){
             var hourOptions = "";
             for(let i=0; i<24; i++){
                 let selected = "";
@@ -166,7 +166,6 @@ const reservations = {
                 waterPipeChecked = "checked" ; }
             if(Boolean(reservationData.done)){ 
                 handledChecked = "checked" ; 
-                console.log(handledChecked);
             }
             const   container = `<div id='${reservationData._id}'></div>`;
             const   hour = `<select class='reservation-hour' name='hour'>${reservations.html.hourOptions(new Date(reservationData.date).getHours())}</select>`,
