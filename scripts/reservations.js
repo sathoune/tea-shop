@@ -41,7 +41,7 @@ const reservations = {
         reservation(){
             const reservationData = {
                 day: $(`#reservation-day`).val(),
-                hour: String(Number($(`#reservation-hour`).val()) +1),
+                hour: $(`#reservation-hour`).val() +1,
                 minutes: $(`#reservation-minutes`).val(),
                 name: $(`#reservation-name`).val(),
                 table: $(`#reservation-table`).val(),
